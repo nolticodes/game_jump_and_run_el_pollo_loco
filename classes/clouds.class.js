@@ -1,4 +1,6 @@
 class Cloud extends Moveableobject{
+    speed = 0.2
+
     constructor() {
         super().loadImage("./assets/img/5_background/layers/4_clouds/1.png");
 
@@ -7,17 +9,13 @@ class Cloud extends Moveableobject{
         this.width = 480;
         this.height = 400;
 
-        this.animate();
-    }
-
-    animate() {
-        setInterval( () => {
-        this.x -= 0.2;
-        }, 1000 / 60)
+        this.animationMoveLeft();
     }
 }
 
 class CloudSecond extends Moveableobject{
+    speed = 0.15
+
     constructor() {
         super().loadImage("./assets/img/5_background/layers/4_clouds/2.png");
 
@@ -26,12 +24,6 @@ class CloudSecond extends Moveableobject{
         this.width = 480;
         this.height = 400;
 
-        this.animate();
-    }
-
-    animate() {
-        setInterval( () => {
-        this.x -= 0.15;
-        }, 1000 / 60)
+        this.animationMoveLeft();
     }
 }

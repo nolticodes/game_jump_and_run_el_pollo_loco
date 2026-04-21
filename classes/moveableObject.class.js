@@ -6,6 +6,7 @@ class Moveableobject {
     height = 400;
     imageCache = {};
     currentImage = 0;
+    speed = 0.2
 
 
     loadImage(path) {
@@ -19,6 +20,12 @@ class Moveableobject {
             img.src = path;
             this.imageCache[path] = img
         });
+    }
+
+    animationMoveLeft() {
+        setInterval( () => {
+        this.x -= this.speed;
+        }, 1000 / 60)
     }
 
 

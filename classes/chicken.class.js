@@ -1,4 +1,5 @@
 class Chicken extends Moveableobject {
+    speed = 0.4 + Math.random() * 0.5;
     chickensWalking = [
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
@@ -14,7 +15,9 @@ class Chicken extends Moveableobject {
         this.width = 100;
         this.height = 100;
 
-        this.animateImages()
+        this.animateImages();
+        
+        this.animationMoveLeft() 
     }
 
     animateImages() {
@@ -25,4 +28,7 @@ class Chicken extends Moveableobject {
             this.currentImage++;
         }, 175)
     }
+
+    
+
 }
