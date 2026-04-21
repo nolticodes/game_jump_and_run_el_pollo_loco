@@ -34,32 +34,35 @@ class Pepe extends Moveableobject {
         this.animateImages();
     }
 
-    animateImages() {
-        setInterval(() => {
-            if (this.world.keyboard.right) {
-                this.x += this.speed
-                this.otherDirection = false
-            } else if (this.world.keyboard.left) {
-                this.x -= this.speed
-                this.otherDirection = true;
-            }
-        }, 1000 / 60)
+animateImages() {
+    setInterval(() => {
+        if (this.world.keyboard.right) {
+            this.x += this.speed;
+            this.otherDirection = false;
+        } else if (this.world.keyboard.left) {
+            this.x -= this.speed;
+            this.otherDirection = true;
+        }
+    }, 1000 / 60);
 
-        setInterval(() => {
-            if (this.world.keyboard.right || this.world.keyboard.left) {
-                // WALK ANIMATION
-                let i = this.currentImage % this.pepeWalkingImages.length;
-                let path = this.pepeWalkingImages[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-            } else {
-                let i = this.currentImage % this.pepeStandingImages.length;
-                let path = this.pepeStandingImages[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-            }
-        }, 175);
-    }
+    setInterval(() => {
+        if (this.world.keyboard.right || this.world.keyboard.left) {
+            let i = this.currentImage % this.pepeWalkingImages.length;
+            let path = this.pepeWalkingImages[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        }
+    }, 50);
+
+    setInterval(() => {
+        if (!this.world.keyboard.right && !this.world.keyboard.left) {
+            let i = this.currentImage % this.pepeStandingImages.length;
+            let path = this.pepeStandingImages[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        }
+    }, 175);
+}
 
 
 
