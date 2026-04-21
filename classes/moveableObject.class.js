@@ -6,7 +6,8 @@ class Moveableobject {
     height = 400;
     imageCache = {};
     currentImage = 0;
-    speed = 0.2
+    speed = 0.2;
+    otherDirection = false;
 
 
     loadImage(path) {

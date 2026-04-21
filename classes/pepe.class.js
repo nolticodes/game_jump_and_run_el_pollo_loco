@@ -1,5 +1,7 @@
 class Pepe extends Moveableobject {
 
+    speed = 5
+
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
         "./assets/img/2_character_pepe/1_idle/idle/I-2.png",
@@ -34,7 +36,18 @@ class Pepe extends Moveableobject {
 
     animateImages() {
         setInterval(() => {
-            if (this.world && this.world.keyboard.right) {
+            if (this.world.keyboard.right) {
+                this.x += this.speed
+                this.otherDirection = false
+            } else if (this.world.keyboard.left) {
+                this.x -= this.speed
+                this.otherDirection = true;
+            }
+        }, 1000 / 60)
+
+        setInterval(() => {
+            if (this.world.keyboard.right || this.world.keyboard.left) {
+                // WALK ANIMATION
                 let i = this.currentImage % this.pepeWalkingImages.length;
                 let path = this.pepeWalkingImages[i];
                 this.img = this.imageCache[path];
