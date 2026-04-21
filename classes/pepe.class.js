@@ -11,22 +11,41 @@ class Pepe extends Moveableobject {
         "./assets/img/2_character_pepe/1_idle/idle/I-8.png",
         "./assets/img/2_character_pepe/1_idle/idle/I-9.png",
         "./assets/img/2_character_pepe/1_idle/idle/I-10.png",
-    ]
+    ];
+
+    pepeWalkingImages = [
+        "./assets/img/2_character_pepe/2_walk/W-21.png",
+        "./assets/img/2_character_pepe/2_walk/W-22.png",
+        "./assets/img/2_character_pepe/2_walk/W-23.png",
+        "./assets/img/2_character_pepe/2_walk/W-24.png",
+        "./assets/img/2_character_pepe/2_walk/W-25.png",
+        "./assets/img/2_character_pepe/2_walk/W-26.png",
+    ];
+
+    world;
 
     constructor() {
         super().loadImage("./assets/img/2_character_pepe/1_idle/idle/I-1.png");
         this.loadImagesToCacheJSON(this.pepeStandingImages);
+        this.loadImagesToCacheJSON(this.pepeWalkingImages);
 
         this.animateImages();
     }
 
     animateImages() {
         setInterval(() => {
-            let i = this.currentImage % this.pepeStandingImages.length
-            let path = this.pepeStandingImages[i]
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 175)
+            if (this.world && this.world.keyboard.right) {
+                let i = this.currentImage % this.pepeWalkingImages.length;
+                let path = this.pepeWalkingImages[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            } else {
+                let i = this.currentImage % this.pepeStandingImages.length;
+                let path = this.pepeStandingImages[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            }
+        }, 175);
     }
 
 

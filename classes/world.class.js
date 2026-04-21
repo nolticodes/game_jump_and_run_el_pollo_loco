@@ -1,6 +1,7 @@
 class World {
     ctx;
     canvas;
+    keyboard;
     character = new Pepe();
     enemies = [
         new Chicken(),
@@ -24,7 +25,13 @@ class World {
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld()
+    }
+
+    setWorld() {
+        this.character.world = this
     }
 
     draw() {
