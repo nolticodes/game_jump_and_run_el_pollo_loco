@@ -1,6 +1,6 @@
 class Pepe extends Moveableobject {
 
-    pepeWalkingImages = [
+    pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
         "./assets/img/2_character_pepe/1_idle/idle/I-2.png",
         "./assets/img/2_character_pepe/1_idle/idle/I-3.png",
@@ -15,15 +15,15 @@ class Pepe extends Moveableobject {
 
     constructor() {
         super().loadImage("./assets/img/2_character_pepe/1_idle/idle/I-1.png");
-        this.loadImagesToCacheJSON(this.pepeWalkingImages);
+        this.loadImagesToCacheJSON(this.pepeStandingImages);
 
         this.animateImages();
     }
 
     animateImages() {
         setInterval(() => {
-            let i = this.currentImage % this.pepeWalkingImages.length
-            let path = this.pepeWalkingImages[i]
+            let i = this.currentImage % this.pepeStandingImages.length
+            let path = this.pepeStandingImages[i]
             this.img = this.imageCache[path];
             this.currentImage++;
         }, 175)
