@@ -39,10 +39,12 @@ animateImages() {
         if (this.world.keyboard.right) {
             this.x += this.speed;
             this.otherDirection = false;
-        } else if (this.world.keyboard.left) {
+        }
+        if (this.world.keyboard.left) {
             this.x -= this.speed;
             this.otherDirection = true;
         }
+        this.world.camera_x = -this.x
     }, 1000 / 60);
 
     setInterval(() => {
