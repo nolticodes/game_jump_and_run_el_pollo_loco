@@ -21,6 +21,10 @@ class World {
         new ThirdLayerBG(),
         new SecondLayerBG(),
         new FirstLayerBG(),
+        new AirBG_2(),
+        new ThirdLayerBG_2(),
+        new SecondLayerBG_2(),
+        new FirstLayerBG_2(),
     ]
 
     constructor(canvas) {
