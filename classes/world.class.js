@@ -15,7 +15,8 @@ class World {
     }
 
     setWorld() {
-        this.character.world = this
+        this.character.world = this;
+        this.character.animateImages();
     }
 
     draw() {
@@ -44,7 +45,7 @@ class World {
             self.draw();
         });
 
-        
+
     }
 
     addToMap(mo) {

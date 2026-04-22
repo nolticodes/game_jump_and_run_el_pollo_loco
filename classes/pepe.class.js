@@ -30,12 +30,12 @@ class Pepe extends Moveableobject {
         super().loadImage("./assets/img/2_character_pepe/1_idle/idle/I-1.png");
         this.loadImagesToCacheJSON(this.pepeStandingImages);
         this.loadImagesToCacheJSON(this.pepeWalkingImages);
-
-        this.animateImages();
     }
 
 animateImages() {
     setInterval(() => {
+        if (!this.world) return;
+
         if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
             this.x += this.speed;
             this.otherDirection = false;
@@ -44,24 +44,22 @@ animateImages() {
             this.x -= this.speed;
             this.otherDirection = true;
         }
-        this.world.camera_x = -this.x + 70
+        this.world.camera_x = -this.x + 70;
     }, 1000 / 60);
 
     setInterval(() => {
+        if (!this.world) return;
+
         if (this.world.keyboard.right || this.world.keyboard.left) {
-            let i = this.currentImage % this.pepeWalkingImages.length;
-            let path = this.pepeWalkingImages[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            this.playAnimation(this.pepeWalkingImages);
         }
     }, 50);
 
     setInterval(() => {
+        if (!this.world) return;
+
         if (!this.world.keyboard.right && !this.world.keyboard.left) {
-            let i = this.currentImage % this.pepeStandingImages.length;
-            let path = this.pepeStandingImages[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            this.playAnimation(this.pepeStandingImages);
         }
     }, 175);
 }
