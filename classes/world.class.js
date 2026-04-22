@@ -4,28 +4,9 @@ class World {
     keyboard;
     camera_x = 0;
     character = new Pepe();
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-    ];
-
-    clouds = [
-        new Cloud(),
-        new CloudSecond(),
-    ]
-
-    backgrounds = [
-        new AirBG(),
-        new ThirdLayerBG(),
-        new SecondLayerBG(),
-        new FirstLayerBG(),
-        new AirBG_2(),
-        new ThirdLayerBG_2(),
-        new SecondLayerBG_2(),
-        new FirstLayerBG_2(),
-    ]
+    enemies = level1.enemies;
+    clouds = level1.clouds;
+    backgrounds = level1.backgrounds;
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
