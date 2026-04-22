@@ -38,6 +38,14 @@ class World {
             this.addToMap(cloud);
         });
 
+        this.level.coins.forEach(coin => {
+            this.addToMap(coin)
+        })
+
+        this.level.bottles.forEach(bottle => {
+            this.addToMap(bottle)
+        })
+
         this.ctx.translate(-this.camera_x, 0)
 
         let self = this

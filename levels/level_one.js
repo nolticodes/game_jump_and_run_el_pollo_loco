@@ -23,6 +23,39 @@ const level1 = new Level(
         new ThirdLayerBG_2(),
         new SecondLayerBG_2(),
         new FirstLayerBG_2(),
+    ],
+
+    [
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+        new Coins(),
+    ],
+
+    [
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
+        new Bottles(),
     ]
 
 )
