@@ -1,5 +1,10 @@
 class Endboss extends Moveableobject {
 
+    height = 400
+    width = 400
+    y = 50
+    x = 900
+
     endbossAlert = [
         "./assets/img/4_enemie_boss_chicken/2_alert/G5.png",
         "./assets/img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -14,7 +19,12 @@ class Endboss extends Moveableobject {
     constructor() {
         super().loadImage("./assets/img/4_enemie_boss_chicken/2_alert/G5.png");
         this.loadImagesToCacheJSON(this.endbossAlert);
-        this.x = 700
+        this.animate()
+    }
 
+    animate() {
+        setInterval(() => {
+            this.playAnimation(this.endbossAlert);
+        }, 250)
     }
 }
