@@ -10,6 +10,10 @@ const level1 = new Level(
         new CloudSecond(),
     ],
     [
+        new AirBG_0(),
+        new ThirdLayerBG_0(),
+        new SecondLayerBG_0(),
+        new FirstLayerBG_0(),
         new AirBG(),
         new ThirdLayerBG(),
         new SecondLayerBG(),

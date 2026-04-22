@@ -4,9 +4,7 @@ class World {
     keyboard;
     camera_x = 0;
     character = new Pepe();
-    enemies = level1.enemies;
-    clouds = level1.clouds;
-    backgrounds = level1.backgrounds;
+    level = level1
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -25,17 +23,17 @@ class World {
 
         this.ctx.translate(this.camera_x, 0)
 
-        this.backgrounds.forEach(bg => {
+        this.level.backgrounds.forEach(bg => {
             this.addToMap(bg);
         });
 
         this.addToMap(this.character);
 
-        this.enemies.forEach(enemy => {
+        this.level.enemies.forEach(enemy => {
             this.addToMap(enemy);
         });
 
-        this.clouds.forEach(cloud => {
+        this.level.clouds.forEach(cloud => {
             this.addToMap(cloud);
         });
 
