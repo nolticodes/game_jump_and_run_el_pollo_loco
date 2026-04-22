@@ -1,6 +1,8 @@
 class Pepe extends Moveableobject {
 
     speed = 5
+    x = 80;
+    y = 40;
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -24,49 +26,68 @@ class Pepe extends Moveableobject {
         "./assets/img/2_character_pepe/2_walk/W-26.png",
     ];
 
+    pepeJumpingImages = [
+        "./assets/img/2_character_pepe/3_jump/J-31.png",
+        "./assets/img/2_character_pepe/3_jump/J-32.png",
+        "./assets/img/2_character_pepe/3_jump/J-33.png",
+        "./assets/img/2_character_pepe/3_jump/J-34.png",
+        "./assets/img/2_character_pepe/3_jump/J-35.png",
+        "./assets/img/2_character_pepe/3_jump/J-36.png",
+        "./assets/img/2_character_pepe/3_jump/J-37.png",
+        "./assets/img/2_character_pepe/3_jump/J-38.png",
+        "./assets/img/2_character_pepe/3_jump/J-39.png",
+    ]
+
     world;
 
     constructor() {
         super().loadImage("./assets/img/2_character_pepe/1_idle/idle/I-1.png");
+        // loadImagesToCache um die Bilder anfangs einmal zu initalisieren/laden
         this.loadImagesToCacheJSON(this.pepeStandingImages);
         this.loadImagesToCacheJSON(this.pepeWalkingImages);
+        this.loadImagesToCacheJSON(this.pepeJumpingImages);
+        this.applyGravity();
+
     }
 
-animateImages() {
-    setInterval(() => {
-        if (!this.world) return;
+    animateImages() {
+        setInterval(() => {
 
-        if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
-            this.x += this.speed;
-            this.otherDirection = false;
-        }
-        if (this.world.keyboard.left && this.x > 0) {
-            this.x -= this.speed;
-            this.otherDirection = true;
-        }
-        this.world.camera_x = -this.x + 70;
-    }, 1000 / 60);
+            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
+                this.otherDirection = false;
+                this.moveRight();
+            }
+            if (this.world.keyboard.left && this.x > 0) {
+                this.otherDirection = true;
+                this.moveLeft();
+            }
 
-    setInterval(() => {
-        if (!this.world) return;
+            if ((this.world.keyboard.up || this.world.keyboard.space) && !this.isInAir()) {
+                this.jump();
+            }
 
-        if (this.world.keyboard.right || this.world.keyboard.left) {
-            this.playAnimation(this.pepeWalkingImages);
-        }
-    }, 50);
+            this.world.camera_x = -this.x + 70;
+        }, 1000 / 60);
 
-    setInterval(() => {
-        if (!this.world) return;
+        setInterval(() => {
+            if (!this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
+                this.playAnimation(this.pepeWalkingImages);
+            }
+        }, 50);
 
-        if (!this.world.keyboard.right && !this.world.keyboard.left) {
-            this.playAnimation(this.pepeStandingImages);
-        }
-    }, 175);
-}
+        setInterval(() => {
+            if (this.isInAir()) {
+                this.playAnimation(this.pepeJumpingImages);
+            }
+        }, 175);
 
+        setInterval(() => {
+            if (!this.world) return;
 
+            if (!this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
+                this.playAnimation(this.pepeStandingImages);
+            }
+        }, 175);
+    }
 
-    jump() {
-
-    };
 } 
