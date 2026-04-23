@@ -38,14 +38,16 @@ class Moveableobject {
     }
 
     drawRectangle(ctx) {
-        ctx.beginPath();
-        ctx.lineWidth = "1";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
+        if (this instanceof Pepe || this instanceof Chicken || this instanceof Endboss || this instanceof Coins || this instanceof Bottles) {
+            ctx.beginPath();
+            ctx.lineWidth = "1";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
     }
 
-    
+
 
     loadImagesToCacheJSON(arr) {
         arr.forEach((path) => {
@@ -80,4 +82,12 @@ class Moveableobject {
     jump() {
         return this.speedY = 25
     };
+
+    isColliding(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x &&
+            this.y < mo.y + mo.height
+    }
+
 }
