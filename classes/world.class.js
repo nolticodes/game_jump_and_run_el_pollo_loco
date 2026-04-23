@@ -58,18 +58,26 @@ class World {
 
     addToMap(mo) {
         if (mo.otherDirection) {
-            // Change dircetion of image pepe
-            // Wieso werden nicht die anderen ctx Elemente verschoben??
-            this.ctx.save();
-            this.ctx.translate(mo.width, 0);
-            this.ctx.scale(-1, 1);
-            mo.x = mo.x * -1
+            this.flipImages(mo);
         }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+
+        mo.drawMoveableObjects(this.ctx);
+        mo.drawRectangle(this.ctx);
 
         if (mo.otherDirection) {
-            mo.x = mo.x * -1
-            this.ctx.restore();
+            this.flipImagesBack(mo);
         }
+    }
+
+    flipImages(mo) {
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
+    }
+
+    flipImagesBack(mo) {
+        mo.x = mo.x * -1;
+        this.ctx.restore();
     }
 }
