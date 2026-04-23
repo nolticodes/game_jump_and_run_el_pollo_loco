@@ -40,6 +40,13 @@ class Pepe extends Moveableobject {
 
     world;
 
+    offset = {
+        top: 120,
+        bottom: 30,
+        left: -90,
+        right: 50,
+    }
+
     constructor() {
         super().loadImage("./assets/img/2_character_pepe/1_idle/idle/I-1.png");
         // loadImagesToCache um die Bilder anfangs einmal zu initalisieren/laden
