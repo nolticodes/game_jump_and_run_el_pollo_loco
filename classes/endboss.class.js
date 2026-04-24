@@ -5,6 +5,13 @@ class Endboss extends Moveableobject {
     y = 50
     x = 900
 
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 20,
+        right: 1300,
+    }
+
     endbossAlert = [
         "./assets/img/4_enemie_boss_chicken/2_alert/G5.png",
         "./assets/img/4_enemie_boss_chicken/2_alert/G6.png",

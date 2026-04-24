@@ -43,7 +43,7 @@ class Pepe extends Moveableobject {
     offset = {
         top: 120,
         bottom: 30,
-        left: -90,
+        left: 20,
         right: 50,
     }
 
