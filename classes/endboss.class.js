@@ -9,7 +9,7 @@ class Endboss extends Moveableobject {
         top: 0,
         bottom: 0,
         left: 20,
-        right: 1300,
+        right: 80,
     }
 
     endbossAlert = [
