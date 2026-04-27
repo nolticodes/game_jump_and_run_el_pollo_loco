@@ -22,7 +22,21 @@ class World {
                     console.log("Collision detectes", enemy)
                 }
             }); 
-        }, 200)
+        }, 200);
+        setInterval(() => {
+            this.level.coins.forEach((coins) => {
+                if(this.character.isColliding(coins)) {
+                    console.log("Collision detectes", coins)
+                }
+            }); 
+        }, 200);
+        setInterval(() => {
+            this.level.bottles.forEach((bottles) => {
+                if(this.character.isColliding(bottles)) {
+                    console.log("Collision detectes", bottles)
+                }
+            }); 
+        }, 200);
     }
 
     setWorld() {

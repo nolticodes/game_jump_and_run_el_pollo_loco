@@ -1,4 +1,12 @@
 class Chicken extends Moveableobject {
+
+    offset = {
+        top: 30,
+        bottom: 0,
+        left: 0,
+        right: 55,
+    }
+
     speed = 0.4 + Math.random() * 0.5;
     chickensWalking = [
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
