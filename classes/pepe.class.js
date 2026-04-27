@@ -3,6 +3,7 @@ class Pepe extends Moveableobject {
     speed = 5
     x = 80;
     y = 40;
+    isDeadAnimationPlayed = false;
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -36,6 +37,15 @@ class Pepe extends Moveableobject {
         "./assets/img/2_character_pepe/3_jump/J-37.png",
         "./assets/img/2_character_pepe/3_jump/J-38.png",
         "./assets/img/2_character_pepe/3_jump/J-39.png",
+    ];
+
+    pepeIsDead = [
+        "./assets/img/2_character_pepe/5_dead/D-51.png",
+        "./assets/img/2_character_pepe/5_dead/D-52.png",
+        "./assets/img/2_character_pepe/5_dead/D-53.png",
+        "./assets/img/2_character_pepe/5_dead/D-54.png",
+        "./assets/img/2_character_pepe/5_dead/D-55.png",
+        "./assets/img/2_character_pepe/5_dead/D-56.png",
     ]
 
     world;
@@ -53,6 +63,7 @@ class Pepe extends Moveableobject {
         this.loadImagesToCacheJSON(this.pepeStandingImages);
         this.loadImagesToCacheJSON(this.pepeWalkingImages);
         this.loadImagesToCacheJSON(this.pepeJumpingImages);
+        this.loadImagesToCacheJSON(this.pepeIsDead);
         this.applyGravity();
 
     }
@@ -76,14 +87,36 @@ class Pepe extends Moveableobject {
             this.world.camera_x = -this.x + 70;
         }, 1000 / 60);
 
+
         setInterval(() => {
-            if (!this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
+            if (this.isDead() && !this.isDeadAnimationPlayed) {
+                this.isDeadAnimationPlayed = true;
+
+                let i = 0;
+
+                let interval = setInterval(() => {
+                    if (i < this.pepeIsDead.length) {
+                        let path = this.pepeIsDead[i];
+                        this.img = this.imageCache[path];
+                        i++;
+                    } else {
+                        clearInterval(interval);
+
+                        // letztes Bild stehen lassen
+                        this.loadImage("./assets/img/2_character_pepe/5_dead/D-56.png")
+                    }
+                }, 125);
+            }
+        }, 100);
+
+        setInterval(() => {
+            if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
                 this.playAnimation(this.pepeWalkingImages);
             }
         }, 50);
 
         setInterval(() => {
-            if (this.isInAir()) {
+            if (!this.isDead() && this.isInAir()) {
                 this.playAnimation(this.pepeJumpingImages);
             }
         }, 175);
@@ -91,7 +124,7 @@ class Pepe extends Moveableobject {
         setInterval(() => {
             if (!this.world) return;
 
-            if (!this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
+            if (!this.isDead() && !this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
                 this.playAnimation(this.pepeStandingImages);
             }
         }, 175);

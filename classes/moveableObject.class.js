@@ -97,11 +97,15 @@ class Moveableobject {
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     }
 
-    hit() {
-        this.energy -= 5;
+    hit(mo) {
+        this.energy -= mo.damage;
         if (this.energy < 0) {
             this.energy = 0;
         }
+    }
+
+    isDead() {
+        return this.energy == 0 
     }
 
 }
