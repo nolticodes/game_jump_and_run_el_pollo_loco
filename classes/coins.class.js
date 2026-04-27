@@ -2,9 +2,9 @@ class Coins extends Moveableobject {
 
     offset = {
         top: 0,
-        bottom: 30,
-        left: 0,
-        right: 0,
+        bottom: 100,
+        left: 60,
+        right: 90,
     }
 
     constructor() {
