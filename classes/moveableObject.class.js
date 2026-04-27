@@ -16,6 +16,7 @@ class Moveableobject {
         right: 0,
         bottom: 0,
     }
+    energy = 100;
 
     applyGravity() {
         setInterval(() => {
@@ -94,6 +95,13 @@ class Moveableobject {
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+    }
+
+    hit() {
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0;
+        }
     }
 
 }
