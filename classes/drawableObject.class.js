@@ -1,0 +1,36 @@
+class DrawableObject {
+    x = 80;
+    y = 40;
+    width = 200;
+    height = 400;
+    img;
+    imageCache = {};
+    currentImage = 0;
+
+    loadImage(path) {
+        this.img = new Image();
+        this.img.src = path;
+    }
+
+    loadImagesToCacheJSON(arr) {
+        arr.forEach((path) => {
+            let img = new Image();
+            img.src = path;
+            this.imageCache[path] = img
+        });
+    };
+
+    drawMoveableObjects(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    drawRectangle(ctx) {
+        if (this instanceof Pepe || this instanceof Chicken || this instanceof Endboss || this instanceof Coins || this instanceof Bottles) {
+            ctx.beginPath();
+            ctx.lineWidth = "1";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+}

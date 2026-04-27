@@ -4,7 +4,10 @@ class World {
     keyboard;
     camera_x = 0;
     character = new Pepe();
-    level = level1
+    level = level1;
+    statusbarHealth = new Statusbar("health", -10, 100);
+    statusbarCoins = new Statusbar("coins", 35, 0);
+    statusbarBottles = new Statusbar("bottles", 80, 0);
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -18,25 +21,26 @@ class World {
     checkCollision() {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)) {
-                    this.character.hit(enemy)
+                if (this.character.isColliding(enemy)) {
+                    this.character.hit(enemy);
+                    this.statusbarHealth.setPercentage(this.character.energy)
                     console.log("Collision with", this.character.energy)
                 }
-            }); 
+            });
         }, 200);
         setInterval(() => {
             this.level.coins.forEach((coins) => {
-                if(this.character.isColliding(coins)) {
+                if (this.character.isColliding(coins)) {
                     console.log("Collision detectes", coins)
                 }
-            }); 
+            });
         }, 200);
         setInterval(() => {
             this.level.bottles.forEach((bottles) => {
-                if(this.character.isColliding(bottles)) {
+                if (this.character.isColliding(bottles)) {
                     console.log("Collision detectes", bottles)
                 }
-            }); 
+            });
         }, 200);
     }
 
@@ -54,15 +58,20 @@ class World {
             this.addToMap(bg);
         });
 
-        this.addToMap(this.character);
+        this.level.clouds.forEach(cloud => {
+            this.addToMap(cloud);
+        });
+        this.ctx.translate(-this.camera_x, 0)
+        this.addToMap(this.statusbarHealth);
+        this.addToMap(this.statusbarCoins);
+        this.addToMap(this.statusbarBottles);
+        this.ctx.translate(this.camera_x, 0)
 
         this.level.enemies.forEach(enemy => {
             this.addToMap(enemy);
         });
 
-        this.level.clouds.forEach(cloud => {
-            this.addToMap(cloud);
-        });
+        this.addToMap(this.character);
 
         this.level.coins.forEach(coin => {
             this.addToMap(coin)
@@ -72,14 +81,14 @@ class World {
             this.addToMap(bottle)
         })
 
+
+
         this.ctx.translate(-this.camera_x, 0)
 
         let self = this
         requestAnimationFrame(function () {
             self.draw();
         });
-
-
     }
 
     addToMap(mo) {
