@@ -9,6 +9,8 @@ class World {
     statusbarCoins = new Statusbar("coins", 35, 0);
     statusbarBottles = new Statusbar("bottles", 80, 0);
     throwableObject = []
+    collectedCoins = 0;
+    collectedBottles = 0;
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -17,6 +19,8 @@ class World {
         this.draw();
         this.setWorld()
         this.run()
+        this.maxCoins = this.level.coins.length;
+        this.maxBottles = this.level.bottles.length;
     }
 
     run() {
@@ -27,10 +31,24 @@ class World {
     }
 
     checkThrowableObjext() {
-        if (this.keyboard.t) {
-            let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100)
-            this.throwableObject.push(bottle)
-            // this.keyboard.t = false;
+        if (this.keyboard.t && this.collectedBottles > 0) {
+
+            let xOffset = this.character.otherDirection ? -100 : 100;
+
+            let bottle = new ThrowableObject(
+                this.character.x + xOffset,
+                this.character.y + 100,
+                this.character.otherDirection
+            );
+
+            this.throwableObject.push(bottle);
+
+            this.collectedBottles--;
+
+            let percentage = (this.collectedBottles / this.maxBottles) * 100;
+            this.statusbarBottles.setPercentage(percentage);
+
+            this.keyboard.t = false;
         }
     }
 
@@ -39,24 +57,40 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy)) {
                     this.character.hit(enemy);
-                    this.statusbarHealth.setPercentage(this.character.energy)
-                    console.log("Collision with", this.character.energy)
+                    this.statusbarHealth.setPercentage(this.character.energy);
+                    console.log("Collision with", this.character.energy);
                 }
             });
         }, 200);
+
         setInterval(() => {
-            this.level.coins.forEach((coins) => {
-                if (this.character.isColliding(coins)) {
-                    console.log("Collision detectes", coins)
+            for (let i = this.level.coins.length - 1; i >= 0; i--) {
+                let coin = this.level.coins[i];
+
+                if (this.character.isColliding(coin)) {
+                    this.level.coins.splice(i, 1);
+
+                    let collected = this.maxCoins - this.level.coins.length;
+                    let percentage = (collected / this.maxCoins) * 100;
+
+                    this.statusbarCoins.setPercentage(percentage);
                 }
-            });
+            }
         }, 200);
+
         setInterval(() => {
-            this.level.bottles.forEach((bottles) => {
-                if (this.character.isColliding(bottles)) {
-                    console.log("Collision detectes", bottles)
+            for (let i = this.level.bottles.length - 1; i >= 0; i--) {
+                let bottle = this.level.bottles[i];
+
+                if (this.character.isColliding(bottle)) {
+                    this.level.bottles.splice(i, 1);
+
+                    this.collectedBottles++;
+
+                    let percentage = (this.collectedBottles / this.maxBottles) * 100;
+                    this.statusbarBottles.setPercentage(percentage);
                 }
-            });
+            }
         }, 200);
     }
 
