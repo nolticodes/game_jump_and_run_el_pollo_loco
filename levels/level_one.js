@@ -23,6 +23,10 @@ const level1 = new Level(
         new ThirdLayerBG_2(),
         new SecondLayerBG_2(),
         new FirstLayerBG_2(),
+        new AirBG_3(),
+        new ThirdLayerBG_3(),
+        new SecondLayerBG_3(),
+        new FirstLayerBG_3(),
     ],
 
     [

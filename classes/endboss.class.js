@@ -4,7 +4,7 @@ class Endboss extends Moveableobject {
     height = 400
     width = 400
     y = 50
-    x = 900
+    x = 1900
 
     offset = {
         top: 150,

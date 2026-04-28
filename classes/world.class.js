@@ -35,8 +35,8 @@ class World {
     checkThrowableObjext() {
         if (this.keyboard.t && this.collectedBottles > 0) {
 
-            let xOffset = this.character.otherDirection ? -100 : 100;
-            let yOffset = 160
+            let xOffset = this.character.otherDirection ? 20 : 100;
+            let yOffset = 160;
 
             let bottle = new ThrowableObject(
                 this.character.x + xOffset,

@@ -1,6 +1,6 @@
 class Pepe extends Moveableobject {
 
-    speed = 3
+    speed = 5
     x = 80;
     y = 40;
     isDeadAnimationPlayed = false;
@@ -82,10 +82,19 @@ class Pepe extends Moveableobject {
     animateImages() {
         setInterval(() => {
 
-            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
-                this.otherDirection = false;
-                this.moveRight();
+            if (this.world.keyboard.right) {
+
+                let screenX = this.x + this.world.camera_x;
+                // 👉 Position von Pepe im sichtbaren Canvas
+
+                let rightLimit = this.world.canvas.width - 200;
+
+                if (screenX < rightLimit) {
+                    this.otherDirection = false;
+                    this.moveRight();
+                }
             }
+
             if (this.world.keyboard.left && this.x > 0) {
                 this.otherDirection = true;
                 this.moveLeft();
@@ -95,7 +104,32 @@ class Pepe extends Moveableobject {
                 this.jump();
             }
 
-            this.world.camera_x = -this.x + 70;
+            let maxCameraX = this.world.level.level_end_x - this.world.canvas.width;
+            let cameraTarget = this.x - 70;
+
+            if (cameraTarget < 0) {
+                cameraTarget = 0;
+            }
+
+            if (cameraTarget > maxCameraX) {
+                cameraTarget = maxCameraX;
+            }
+
+            this.world.camera_x = -cameraTarget;
+
+            if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
+                if (!this.isWalkingSoundPlaying) {
+                    this.walkingSound.play();
+                    this.isWalkingSoundPlaying = true;
+                }
+            } else {
+                if (this.isWalkingSoundPlaying) {
+                    this.walkingSound.pause();
+                    this.walkingSound.currentTime = 0;
+                    this.isWalkingSoundPlaying = false;
+                }
+            }
+
         }, 1000 / 60);
 
 
@@ -132,38 +166,7 @@ class Pepe extends Moveableobject {
             }
         }, 50);
 
-        setInterval(() => {
 
-            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
-                this.otherDirection = false;
-                this.moveRight();
-            }
-
-            if (this.world.keyboard.left && this.x > 0) {
-                this.otherDirection = true;
-                this.moveLeft();
-            }
-
-            if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
-                if (!this.isWalkingSoundPlaying) {
-                    this.walkingSound.play();
-                    this.isWalkingSoundPlaying = true;
-                }
-            } else {
-                if (this.isWalkingSoundPlaying) {
-                    this.walkingSound.pause();
-                    this.walkingSound.currentTime = 0;
-                    this.isWalkingSoundPlaying = false;
-                }
-            }
-
-            if ((this.world.keyboard.up || this.world.keyboard.space) && !this.isInAir()) {
-                this.jump();
-            }
-
-            this.world.camera_x = -this.x + 70;
-
-        }, 1000 / 60);
 
         setInterval(() => {
             if (!this.isDead() && !this.isHurt() && this.isInAir()) {
