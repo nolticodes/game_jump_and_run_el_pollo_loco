@@ -181,7 +181,8 @@ class Pepe extends Moveableobject {
 
     isJumpingOn(mo) {
         return this.speedY < 0 &&
-            this.y + this.height - this.offset.bottom <= mo.y + mo.offset.top &&
+            this.y + this.height - this.offset.bottom >= mo.y + mo.offset.top - 20 &&
+            this.y + this.height - this.offset.bottom <= mo.y + mo.offset.top + 20 &&
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
     }
