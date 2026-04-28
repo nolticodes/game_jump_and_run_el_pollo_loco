@@ -48,6 +48,12 @@ class Pepe extends Moveableobject {
         "./assets/img/2_character_pepe/5_dead/D-56.png",
     ]
 
+    pepeIsHurt = [
+        "./assets/img/2_character_pepe/4_hurt/H-41.png",
+        "./assets/img/2_character_pepe/4_hurt/H-42.png",
+        "./assets/img/2_character_pepe/4_hurt/H-43.png",
+    ]
+
     world;
 
     offset = {
@@ -64,6 +70,7 @@ class Pepe extends Moveableobject {
         this.loadImagesToCacheJSON(this.pepeWalkingImages);
         this.loadImagesToCacheJSON(this.pepeJumpingImages);
         this.loadImagesToCacheJSON(this.pepeIsDead);
+        this.loadImagesToCacheJSON(this.pepeIsHurt);
         this.applyGravity();
 
     }
@@ -110,13 +117,19 @@ class Pepe extends Moveableobject {
         }, 100);
 
         setInterval(() => {
-            if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
+            if (!this.isDead() && this.isHurt()) {
+                this.playAnimation(this.pepeIsHurt);
+            }
+        }, 100);
+
+        setInterval(() => {
+            if (!this.isDead() && !this.isHurt() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
                 this.playAnimation(this.pepeWalkingImages);
             }
         }, 50);
 
         setInterval(() => {
-            if (!this.isDead() && this.isInAir()) {
+            if (!this.isDead() && !this.isHurt() && this.isInAir()) {
                 this.playAnimation(this.pepeJumpingImages);
             }
         }, 175);
@@ -124,7 +137,7 @@ class Pepe extends Moveableobject {
         setInterval(() => {
             if (!this.world) return;
 
-            if (!this.isDead() && !this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
+            if (!this.isDead() && !this.isHurt() && !this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
                 this.playAnimation(this.pepeStandingImages);
             }
         }, 175);

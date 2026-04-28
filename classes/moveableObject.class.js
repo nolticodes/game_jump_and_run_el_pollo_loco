@@ -10,6 +10,7 @@ class Moveableobject extends DrawableObject {
         bottom: 0,
     }
     energy = 100;
+    lastHit = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -62,15 +63,26 @@ class Moveableobject extends DrawableObject {
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     }
 
+    lastHit = 0;
+
     hit(mo) {
-        this.energy -= mo.damage;
+        this.energy -= mo.damage || 0;
+
         if (this.energy < 0) {
             this.energy = 0;
         }
+
+        this.lastHit = new Date().getTime();
+    }
+
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lastHit;
+        timepassed = timepassed / 1000;
+        return timepassed < 1;
     }
 
     isDead() {
-        return this.energy == 0 
+        return this.energy == 0
     }
 
 }
