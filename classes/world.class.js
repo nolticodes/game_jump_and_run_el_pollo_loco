@@ -24,20 +24,23 @@ class World {
     }
 
     run() {
-        this.checkCollision()
+        this.checkCollision();
+
         setInterval(() => {
-            this.checkThrowableObjext()
-        }, 200)
+            this.checkThrowableObjext();
+            this.throwableObject = this.throwableObject.filter(bottle => !bottle.markedForDeletion);
+        }, 200);
     }
 
     checkThrowableObjext() {
         if (this.keyboard.t && this.collectedBottles > 0) {
 
             let xOffset = this.character.otherDirection ? -100 : 100;
+            let yOffset = 160
 
             let bottle = new ThrowableObject(
                 this.character.x + xOffset,
-                this.character.y + 100,
+                this.character.y + yOffset,
                 this.character.otherDirection
             );
 
@@ -65,6 +68,20 @@ class World {
                     console.log("Collision with", this.character.energy);
                 }
 
+            });
+            this.throwableObject.forEach((bottle, bottleIndex) => {
+                this.level.enemies.forEach((enemy, enemyIndex) => {
+
+                    if (!bottle.isBroken && bottle.isColliding(enemy)) {
+
+                        // Enemy entfernen
+                        this.level.enemies.splice(enemyIndex, 1);
+
+                        // Splash starten
+                        bottle.playSplashAnimation();
+                    }
+
+                });
             });
         }, 200);
 

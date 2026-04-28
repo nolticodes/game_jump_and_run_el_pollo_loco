@@ -1,6 +1,6 @@
 class Pepe extends Moveableobject {
 
-    speed = 5
+    speed = 3
     x = 80;
     y = 40;
     isDeadAnimationPlayed = false;
@@ -180,9 +180,12 @@ class Pepe extends Moveableobject {
     }
 
     isJumpingOn(mo) {
+        let pepeBottom = this.y + this.height - this.offset.bottom;
+        let enemyTop = mo.y + mo.offset.top;
+
         return this.speedY < 0 &&
-            this.y + this.height - this.offset.bottom >= mo.y + mo.offset.top - 20 &&
-            this.y + this.height - this.offset.bottom <= mo.y + mo.offset.top + 20 &&
+            pepeBottom >= enemyTop - 50 &&
+            pepeBottom <= enemyTop + 50 &&
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
     }
