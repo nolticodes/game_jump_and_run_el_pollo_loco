@@ -4,6 +4,8 @@ class Pepe extends Moveableobject {
     x = 80;
     y = 40;
     isDeadAnimationPlayed = false;
+    walkingSound = new Audio("./assets/audio/pepe/walking_fast.mp3");
+    isWalkingSoundPlaying = false;
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -57,10 +59,10 @@ class Pepe extends Moveableobject {
     world;
 
     offset = {
-        top: 120,
-        bottom: 30,
-        left: 20,
-        right: 50,
+        top: 180,
+        bottom: 20,
+        left: 40,
+        right: 60,
     }
 
     constructor() {
@@ -72,7 +74,8 @@ class Pepe extends Moveableobject {
         this.loadImagesToCacheJSON(this.pepeIsDead);
         this.loadImagesToCacheJSON(this.pepeIsHurt);
         this.applyGravity();
-
+        this.walkingSound.loop = true;
+        this.walkingSound.volume = 1;
     }
 
     animateImages() {
@@ -123,10 +126,43 @@ class Pepe extends Moveableobject {
         }, 100);
 
         setInterval(() => {
-            if (!this.isDead() && !this.isHurt() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
+            if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
                 this.playAnimation(this.pepeWalkingImages);
             }
         }, 50);
+
+        setInterval(() => {
+
+            if (this.world.keyboard.right && this.x < this.world.level.level_end_x) {
+                this.otherDirection = false;
+                this.moveRight();
+            }
+
+            if (this.world.keyboard.left && this.x > 0) {
+                this.otherDirection = true;
+                this.moveLeft();
+            }
+
+            if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
+                if (!this.isWalkingSoundPlaying) {
+                    this.walkingSound.play();
+                    this.isWalkingSoundPlaying = true;
+                }
+            } else {
+                if (this.isWalkingSoundPlaying) {
+                    this.walkingSound.pause();
+                    this.walkingSound.currentTime = 0;
+                    this.isWalkingSoundPlaying = false;
+                }
+            }
+
+            if ((this.world.keyboard.up || this.world.keyboard.space) && !this.isInAir()) {
+                this.jump();
+            }
+
+            this.world.camera_x = -this.x + 70;
+
+        }, 1000 / 60);
 
         setInterval(() => {
             if (!this.isDead() && !this.isHurt() && this.isInAir()) {
@@ -141,6 +177,13 @@ class Pepe extends Moveableobject {
                 this.playAnimation(this.pepeStandingImages);
             }
         }, 175);
+    }
+
+    isJumpingOn(mo) {
+        return this.speedY < 0 &&
+            this.y + this.height - this.offset.bottom <= mo.y + mo.offset.top &&
+            this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
     }
 
 } 

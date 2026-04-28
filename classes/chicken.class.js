@@ -2,10 +2,10 @@ class Chicken extends Moveableobject {
 
     damage = 5
     offset = {
-        top: 30,
-        bottom: 0,
-        left: 0,
-        right: 55,
+        top: 10,
+        bottom:10,
+        left: 10,
+        right: 10,
     }
 
     speed = 0.4 + Math.random() * 0.5;
@@ -14,6 +14,7 @@ class Chicken extends Moveableobject {
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png"
     ]
+    isDead = false
 
     
 

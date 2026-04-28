@@ -54,12 +54,17 @@ class World {
 
     checkCollision() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy)) {
+            this.level.enemies.forEach((enemy, index) => {
+
+                if (enemy instanceof Chicken && this.character.isJumpingOn(enemy)) {
+                    this.level.enemies.splice(index, 1);
+                    this.character.speedY = 15; // kleiner Bounce nach oben
+                } else if (this.character.isColliding(enemy)) {
                     this.character.hit(enemy);
                     this.statusbarHealth.setPercentage(this.character.energy);
                     console.log("Collision with", this.character.energy);
                 }
+
             });
         }, 200);
 

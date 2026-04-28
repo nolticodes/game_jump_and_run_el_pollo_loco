@@ -7,10 +7,10 @@ class Endboss extends Moveableobject {
     x = 900
 
     offset = {
-        top: 0,
-        bottom: 0,
-        left: 20,
-        right: 80,
+        top: 150,
+        bottom: 70,
+        left: 60,
+        right: 70,
     }
 
     endbossAlert = [
