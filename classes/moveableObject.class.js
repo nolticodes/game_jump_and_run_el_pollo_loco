@@ -11,6 +11,7 @@ class Moveableobject extends DrawableObject {
     }
     energy = 100;
     lastHit = 0;
+    lastAnimation = "";
 
     applyGravity() {
         setInterval(() => {
@@ -36,11 +37,33 @@ class Moveableobject extends DrawableObject {
         }, 1000 / 60)
     }
 
-    playAnimation(images) {
+    playAnimation(images, animationName) {
+
+        if (this.lastAnimation !== animationName) {
+            this.currentImage = 0;
+            this.lastAnimation = animationName;
+        }
+
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+    }
+
+    playAnimationOnce(images, animationName) {
+        if (this.lastAnimation !== animationName) {
+            this.currentImage = 0;
+            this.lastAnimation = animationName;
+        }
+
+        if (this.currentImage < images.length) {
+            let path = images[this.currentImage];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        } else {
+            let lastImage = images[images.length - 1];
+            this.img = this.imageCache[lastImage];
+        }
     }
 
 

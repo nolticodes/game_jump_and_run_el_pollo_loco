@@ -6,6 +6,7 @@ class Pepe extends Moveableobject {
     isDeadAnimationPlayed = false;
     walkingSound = new Audio("./assets/audio/pepe/walking_fast.mp3");
     isWalkingSoundPlaying = false;
+    lastAnimation = "";
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -121,13 +122,13 @@ class Pepe extends Moveableobject {
 
         setInterval(() => {
             if (!this.isDead() && this.isHurt()) {
-                this.playAnimation(this.pepeIsHurt);
+                this.playAnimation(this.pepeIsHurt, "hurt");
             }
         }, 100);
 
         setInterval(() => {
             if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
-                this.playAnimation(this.pepeWalkingImages);
+                this.playAnimation(this.pepeWalkingImages, "walk");
             }
         }, 50);
 
@@ -166,15 +167,15 @@ class Pepe extends Moveableobject {
 
         setInterval(() => {
             if (!this.isDead() && !this.isHurt() && this.isInAir()) {
-                this.playAnimation(this.pepeJumpingImages);
+                this.playAnimationOnce(this.pepeJumpingImages, "jump");
             }
-        }, 175);
+        }, 120);
 
         setInterval(() => {
             if (!this.world) return;
 
             if (!this.isDead() && !this.isHurt() && !this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
-                this.playAnimation(this.pepeStandingImages);
+                this.playAnimation(this.pepeStandingImages, "idle");
             }
         }, 175);
     }
