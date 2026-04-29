@@ -5,10 +5,11 @@ class World {
     camera_x = 0;
     character = new Pepe();
     level = level1;
-    statusbarHealth = new Statusbar("health", -10, 100);
-    statusbarCoins = new Statusbar("coins", 35, 0);
-    statusbarBottles = new Statusbar("bottles", 80, 0);
-    throwableObject = []
+    statusbarHealth = new Statusbar("health", 15, -10, 100);
+    statusbarCoins = new Statusbar("coins", 15, 35, 0);
+    statusbarBottles = new Statusbar("bottles", 15, 80, 0);
+    statusbarEndboss = new Statusbar("endboss", 525, -4, 100);
+    throwableObject = [];
     collectedCoins = 0;
     collectedBottles = 0;
 
@@ -138,6 +139,7 @@ class World {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoins);
         this.addToMap(this.statusbarBottles);
+        this.addToMap(this.statusbarEndboss);
         this.ctx.translate(this.camera_x, 0)
 
         this.level.enemies.forEach(enemy => {

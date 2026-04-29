@@ -32,10 +32,20 @@ class Statusbar extends DrawableObject {
         "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png",
     ];
 
-    constructor(type, y, percentage) {
+    imagesEndboss = [
+        "./assets/img/7_statusbars/2_statusbar_endboss/green/green0.png",
+        "./assets/img/7_statusbars/2_statusbar_endboss/green/green20.png",
+        "./assets/img/7_statusbars/2_statusbar_endboss/green/green40.png",
+        "./assets/img/7_statusbars/2_statusbar_endboss/green/green60.png",
+        "./assets/img/7_statusbars/2_statusbar_endboss/green/green80.png",
+        "./assets/img/7_statusbars/2_statusbar_endboss/green/green100.png",
+    ]
+
+    constructor(type, x, y, percentage) {
         super();
 
         this.y = y;
+        this.x = x;
         this.percentage = percentage;
 
         if (type === "health") {
@@ -44,6 +54,8 @@ class Statusbar extends DrawableObject {
             this.images = this.imagesCoins;
         } else if (type === "bottles") {
             this.images = this.imagesBottles;
+        } else if (type === "endboss") {
+            this.images = this.imagesEndboss
         }
 
         this.loadImagesToCacheJSON(this.images);
