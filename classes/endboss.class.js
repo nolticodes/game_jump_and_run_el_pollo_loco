@@ -6,6 +6,7 @@ class Endboss extends Moveableobject {
     y = 50
     x = 1900
     energy = 100
+    lastAnimation = ""
 
     offset = {
         top: 150,
@@ -25,15 +26,54 @@ class Endboss extends Moveableobject {
         "./assets/img/4_enemie_boss_chicken/2_alert/G12.png",
     ];
 
+    endbossWalking = [
+        "./assets/img/4_enemie_boss_chicken/1_walk/G1.png",
+        "./assets/img/4_enemie_boss_chicken/1_walk/G2.png",
+        "./assets/img/4_enemie_boss_chicken/1_walk/G3.png",
+        "./assets/img/4_enemie_boss_chicken/1_walk/G4.png",
+    ];
+
+    endbossHurt = [
+        "./assets/img/4_enemie_boss_chicken/4_hurt/G21.png",
+        "./assets/img/4_enemie_boss_chicken/4_hurt/G22.png",
+        "./assets/img/4_enemie_boss_chicken/4_hurt/G23.png",
+    ];
+
+    endbossAttack = [
+        "./assets/img/4_enemie_boss_chicken/3_attack/G13.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G14.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G15.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G16.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G17.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G18.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G19.png",
+        "./assets/img/4_enemie_boss_chicken/3_attack/G20.png",
+    ]
+
+    endbossDead = [
+        "./assets/img/4_enemie_boss_chicken/5_dead/G24.png",
+        "./assets/img/4_enemie_boss_chicken/5_dead/G25.png",
+        "./assets/img/4_enemie_boss_chicken/5_dead/G26.png",
+    ];
+
     constructor() {
         super().loadImage("./assets/img/4_enemie_boss_chicken/2_alert/G5.png");
         this.loadImagesToCacheJSON(this.endbossAlert);
+        this.loadImagesToCacheJSON(this.endbossHurt);
         this.animate()
     }
 
     animate() {
         setInterval(() => {
-            this.playAnimation(this.endbossAlert);
+            if (!this.isHurt() && !this.isDead()) {
+                this.playAnimation(this.endbossAlert);
+            }
         }, 250)
+
+        setInterval(() => {
+            if (!this.isDead() && this.isHurt()) {
+                this.playAnimation(this.endbossHurt, "hurt");
+            }
+        }, 100);
     }
 }
