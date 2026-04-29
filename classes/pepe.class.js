@@ -7,7 +7,8 @@ class Pepe extends Moveableobject {
     walkingSound = new Audio("./assets/audio/pepe/running_2.mp3");
     isWalkingSoundPlaying = false;
     jumpingSound = new Audio("./assets/audio/pepe/jump.mp3");
-    isJumpingSoundPlaying = false;
+    landingSound = new Audio("./assets/audio/pepe/landing.mp3");
+    wasInAir = false;
     lastAnimation = "";
 
     pepeStandingImages = [
@@ -81,10 +82,21 @@ class Pepe extends Moveableobject {
         this.walkingSound.volume = 1;
         this.walkingSound.playbackRate = 2;
         this.jumpingSound.volume = 0.3;
+        this.landingSound.volume = 0.7
     }
 
     animateImages() {
         setInterval(() => {
+
+            let currentlyInAir = this.isInAir();
+
+            if (this.wasInAir && !currentlyInAir) {
+                // 👉 Übergang: Luft → Boden
+                this.landingSound.currentTime = 0;
+                this.landingSound.play();
+            }
+
+            this.wasInAir = currentlyInAir;
 
             if (this.world.keyboard.right) {
 

@@ -25,6 +25,9 @@ class Bottles extends Moveableobject {
         "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
     ]
 
+    throwingBottleSound = new Audio("./assets/audio/pepe/throw_bottle.mp3");
+    collectBottleSound = new Audio("./assets/audio/pepe/collect_bottle.mp3");
+
     constructor() {
         super().loadImage("./assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png");
         this.loadImagesToCacheJSON(this.bottleThrow);

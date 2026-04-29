@@ -17,6 +17,9 @@ class ThrowableObject extends Bottles {
     }
 
     throw() {
+        this.throwingBottleSound.currentTime = 0;
+        this.throwingBottleSound.play();
+
         this.speedY = 10;
         this.speedX = this.otherDirection ? -10 : 10;
         this.acceleration = 2;
