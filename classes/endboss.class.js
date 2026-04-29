@@ -7,6 +7,7 @@ class Endboss extends Moveableobject {
     x = 1900
     energy = 100
     lastAnimation = ""
+    isDeadAnimationPlayed = false
 
     offset = {
         top: 150,
@@ -59,20 +60,44 @@ class Endboss extends Moveableobject {
     constructor() {
         super().loadImage("./assets/img/4_enemie_boss_chicken/2_alert/G5.png");
         this.loadImagesToCacheJSON(this.endbossAlert);
+        this.loadImagesToCacheJSON(this.endbossWalking);
         this.loadImagesToCacheJSON(this.endbossHurt);
+        this.loadImagesToCacheJSON(this.endbossAttack);
+        this.loadImagesToCacheJSON(this.endbossDead);
         this.animate()
     }
 
     animate() {
         setInterval(() => {
             if (!this.isHurt() && !this.isDead()) {
-                this.playAnimation(this.endbossAlert);
+                this.playAnimation(this.endbossAlert, "alert");
             }
         }, 250)
 
         setInterval(() => {
             if (!this.isDead() && this.isHurt()) {
                 this.playAnimation(this.endbossHurt, "hurt");
+            }
+        }, 100);
+
+        setInterval(() => {
+            if (this.isDead() && !this.isDeadAnimationPlayed) {
+                this.isDeadAnimationPlayed = true;
+
+                let i = 0;
+
+                let interval = setInterval(() => {
+                    if (i < this.endbossDead.length) {
+                        let path = this.endbossDead[i];
+                        this.img = this.imageCache[path];
+                        i++;
+                    } else {
+                        clearInterval(interval);
+
+                        // letztes Bild stehen lassen
+                        this.loadImage("./assets/img/4_enemie_boss_chicken/5_dead/G26.png")
+                    }
+                }, 125);
             }
         }, 100);
     }
