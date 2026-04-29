@@ -3,6 +3,7 @@ class ThrowableObject extends Bottles {
     groundY = 380;
     isBroken = false;
     markedForDeletion = false;
+    throwingBottleSound = new Audio("./assets/audio/pepe/throw_bottle.mp3");
 
     constructor(x, y, otherDirection) {
         super();

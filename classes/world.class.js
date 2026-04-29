@@ -12,6 +12,8 @@ class World {
     throwableObject = [];
     collectedCoins = 0;
     collectedBottles = 0;
+    collectBottleSound = new Audio("./assets/audio/pepe/collect_bottle.mp3");
+    collectCoinSound = new Audio("./assets/audio/pepe/collect_coin.mp3");
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -99,6 +101,8 @@ class World {
                 let coin = this.level.coins[i];
 
                 if (this.character.isColliding(coin)) {
+                    this.collectCoinSound.currentTime = 0;
+                    this.collectCoinSound.play();
                     this.level.coins.splice(i, 1);
 
                     let collected = this.maxCoins - this.level.coins.length;
@@ -114,6 +118,8 @@ class World {
                 let bottle = this.level.bottles[i];
 
                 if (this.character.isColliding(bottle)) {
+                    this.collectBottleSound.currentTime = 0;
+                    this.collectBottleSound.play();
                     this.level.bottles.splice(i, 1);
 
                     this.collectedBottles++;
