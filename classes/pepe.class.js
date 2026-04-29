@@ -4,8 +4,10 @@ class Pepe extends Moveableobject {
     x = 80;
     y = 40;
     isDeadAnimationPlayed = false;
-    walkingSound = new Audio("./assets/audio/pepe/walking_fast.mp3");
+    walkingSound = new Audio("./assets/audio/pepe/running_2.mp3");
     isWalkingSoundPlaying = false;
+    jumpingSound = new Audio("./assets/audio/pepe/jump.mp3");
+    isJumpingSoundPlaying = false;
     lastAnimation = "";
 
     pepeStandingImages = [
@@ -77,6 +79,8 @@ class Pepe extends Moveableobject {
         this.applyGravity();
         this.walkingSound.loop = true;
         this.walkingSound.volume = 1;
+        this.walkingSound.playbackRate = 2;
+        this.jumpingSound.volume = 0.3;
     }
 
     animateImages() {
@@ -102,6 +106,8 @@ class Pepe extends Moveableobject {
 
             if ((this.world.keyboard.up || this.world.keyboard.space) && !this.isInAir()) {
                 this.jump();
+                this.jumpingSound.currentTime = 0;
+                this.jumpingSound.play();
             }
 
             let maxCameraX = this.world.level.level_end_x - this.world.canvas.width;
