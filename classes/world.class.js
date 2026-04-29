@@ -4,6 +4,7 @@ class World {
     keyboard;
     camera_x = 0;
     character = new Pepe();
+    endboss = new Endboss();
     level = level1;
     statusbarHealth = new Statusbar("health", 15, -10, 100);
     statusbarCoins = new Statusbar("coins", 15, 35, 0);
@@ -75,11 +76,17 @@ class World {
 
                     if (!bottle.isBroken && bottle.isColliding(enemy)) {
 
-                        // Enemy entfernen
-                        this.level.enemies.splice(enemyIndex, 1);
+                        if (enemy instanceof Endboss) {
+                            enemy.energy -= bottle.damage;
+                            this.statusbarEndboss.setPercentage(enemy.energy)
+                            bottle.playSplashAnimation();
+                        } else {
+                            // Enemy entfernen
+                            this.level.enemies.splice(enemyIndex, 1);
 
-                        // Splash starten
-                        bottle.playSplashAnimation();
+                            // Splash starten
+                            bottle.playSplashAnimation();
+                        }
                     }
 
                 });

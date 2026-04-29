@@ -1,4 +1,6 @@
 class Bottles extends Moveableobject {
+    
+    damage = 20;
 
     offset = {
         top: 20,

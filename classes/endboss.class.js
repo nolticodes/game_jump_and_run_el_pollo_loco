@@ -5,6 +5,7 @@ class Endboss extends Moveableobject {
     width = 400
     y = 50
     x = 1900
+    energy = 100
 
     offset = {
         top: 150,
