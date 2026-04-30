@@ -16,6 +16,7 @@ class World {
     collectCoinSound = new Audio("./assets/audio/pepe/collect_coin.mp3");
     splashBottleSound = new Audio("./assets/audio/pepe/bottle_splash.mp3");
     chickenDiesSound = new Audio("./assets/audio/pepe/chicken_dies.mp3");
+    endbossHitSound = new Audio("./assets/audio/pepe/endboss_hit.mp3");
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -90,7 +91,8 @@ class World {
                             if (enemy.energy < 0) {
                                 enemy.energy = 0;
                             }
-
+                            this.endbossHitSound.currentTime = 0;
+                            this.endbossHitSound.play();
                             this.statusbarEndboss.setPercentage(enemy.energy);
                             bottle.playSplashAnimation();
                         } else {
