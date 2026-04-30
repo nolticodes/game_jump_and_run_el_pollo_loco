@@ -17,6 +17,7 @@ class World {
     splashBottleSound = new Audio("./assets/audio/pepe/bottle_splash.mp3");
     chickenDiesSound = new Audio("./assets/audio/pepe/chicken_dies.mp3");
     endbossHitSound = new Audio("./assets/audio/pepe/endboss_hit.mp3");
+    pepeIsHurtSound = new Audio("./assets/audio/pepe/pepe_hurt.mp3");
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -70,9 +71,13 @@ class World {
                     this.chickenDiesSound.play();
                     this.level.enemies.splice(index, 1);
                     this.character.speedY = 15; // kleiner Bounce nach oben
-                } else if (this.character.isColliding(enemy)) {
+                } else if (this.character.isColliding(enemy) && !this.character.isHurt()) {
+                    this.pepeIsHurtSound.currentTime = 0;
+                    this.pepeIsHurtSound.play();
+
                     this.character.hit(enemy);
                     this.statusbarHealth.setPercentage(this.character.energy);
+
                     console.log("Collision with", this.character.energy);
                 }
 
