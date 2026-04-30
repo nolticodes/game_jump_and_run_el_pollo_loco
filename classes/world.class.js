@@ -14,6 +14,8 @@ class World {
     collectedBottles = 0;
     collectBottleSound = new Audio("./assets/audio/pepe/collect_bottle.mp3");
     collectCoinSound = new Audio("./assets/audio/pepe/collect_coin.mp3");
+    splashBottleSound = new Audio("./assets/audio/pepe/bottle_splash.mp3");
+    chickenDiesSound = new Audio("./assets/audio/pepe/chicken_dies.mp3");
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -63,6 +65,8 @@ class World {
             this.level.enemies.forEach((enemy, index) => {
 
                 if (enemy instanceof Chicken && this.character.isJumpingOn(enemy)) {
+                    this.chickenDiesSound.currentTime = 0;
+                    this.chickenDiesSound.play();
                     this.level.enemies.splice(index, 1);
                     this.character.speedY = 15; // kleiner Bounce nach oben
                 } else if (this.character.isColliding(enemy)) {
@@ -77,6 +81,9 @@ class World {
 
                     if (!bottle.isBroken && bottle.isColliding(enemy)) {
 
+                        this.splashBottleSound.currentTime = 0;
+                        this.splashBottleSound.play();
+
                         if (enemy instanceof Endboss) {
                             enemy.hit(bottle)
 
@@ -87,6 +94,8 @@ class World {
                             this.statusbarEndboss.setPercentage(enemy.energy);
                             bottle.playSplashAnimation();
                         } else {
+                            this.chickenDiesSound.currentTime = 0;
+                            this.chickenDiesSound.play();
                             this.level.enemies.splice(enemyIndex, 1);
                             bottle.playSplashAnimation();
                         }

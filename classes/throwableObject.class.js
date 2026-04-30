@@ -65,14 +65,10 @@ class ThrowableObject extends Bottles {
 
     applyGravity() {
         let gravityInterval = setInterval(() => {
-            if (!this.isBroken && (this.isInAir() || this.speedY > 0)) {
+            if (!this.isBroken) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-            }
-
-            if (this.y > this.groundY) {
-                this.y = this.groundY;
-                this.playSplashAnimation();
+            } else {
                 clearInterval(gravityInterval);
             }
         }, 1000 / 25);
