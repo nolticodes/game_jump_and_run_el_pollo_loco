@@ -10,6 +10,7 @@ class Pepe extends Moveableobject {
     landingSound = new Audio("./assets/audio/pepe/landing.mp3");
     wasInAir = false;
     lastAnimation = "";
+    pepeDiesSound = new Audio("./assets/audio/pepe/pepe_dead.mp3");
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -154,6 +155,8 @@ class Pepe extends Moveableobject {
         setInterval(() => {
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.isDeadAnimationPlayed = true;
+                this.pepeDiesSound.currentTime = 0;
+                this.pepeDiesSound.play();
 
                 let i = 0;
 

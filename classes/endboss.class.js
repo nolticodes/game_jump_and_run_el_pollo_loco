@@ -8,7 +8,10 @@ class Endboss extends Moveableobject {
     energy = 100
     lastAnimation = ""
     isDeadAnimationPlayed = false
-    endbossDiesSound = new Audio ("./assets/audio/pepe/endboss_dies.mp3");
+    endbossDiesSound = new Audio("./assets/audio/pepe/endboss_dies.mp3");
+    borderXLeft = 1400
+    borderXRight = 2500
+    speed = 25
 
     offset = {
         top: 150,
@@ -65,7 +68,6 @@ class Endboss extends Moveableobject {
         this.loadImagesToCacheJSON(this.endbossHurt);
         this.loadImagesToCacheJSON(this.endbossAttack);
         this.loadImagesToCacheJSON(this.endbossDead);
-        this.animate()
     }
 
     animate() {
@@ -102,5 +104,27 @@ class Endboss extends Moveableobject {
                 }, 125);
             }
         }, 100);
+        setInterval(() => {
+            if (!this.isHurt() && !this.isDead() && this.isPlayerNear()) {
+                if (this.world.character.x < this.x && this.x > this.borderXLeft) {
+                    this.playAnimation(this.endbossWalking, "walking")
+                    this.x -= this.speed
+                }
+
+                if (this.world.character.x > this.x && this.x < this.borderXRight) {
+                    this.otherDirection = true
+                    this.playAnimation(this.endbossWalking, "walking")
+                    this.x += this.speed
+                }
+            }
+        }, 200)
     }
+
+    isPlayerNear() {
+        let distance = Math.abs(this.x - this.world.character.x);
+        return distance <= 500;
+    }
+
+
 }
+
