@@ -148,17 +148,17 @@ class World {
     }
 
     setWorld() {
-    this.character.world = this;
-    this.character.animateImages();
+        this.character.world = this;
+        this.character.animateImages();
 
-    this.level.enemies.forEach((enemy) => {
-        enemy.world = this;
+        this.level.enemies.forEach((enemy) => {
+            enemy.world = this;
 
-        if (enemy instanceof Endboss) {
-            enemy.animate();
-        }
-    });
-}
+            if (enemy instanceof Endboss) {
+                enemy.animate();
+            }
+        });
+    }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -199,6 +199,22 @@ class World {
         })
 
         this.ctx.translate(-this.camera_x, 0)
+
+            let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+
+            if (endboss) {
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = "red";
+                this.ctx.lineWidth = 2;
+
+                this.ctx.moveTo(endboss.borderXLeft + this.camera_x, 0);
+                this.ctx.lineTo(endboss.borderXLeft + this.camera_x, this.canvas.height);
+
+                this.ctx.moveTo(endboss.borderXRight + this.camera_x, 0);
+                this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
+
+                this.ctx.stroke();
+            }
 
         let self = this
         requestAnimationFrame(function () {

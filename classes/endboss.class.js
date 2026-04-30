@@ -5,13 +5,15 @@ class Endboss extends Moveableobject {
     width = 400
     y = 50
     x = 1900
+    startX = 1900
     energy = 100
     lastAnimation = ""
     isDeadAnimationPlayed = false
     endbossDiesSound = new Audio("./assets/audio/pepe/endboss_dies.mp3");
-    borderXLeft = 1400
+    borderXLeft = 1000
     borderXRight = 2500
     speed = 25
+    hasSeenPlayer = false
 
     offset = {
         top: 150,
@@ -105,8 +107,13 @@ class Endboss extends Moveableobject {
             }
         }, 100);
         setInterval(() => {
-            if (!this.isHurt() && !this.isDead() && this.isPlayerNear()) {
+            if (this.isPlayerNear()) {
+                this.hasSeenPlayer = true
+            }
+
+            if (this.hasSeenPlayer && !this.isPlayerOutsideBossArea()) {
                 if (this.world.character.x < this.x && this.x > this.borderXLeft) {
+                    this.otherDirection = false
                     this.playAnimation(this.endbossWalking, "walking")
                     this.x -= this.speed
                 }
@@ -117,12 +124,43 @@ class Endboss extends Moveableobject {
                     this.x += this.speed
                 }
             }
+
+            if (this.hasSeenPlayer && this.isPlayerOutsideBossArea()) {
+                this.moveBackToStartPosition()
+            }
+
         }, 200)
     }
 
     isPlayerNear() {
         let distance = Math.abs(this.x - this.world.character.x);
         return distance <= 500;
+    }
+
+    isPlayerOutsideBossArea() {
+        return this.world.character.x < this.borderXLeft ||
+            this.world.character.x > this.borderXRight;
+    }
+
+    moveBackToStartPosition() {
+        
+            if (this.x > this.startX) {
+                this.otherDirection = false
+                this.playAnimation(this.endbossWalking, "walking")
+                this.x -= this.speed
+            }
+
+            if (this.x < this.startX) {
+                this.otherDirection = true
+                this.playAnimation(this.endbossWalking, "walking")
+                this.x += this.speed
+            }
+
+            if (Math.abs(this.x - this.startX) < 5) {
+                this.x = this.startX
+                this.hasSeenPlayer = false;
+            }
+        
     }
 
 
