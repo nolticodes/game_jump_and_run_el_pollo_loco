@@ -74,7 +74,7 @@ class Endboss extends Moveableobject {
 
     animate() {
         setInterval(() => {
-            if (!this.isHurt() && !this.isDead()) {
+            if (!this.isHurt() && !this.isDead() && !this.hasSeenPlayer) {
                 this.playAnimation(this.endbossAlert, "alert");
             }
         }, 250)
@@ -107,6 +107,7 @@ class Endboss extends Moveableobject {
             }
         }, 100);
         setInterval(() => {
+            if (this.isDead()) return;
             if (this.isPlayerNear()) {
                 this.hasSeenPlayer = true
             }
@@ -143,24 +144,24 @@ class Endboss extends Moveableobject {
     }
 
     moveBackToStartPosition() {
-        
-            if (this.x > this.startX) {
-                this.otherDirection = false
-                this.playAnimation(this.endbossWalking, "walking")
-                this.x -= this.speed
-            }
 
-            if (this.x < this.startX) {
-                this.otherDirection = true
-                this.playAnimation(this.endbossWalking, "walking")
-                this.x += this.speed
-            }
+        if (this.x > this.startX) {
+            this.otherDirection = false
+            this.playAnimation(this.endbossWalking, "walking")
+            this.x -= this.speed
+        }
 
-            if (Math.abs(this.x - this.startX) < 5) {
-                this.x = this.startX
-                this.hasSeenPlayer = false;
-            }
-        
+        if (this.x < this.startX) {
+            this.otherDirection = true
+            this.playAnimation(this.endbossWalking, "walking")
+            this.x += this.speed
+        }
+
+        if (Math.abs(this.x - this.startX) < 5) {
+            this.x = this.startX
+            this.hasSeenPlayer = false;
+        }
+
     }
 
 
