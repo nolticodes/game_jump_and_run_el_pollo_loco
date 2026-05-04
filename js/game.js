@@ -12,6 +12,7 @@ function init() {
 
 
 window.addEventListener("keydown", (event) => {
+    world.character.lastKeyPressTime = new Date().getTime();
     if (event.key == "a" || event.key == "ArrowLeft") {
         keyboard.left = true;
     }

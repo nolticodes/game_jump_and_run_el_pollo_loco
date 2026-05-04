@@ -106,6 +106,7 @@ class Endboss extends Moveableobject {
                 }, 125);
             }
         }, 100);
+        
         setInterval(() => {
             if (this.isDead()) return;
             if (this.isPlayerNear()) {
@@ -118,7 +119,6 @@ class Endboss extends Moveableobject {
                     this.playAnimation(this.endbossWalking, "walking")
                     this.x -= this.speed
                 }
-
                 if (this.world.character.x > this.x && this.x < this.borderXRight) {
                     this.otherDirection = true
                     this.playAnimation(this.endbossWalking, "walking")
@@ -144,7 +144,6 @@ class Endboss extends Moveableobject {
     }
 
     moveBackToStartPosition() {
-
         if (this.x > this.startX) {
             this.otherDirection = false
             this.playAnimation(this.endbossWalking, "walking")
@@ -161,7 +160,6 @@ class Endboss extends Moveableobject {
             this.x = this.startX
             this.hasSeenPlayer = false;
         }
-
     }
 
 

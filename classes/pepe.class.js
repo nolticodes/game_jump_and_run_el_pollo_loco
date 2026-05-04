@@ -11,6 +11,7 @@ class Pepe extends Moveableobject {
     wasInAir = false;
     lastAnimation = "";
     pepeDiesSound = new Audio("./assets/audio/pepe/pepe_dead.mp3");
+    lastKeyPressTime = new Date().getTime();
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -61,6 +62,19 @@ class Pepe extends Moveableobject {
         "./assets/img/2_character_pepe/4_hurt/H-43.png",
     ]
 
+    pepeIsSpleeping = [
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-11.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-12.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-13.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-14.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-15.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-16.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-17.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-18.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-19.png",
+        "./assets/img/2_character_pepe/1_idle/long_idle/I-20.png",
+    ]
+
     world;
 
     offset = {
@@ -78,6 +92,7 @@ class Pepe extends Moveableobject {
         this.loadImagesToCacheJSON(this.pepeJumpingImages);
         this.loadImagesToCacheJSON(this.pepeIsDead);
         this.loadImagesToCacheJSON(this.pepeIsHurt);
+        this.loadImagesToCacheJSON(this.pepeIsSpleeping);
         this.applyGravity();
         this.walkingSound.loop = true;
         this.walkingSound.volume = 1;
@@ -153,6 +168,12 @@ class Pepe extends Moveableobject {
 
 
         setInterval(() => {
+            if (!this.isDead() && !this.isHurt() && !this.isInAir() && this.isSleeping()) {
+                this.playAnimation(this.pepeIsSpleeping, "Sleep")
+            }
+        }, 200)
+
+        setInterval(() => {
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.isDeadAnimationPlayed = true;
                 this.pepeDiesSound.currentTime = 0;
@@ -198,7 +219,7 @@ class Pepe extends Moveableobject {
         setInterval(() => {
             if (!this.world) return;
 
-            if (!this.isDead() && !this.isHurt() && !this.isInAir() && !this.world.keyboard.right && !this.world.keyboard.left) {
+            if (!this.isDead() && !this.isHurt() && !this.isInAir() && !this.isSleeping() && !this.world.keyboard.right && !this.world.keyboard.left) {
                 this.playAnimation(this.pepeStandingImages, "idle");
             }
         }, 175);
@@ -213,6 +234,17 @@ class Pepe extends Moveableobject {
             pepeBottom <= enemyTop + 50 &&
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
+    }
+
+    isSleeping() {
+        let timePassed = new Date().getTime() - this.lastKeyPressTime;
+        return timePassed > 5000 &&
+            !this.world.keyboard.right &&
+            !this.world.keyboard.left &&
+            !this.world.keyboard.up &&
+            !this.world.keyboard.down &&
+            !this.world.keyboard.space &&
+            !this.world.keyboard.t;
     }
 
 } 
