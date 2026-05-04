@@ -13,12 +13,7 @@ class World {
     throwableObject = [];
     collectedCoins = 0;
     collectedBottles = 0;
-    collectBottleSound = new Audio("./assets/audio/pepe/collect_bottle.mp3");
-    collectCoinSound = new Audio("./assets/audio/pepe/collect_coin.mp3");
-    splashBottleSound = new Audio("./assets/audio/pepe/bottle_splash.mp3");
-    chickenDiesSound = new Audio("./assets/audio/pepe/chicken_dies.mp3");
-    endbossHitSound = new Audio("./assets/audio/pepe/endboss_hit.mp3");
-    pepeIsHurtSound = new Audio("./assets/audio/pepe/pepe_hurt.mp3");
+    sounds = new SoundManager();
     startScreenImage = new Image()
     startButton = new Buttons(200, 30, 200, 60, "Play");
     controlsButton = new Buttons(200, 110, 200, 60, "Controls");
@@ -109,42 +104,34 @@ class World {
     checkCollision() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
-
                 if (enemy instanceof Chicken && this.character.isJumpingOn(enemy)) {
-                    this.chickenDiesSound.currentTime = 0;
-                    this.chickenDiesSound.play();
+                    this.sounds.play(this.sounds.chickenDies);
                     this.level.enemies.splice(index, 1);
                     this.character.speedY = 13; // kleiner Bounce nach oben
                 } else if (enemy instanceof MiniChicken && this.character.isJumpingOn(enemy)) {
-                    this.chickenDiesSound.currentTime = 0;
-                    this.chickenDiesSound.play();
+                    this.sounds.play(this.sounds.chickenDies);
                     this.level.enemies.splice(index, 1);
                     this.character.speedY = 8; // kleiner Bounce nach oben
                 } else if (this.character.isColliding(enemy) && !this.character.isHurt()) {
-                    this.pepeIsHurtSound.currentTime = 0;
-                    this.pepeIsHurtSound.play();
+                    this.sounds.play(this.sounds.pepeHurt);
                     this.character.hit(enemy);
                     this.statusbarHealth.setPercentage(this.character.energy);
                 }
-
             });
             this.throwableObject.forEach((bottle, bottleIndex) => {
                 this.level.enemies.forEach((enemy, enemyIndex) => {
                     if (!bottle.isBroken && bottle.isColliding(enemy)) {
-                        this.splashBottleSound.currentTime = 0;
-                        this.splashBottleSound.play();
+                        this.sounds.play(this.sounds.splashBottle);
                         if (enemy instanceof Endboss) {
                             enemy.hit(bottle)
                             if (enemy.energy < 0) {
                                 enemy.energy = 0;
                             }
-                            this.endbossHitSound.currentTime = 0;
-                            this.endbossHitSound.play();
+                            this.sounds.play(this.sounds.endbossHit);
                             this.statusbarEndboss.setPercentage(enemy.energy);
                             bottle.playSplashAnimation();
                         } else {
-                            this.chickenDiesSound.currentTime = 0;
-                            this.chickenDiesSound.play();
+                            this.sounds.play(this.sounds.chickenDies);
                             this.level.enemies.splice(enemyIndex, 1);
                             bottle.playSplashAnimation();
                         }
@@ -159,8 +146,7 @@ class World {
                 if (this.character.isColliding(coin)) {
                     let collected = this.maxCoins - this.level.coins.length;
                     let percentage = (collected / this.maxCoins) * 100;
-                    this.collectCoinSound.currentTime = 0;
-                    this.collectCoinSound.play();
+                    this.sounds.play(this.sounds.collectCoin);
                     this.level.coins.splice(i, 1);
                     this.statusbarCoins.setPercentage(percentage);
                 }
@@ -172,8 +158,7 @@ class World {
                 let bottle = this.level.bottles[i];
                 if (this.character.isColliding(bottle)) {
                     let percentage = (this.collectedBottles / this.maxBottles) * 100;
-                    this.collectBottleSound.currentTime = 0;
-                    this.collectBottleSound.play();
+                    this.sounds.play(this.sounds.collectBottle);
                     this.level.bottles.splice(i, 1);
                     this.collectedBottles++;
                     this.statusbarBottles.setPercentage(percentage);
