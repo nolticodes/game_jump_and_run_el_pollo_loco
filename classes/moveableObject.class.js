@@ -95,7 +95,12 @@ class Moveableobject extends DrawableObject {
             this.energy = 0;
         }
 
-        this.lastHit = new Date().getTime();
+        let now = new Date().getTime();
+
+        this.lastHit = now;
+
+        // 👉 NEU: Sleep-Timer resetten
+        this.lastKeyPressTime = now;
     }
 
     isHurt() {

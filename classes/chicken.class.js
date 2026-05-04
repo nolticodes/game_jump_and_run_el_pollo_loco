@@ -1,6 +1,6 @@
 class Chicken extends Moveableobject {
 
-    damage = 5
+    damage = 10
     offset = {
         top: 10,
         bottom:10,

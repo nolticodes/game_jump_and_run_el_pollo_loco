@@ -1,6 +1,6 @@
 class Endboss extends Moveableobject {
 
-    damage = 10
+    damage = 15
     height = 400
     width = 400
     y = 50
@@ -106,7 +106,7 @@ class Endboss extends Moveableobject {
                 }, 125);
             }
         }, 100);
-        
+
         setInterval(() => {
             if (this.isDead()) return;
             if (this.isPlayerNear()) {
