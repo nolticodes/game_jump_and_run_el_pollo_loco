@@ -4,15 +4,11 @@ class Pepe extends Moveableobject {
     x = 80;
     y = 40;
     isDeadAnimationPlayed = false;
-    walkingSound = new Audio("./assets/audio/pepe/running_2.mp3");
     isWalkingSoundPlaying = false;
-    jumpingSound = new Audio("./assets/audio/pepe/jump.mp3");
-    landingSound = new Audio("./assets/audio/pepe/landing.mp3");
     wasInAir = false;
     lastAnimation = "";
-    pepeDiesSound = new Audio("./assets/audio/pepe/pepe_dead.mp3");
     lastKeyPressTime = new Date().getTime();
-    pepeSleepsSound = new Audio ("./assets/audio/pepe/pepe_snoring.mp3")
+    isSleepingSoundPlaying = false;
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -95,11 +91,6 @@ class Pepe extends Moveableobject {
         this.loadImagesToCacheJSON(this.pepeIsHurt);
         this.loadImagesToCacheJSON(this.pepeIsSpleeping);
         this.applyGravity();
-        this.walkingSound.loop = true;
-        this.walkingSound.volume = 1;
-        this.walkingSound.playbackRate = 2;
-        this.jumpingSound.volume = 0.3;
-        this.landingSound.volume = 0.7
     }
 
     animateImages() {
@@ -109,8 +100,7 @@ class Pepe extends Moveableobject {
 
             if (this.wasInAir && !currentlyInAir) {
                 // 👉 Übergang: Luft → Boden
-                this.landingSound.currentTime = 0;
-                this.landingSound.play();
+                this.world.sounds.play(this.world.sounds.pepeLanding);
             }
 
             this.wasInAir = currentlyInAir;
@@ -135,8 +125,7 @@ class Pepe extends Moveableobject {
 
             if ((this.world.keyboard.up || this.world.keyboard.space) && !this.isInAir()) {
                 this.jump();
-                this.jumpingSound.currentTime = 0;
-                this.jumpingSound.play();
+                this.world.sounds.play(this.world.sounds.pepeJump);
             }
 
             let maxCameraX = this.world.level.level_end_x - this.world.canvas.width;
@@ -154,13 +143,12 @@ class Pepe extends Moveableobject {
 
             if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
                 if (!this.isWalkingSoundPlaying) {
-                    this.walkingSound.play();
+                    this.world.sounds.playLoop(this.world.sounds.pepeWalking);
                     this.isWalkingSoundPlaying = true;
                 }
             } else {
                 if (this.isWalkingSoundPlaying) {
-                    this.walkingSound.pause();
-                    this.walkingSound.currentTime = 0;
+                    this.world.sounds.stop(this.world.sounds.pepeWalking);
                     this.isWalkingSoundPlaying = false;
                 }
             }
@@ -170,17 +158,24 @@ class Pepe extends Moveableobject {
 
         setInterval(() => {
             if (!this.isDead() && !this.isHurt() && !this.isInAir() && this.isSleeping()) {
-                this.pepeIsSpleeping.currentTime = 0;
-                this.pepeSleepsSound.play()
-                this.playAnimation(this.pepeIsSpleeping, "Sleep")
+                if (!this.isSleepingSoundPlaying) {
+                    this.world.sounds.playLoop(this.world.sounds.pepeSleeping);
+                    this.isSleepingSoundPlaying = true;
+                }
+
+                this.playAnimation(this.pepeIsSpleeping, "sleep");
+            } else {
+                if (this.isSleepingSoundPlaying) {
+                    this.world.sounds.stop(this.world.sounds.pepeSleeping);
+                    this.isSleepingSoundPlaying = false;
+                }
             }
-        }, 150)
+        }, 150);
 
         setInterval(() => {
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.isDeadAnimationPlayed = true;
-                this.pepeDiesSound.currentTime = 0;
-                this.pepeDiesSound.play();
+                this.world.sounds.play(this.world.sounds.pepeDead);
 
                 let i = 0;
 

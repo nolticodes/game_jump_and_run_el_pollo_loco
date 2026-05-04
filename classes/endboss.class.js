@@ -9,7 +9,7 @@ class Endboss extends Moveableobject {
     energy = 100
     lastAnimation = ""
     isDeadAnimationPlayed = false
-    endbossDiesSound = new Audio("./assets/audio/pepe/endboss_dies.mp3");
+    
     borderXLeft = 1000
     borderXRight = 2500
     speed = 25
@@ -88,8 +88,7 @@ class Endboss extends Moveableobject {
         setInterval(() => {
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.isDeadAnimationPlayed = true;
-                this.endbossDiesSound.currentTime = 0;
-                this.endbossDiesSound.play();
+                this.world.sounds.playLoop(this.world.sounds.endbossDiesSound);
                 let i = 0;
 
                 let interval = setInterval(() => {

@@ -27,7 +27,7 @@ class Chicken extends Moveableobject {
         this.width = 100;
         this.height = 100;
 
-        this.animateImages();
+        // this.animateImages();
         
         
     }
