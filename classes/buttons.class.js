@@ -37,17 +37,29 @@ class Buttons {
         this.drawRoundedPath(ctx, this.x, this.y, this.width, this.height, radius);
         ctx.stroke();
 
-        // 👉 Text
-        ctx.fillStyle = "white";
-        ctx.font = "30px 'Luckiest Guy', Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        // 👉 Text oder Icon
+        if (this.icon) {
+            let iconSize = this.width * 0.6;
 
-        ctx.fillText(
-            this.text,
-            this.x + this.width / 2,
-            this.y + this.height / 2 + 5
-        );
+            ctx.drawImage(
+                this.icon,
+                this.x + (this.width - iconSize) / 2,
+                this.y + (this.height - iconSize) / 2,
+                iconSize,
+                iconSize
+            );
+        } else {
+            ctx.fillStyle = "white";
+            ctx.font = "30px 'Luckiest Guy', Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            ctx.fillText(
+                this.text,
+                this.x + this.width / 2,
+                this.y + this.height / 2 + 5
+            );
+        }
 
         ctx.restore();
     }

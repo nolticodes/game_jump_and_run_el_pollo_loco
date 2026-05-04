@@ -17,8 +17,9 @@ class World {
     startScreenImage = new Image()
     startButton = new Buttons(200, 30, 200, 60, "Play");
     controlsButton = new Buttons(200, 110, 200, 60, "Controls");
-    fullScreenButton = new Buttons()
+    fullscreenButton = new Buttons(20, 410, 50, 50, "");
     backButton = new Buttons(20, 20, 140, 50, "Back");
+
     gameStarted = false;
 
     constructor(canvas) {
@@ -56,6 +57,10 @@ class World {
             this.handleClick(x, y);
         });
 
+
+        this.fullscreenButton = new Buttons(20, this.canvas.height - 70, 50, 50, "");
+        this.fullscreenImage = new Image();
+        this.fullscreenImage.src = "./assets/img/01_UI/fullscreen.svg"; // dein Icon
         this.draw();
     }
 
@@ -259,10 +264,6 @@ class World {
         }
     }
 
-    drawEndScreen() {
-
-    }
-
     flipImages(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -279,15 +280,21 @@ class World {
         this.lastMouseX = x;
         this.lastMouseY = y;
 
+        let hoverFullscreen = this.fullscreenButton.checkHover(x, y);
+
         if (this.gamestate === "startScreen") {
             let hoverStart = this.startButton.checkHover(x, y);
             let hoverControls = this.controlsButton.checkHover(x, y);
+
             this.canvas.style.cursor =
-                hoverStart || hoverControls ? "pointer" : "default";
+                hoverStart || hoverControls || hoverFullscreen ? "pointer" : "default";
         }
-        if (this.gamestate === "controlsScreen") {
+
+        else if (this.gamestate === "controlsScreen") {
             let hoverBack = this.backButton.checkHover(x, y);
-            this.canvas.style.cursor = hoverBack ? "pointer" : "default";
+
+            this.canvas.style.cursor =
+                hoverBack || hoverFullscreen ? "pointer" : "default";
         }
     }
 
@@ -306,6 +313,17 @@ class World {
             if (this.backButton.checkHover(x, y)) {
                 this.gamestate = "startScreen";
             }
+        }
+        if (this.fullscreenButton.checkHover(x, y)) {
+            this.toggleFullscreen();
+        }
+    }
+
+    toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            this.canvas.requestFullscreen();
+        } else {
+            document.exitFullscreen();
         }
     }
 }
