@@ -12,6 +12,7 @@ class Pepe extends Moveableobject {
     lastAnimation = "";
     pepeDiesSound = new Audio("./assets/audio/pepe/pepe_dead.mp3");
     lastKeyPressTime = new Date().getTime();
+    pepeSleepsSound = new Audio ("./assets/audio/pepe/pepe_snoring.mp3")
 
     pepeStandingImages = [
         "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -169,6 +170,8 @@ class Pepe extends Moveableobject {
 
         setInterval(() => {
             if (!this.isDead() && !this.isHurt() && !this.isInAir() && this.isSleeping()) {
+                this.pepeIsSpleeping.currentTime = 0;
+                this.pepeSleepsSound.play()
                 this.playAnimation(this.pepeIsSpleeping, "Sleep")
             }
         }, 200)
