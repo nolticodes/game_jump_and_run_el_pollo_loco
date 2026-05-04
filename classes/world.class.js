@@ -22,33 +22,56 @@ class World {
     startScreenImage = new Image()
     startButton = new Buttons(200, 30, 200, 60, "Play");
     controlsButton = new Buttons(200, 110, 200, 60, "Controls");
+    fullScreenButton = new Buttons()
+    backButton = new Buttons(20, 20, 140, 50, "Back");
+    gameStarted = false;
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
-        this.setWorld()
-        this.run();
+
         this.maxCoins = this.level.coins.length;
         this.maxBottles = this.level.bottles.length;
+
         this.startScreenImage.src = "./assets/img/9_intro_outro_screens/start/startscreen_2.png";
+
+        let buttonWidth = 200;
+        let gap = 20;
+        let totalWidth = buttonWidth * 2 + gap;
+        let startX = (this.canvas.width - totalWidth) / 2;
+
+        this.startButton = new Buttons(startX, 30, buttonWidth, 60, "PLAY");
+        this.controlsButton = new Buttons(startX + buttonWidth + gap, 30, buttonWidth, 60, "CONTROLS");
+
+        this.startScreen = new StartScreen(this);
+        this.controlsScreen = new ControlsScreen(this);
+
         this.canvas.addEventListener("mousemove", (event) => {
             let rect = this.canvas.getBoundingClientRect();
-
             let x = event.clientX - rect.left;
             let y = event.clientY - rect.top;
-
             this.handleMouseMove(x, y);
         });
+
         this.canvas.addEventListener("click", (event) => {
             let rect = this.canvas.getBoundingClientRect();
-
             let x = event.clientX - rect.left;
             let y = event.clientY - rect.top;
-
             this.handleClick(x, y);
         });
+
+        this.draw();
+    }
+
+
+    startGame() {
+        if (this.gameStarted) return;
+
+        this.gameStarted = true;
+        this.gamestate = "playingScreen";
+        this.setWorld();
+        this.run();
     }
 
     run() {
@@ -172,10 +195,13 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
         if (this.gamestate === "startScreen") {
-            this.drawStartScreen()
+            this.startScreen.draw();
         } else if (this.gamestate === "playingScreen") {
-            this.drawPlayingScreen()
+            this.drawPlayingScreen();
+        } else if (this.gamestate === "controlsScreen") {
+            this.controlsScreen.draw();
         }
 
         requestAnimationFrame(() => this.draw());
@@ -191,21 +217,6 @@ class World {
         if (mo.otherDirection) {
             this.flipImagesBack(mo);
         }
-    }
-
-
-    drawStartScreen() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.drawImage(
-            this.startScreenImage,
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        this.drawStartScreenButtons()
     }
 
     drawPlayingScreen() {
@@ -257,14 +268,9 @@ class World {
         }
     }
 
-    drawControlsScreen() {
-
-    }
-
     drawEndScreen() {
 
     }
-
 
     flipImages(mo) {
         this.ctx.save();
@@ -278,34 +284,37 @@ class World {
         this.ctx.restore();
     }
 
-    drawStartScreenButtons() {
-        this.startButton.draw(this.ctx);
-        this.controlsButton.draw(this.ctx);
-    }
-
     handleMouseMove(x, y) {
+        this.lastMouseX = x;
+        this.lastMouseY = y;
+
         if (this.gamestate === "startScreen") {
             let hoverStart = this.startButton.checkHover(x, y);
             let hoverControls = this.controlsButton.checkHover(x, y);
-
-            this.canvas.style.cursor = hoverStart || hoverControls ? "pointer" : "default";
+            this.canvas.style.cursor =
+                hoverStart || hoverControls ? "pointer" : "default";
+        }
+        if (this.gamestate === "controlsScreen") {
+            let hoverBack = this.backButton.checkHover(x, y);
+            this.canvas.style.cursor = hoverBack ? "pointer" : "default";
         }
     }
 
     handleClick(x, y) {
-    if (this.gamestate === "startScreen") {
+        if (this.gamestate === "startScreen") {
+            if (this.startButton.checkHover(x, y)) {
+                this.startGame();
+            }
 
-        if (this.startButton.checkHover(x, y)) {
-            this.gamestate = "playingScreen";
+            if (this.controlsButton.checkHover(x, y)) {
+                this.gamestate = "controlsScreen";
+            }
         }
 
-        if (this.controlsButton.checkHover(x, y)) {
-            this.gamestate = "controlsScreen";
+        else if (this.gamestate === "controlsScreen") {
+            if (this.backButton.checkHover(x, y)) {
+                this.gamestate = "startScreen";
+            }
         }
     }
-}
-
-
-
-
 }
