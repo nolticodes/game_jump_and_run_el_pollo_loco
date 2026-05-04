@@ -1,6 +1,7 @@
 class World {
     ctx;
     canvas;
+    gamestate = "startScreen"
     keyboard;
     camera_x = 0;
     character = new Pepe();
@@ -18,6 +19,9 @@ class World {
     chickenDiesSound = new Audio("./assets/audio/pepe/chicken_dies.mp3");
     endbossHitSound = new Audio("./assets/audio/pepe/endboss_hit.mp3");
     pepeIsHurtSound = new Audio("./assets/audio/pepe/pepe_hurt.mp3");
+    startScreenImage = new Image()
+    startButton = new Buttons(200, 30, 200, 60, "Play");
+    controlsButton = new Buttons(200, 110, 200, 60, "Controls");
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -25,9 +29,26 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld()
-        this.run()
+        this.run();
         this.maxCoins = this.level.coins.length;
         this.maxBottles = this.level.bottles.length;
+        this.startScreenImage.src = "./assets/img/9_intro_outro_screens/start/startscreen_2.png";
+        this.canvas.addEventListener("mousemove", (event) => {
+            let rect = this.canvas.getBoundingClientRect();
+
+            let x = event.clientX - rect.left;
+            let y = event.clientY - rect.top;
+
+            this.handleMouseMove(x, y);
+        });
+        this.canvas.addEventListener("click", (event) => {
+            let rect = this.canvas.getBoundingClientRect();
+
+            let x = event.clientX - rect.left;
+            let y = event.clientY - rect.top;
+
+            this.handleClick(x, y);
+        });
     }
 
     run() {
@@ -70,29 +91,27 @@ class World {
                     this.chickenDiesSound.currentTime = 0;
                     this.chickenDiesSound.play();
                     this.level.enemies.splice(index, 1);
-                    this.character.speedY = 15; // kleiner Bounce nach oben
+                    this.character.speedY = 13; // kleiner Bounce nach oben
+                } else if (enemy instanceof MiniChicken && this.character.isJumpingOn(enemy)) {
+                    this.chickenDiesSound.currentTime = 0;
+                    this.chickenDiesSound.play();
+                    this.level.enemies.splice(index, 1);
+                    this.character.speedY = 8; // kleiner Bounce nach oben
                 } else if (this.character.isColliding(enemy) && !this.character.isHurt()) {
                     this.pepeIsHurtSound.currentTime = 0;
                     this.pepeIsHurtSound.play();
-
                     this.character.hit(enemy);
                     this.statusbarHealth.setPercentage(this.character.energy);
-
-                    console.log("Collision with", this.character.energy);
                 }
 
             });
             this.throwableObject.forEach((bottle, bottleIndex) => {
                 this.level.enemies.forEach((enemy, enemyIndex) => {
-
                     if (!bottle.isBroken && bottle.isColliding(enemy)) {
-
                         this.splashBottleSound.currentTime = 0;
                         this.splashBottleSound.play();
-
                         if (enemy instanceof Endboss) {
                             enemy.hit(bottle)
-
                             if (enemy.energy < 0) {
                                 enemy.energy = 0;
                             }
@@ -107,7 +126,6 @@ class World {
                             bottle.playSplashAnimation();
                         }
                     }
-
                 });
             });
         }, 200);
@@ -115,15 +133,12 @@ class World {
         setInterval(() => {
             for (let i = this.level.coins.length - 1; i >= 0; i--) {
                 let coin = this.level.coins[i];
-
                 if (this.character.isColliding(coin)) {
+                    let collected = this.maxCoins - this.level.coins.length;
+                    let percentage = (collected / this.maxCoins) * 100;
                     this.collectCoinSound.currentTime = 0;
                     this.collectCoinSound.play();
                     this.level.coins.splice(i, 1);
-
-                    let collected = this.maxCoins - this.level.coins.length;
-                    let percentage = (collected / this.maxCoins) * 100;
-
                     this.statusbarCoins.setPercentage(percentage);
                 }
             }
@@ -132,15 +147,12 @@ class World {
         setInterval(() => {
             for (let i = this.level.bottles.length - 1; i >= 0; i--) {
                 let bottle = this.level.bottles[i];
-
                 if (this.character.isColliding(bottle)) {
+                    let percentage = (this.collectedBottles / this.maxBottles) * 100;
                     this.collectBottleSound.currentTime = 0;
                     this.collectBottleSound.play();
                     this.level.bottles.splice(i, 1);
-
                     this.collectedBottles++;
-
-                    let percentage = (this.collectedBottles / this.maxBottles) * 100;
                     this.statusbarBottles.setPercentage(percentage);
                 }
             }
@@ -150,10 +162,8 @@ class World {
     setWorld() {
         this.character.world = this;
         this.character.animateImages();
-
         this.level.enemies.forEach((enemy) => {
             enemy.world = this;
-
             if (enemy instanceof Endboss) {
                 enemy.animate();
             }
@@ -162,13 +172,48 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.gamestate === "startScreen") {
+            this.drawStartScreen()
+        } else if (this.gamestate === "playingScreen") {
+            this.drawPlayingScreen()
+        }
 
+        requestAnimationFrame(() => this.draw());
+    }
+
+
+    addToMap(mo) {
+        if (mo.otherDirection) {
+            this.flipImages(mo);
+        }
+        mo.drawMoveableObjects(this.ctx);
+        mo.drawRectangle(this.ctx);
+        if (mo.otherDirection) {
+            this.flipImagesBack(mo);
+        }
+    }
+
+
+    drawStartScreen() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.drawImage(
+            this.startScreenImage,
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+        );
+
+        this.drawStartScreenButtons()
+    }
+
+    drawPlayingScreen() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0)
-
         this.level.backgrounds.forEach(bg => {
             this.addToMap(bg);
         });
-
         this.level.clouds.forEach(cloud => {
             this.addToMap(cloud);
         });
@@ -177,63 +222,49 @@ class World {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoins);
         this.addToMap(this.statusbarBottles);
-        this.addToMap(this.statusbarEndboss);
+        let endBoss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+
+        if (endBoss && endBoss.hasSeenPlayer) {
+            this.addToMap(this.statusbarEndboss);
+        }
         this.ctx.translate(this.camera_x, 0)
 
         this.level.enemies.forEach(enemy => {
             this.addToMap(enemy);
         });
-
         this.addToMap(this.character);
-
         this.throwableObject.forEach((throwableObject) => {
             this.addToMap(throwableObject);
         });
-
         this.level.coins.forEach(coin => {
             this.addToMap(coin)
         })
-
         this.level.bottles.forEach(bottle => {
             this.addToMap(bottle)
         })
-
         this.ctx.translate(-this.camera_x, 0)
+        let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
 
-            let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-
-            if (endboss) {
-                this.ctx.beginPath();
-                this.ctx.strokeStyle = "red";
-                this.ctx.lineWidth = 2;
-
-                this.ctx.moveTo(endboss.borderXLeft + this.camera_x, 0);
-                this.ctx.lineTo(endboss.borderXLeft + this.camera_x, this.canvas.height);
-
-                this.ctx.moveTo(endboss.borderXRight + this.camera_x, 0);
-                this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
-
-                this.ctx.stroke();
-            }
-
-        let self = this
-        requestAnimationFrame(function () {
-            self.draw();
-        });
-    }
-
-    addToMap(mo) {
-        if (mo.otherDirection) {
-            this.flipImages(mo);
-        }
-
-        mo.drawMoveableObjects(this.ctx);
-        mo.drawRectangle(this.ctx);
-
-        if (mo.otherDirection) {
-            this.flipImagesBack(mo);
+        if (endboss) {
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = "red";
+            this.ctx.lineWidth = 2;
+            this.ctx.moveTo(endboss.borderXLeft + this.camera_x, 0);
+            this.ctx.lineTo(endboss.borderXLeft + this.camera_x, this.canvas.height);
+            this.ctx.moveTo(endboss.borderXRight + this.camera_x, 0);
+            this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
+            this.ctx.stroke();
         }
     }
+
+    drawControlsScreen() {
+
+    }
+
+    drawEndScreen() {
+
+    }
+
 
     flipImages(mo) {
         this.ctx.save();
@@ -246,4 +277,35 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+    drawStartScreenButtons() {
+        this.startButton.draw(this.ctx);
+        this.controlsButton.draw(this.ctx);
+    }
+
+    handleMouseMove(x, y) {
+        if (this.gamestate === "startScreen") {
+            let hoverStart = this.startButton.checkHover(x, y);
+            let hoverControls = this.controlsButton.checkHover(x, y);
+
+            this.canvas.style.cursor = hoverStart || hoverControls ? "pointer" : "default";
+        }
+    }
+
+    handleClick(x, y) {
+    if (this.gamestate === "startScreen") {
+
+        if (this.startButton.checkHover(x, y)) {
+            this.gamestate = "playingScreen";
+        }
+
+        if (this.controlsButton.checkHover(x, y)) {
+            this.gamestate = "controlsScreen";
+        }
+    }
+}
+
+
+
+
 }

@@ -3,7 +3,8 @@ let canvas;
 let keyboard = new Keyboard();
 
 function init() {
-    canvas = document.getElementById("cancas_id");
+    canvas = document.getElementById("canvas_id");
+
     world = new World(canvas, keyboard);
 }
 
@@ -50,3 +51,9 @@ window.addEventListener("keyup", (event) => {
         keyboard.t = false;
     }
 });
+
+function activateFullscreen() {
+    // Get the canvas element form the page
+    var canvas = document.getElementById("canvas_id");
+    canvas.requestFullscreen()
+}

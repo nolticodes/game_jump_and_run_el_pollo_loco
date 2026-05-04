@@ -174,7 +174,7 @@ class Pepe extends Moveableobject {
                 this.pepeSleepsSound.play()
                 this.playAnimation(this.pepeIsSpleeping, "Sleep")
             }
-        }, 200)
+        }, 150)
 
         setInterval(() => {
             if (this.isDead() && !this.isDeadAnimationPlayed) {
