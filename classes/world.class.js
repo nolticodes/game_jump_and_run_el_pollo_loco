@@ -19,6 +19,8 @@ class World {
     controlsButton = new Buttons(200, 110, 200, 60, "Controls");
     fullscreenButton = new Buttons(20, 410, 50, 50, "");
     backButton = new Buttons(20, 20, 140, 50, "Back");
+    playButton = new Buttons(20, 20, 50, 50, "play");
+    pauseButton = new Buttons(20, 90, 50, 50, "pause")
 
     gameStarted = false;
 
@@ -57,15 +59,18 @@ class World {
         let size = 50;
         let margin = 10;
 
-        this.fullscreenButton = new Buttons(
-            this.canvas.width - size - margin,
-            this.canvas.height - size - margin,
-            size,
-            size,
-            ""
-        );
+        this.fullscreenButton = new Buttons(this.canvas.width - size - margin, this.canvas.height - size - margin, size, size, "");
         this.fullscreenButton.icon = new Image();
         this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen_icon.svg";
+
+        this.playButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
+        this.playButton.icon = new Image();
+        this.playButton.icon.src = "./assets/img/01_UI/play_icon.svg";
+
+        this.pauseButton = new Buttons(75, this.canvas.height - size - margin, size, size, "");
+        this.pauseButton.icon = new Image();
+        this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
+
         this.draw();
     }
 
@@ -294,7 +299,10 @@ class World {
             this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
             this.ctx.stroke();
         }
+        this.playButton.draw(this.ctx);
+        this.pauseButton.draw(this.ctx)
         this.fullscreenButton.draw(this.ctx);
+
     }
 
     flipImages(mo) {
@@ -310,25 +318,11 @@ class World {
     }
 
     handleMouseMove(x, y) {
-        this.lastMouseX = x;
-        this.lastMouseY = y;
+        let buttons = [this.startButton, this.controlsButton, this.backButton, this.playButton, this.fullscreenButton, this.pauseButton];
 
-        let hoverFullscreen = this.fullscreenButton.checkHover(x, y);
+        let isHoveringAny = buttons.some(btn => btn && btn.checkHover(x, y));
 
-        if (this.gamestate === "startScreen") {
-            let hoverStart = this.startButton.checkHover(x, y);
-            let hoverControls = this.controlsButton.checkHover(x, y);
-
-            this.canvas.style.cursor =
-                hoverStart || hoverControls || hoverFullscreen ? "pointer" : "default";
-        }
-
-        else if (this.gamestate === "controlsScreen") {
-            let hoverBack = this.backButton.checkHover(x, y);
-
-            this.canvas.style.cursor =
-                hoverBack || hoverFullscreen ? "pointer" : "default";
-        }
+        this.canvas.style.cursor = isHoveringAny ? "pointer" : "default";
     }
 
     handleClick(x, y) {
