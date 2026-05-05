@@ -294,6 +294,7 @@ class World {
             this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
             this.ctx.stroke();
         }
+        this.fullscreenButton.draw(this.ctx);
     }
 
     flipImages(mo) {
