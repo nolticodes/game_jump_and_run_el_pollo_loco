@@ -44,22 +44,18 @@ class World {
         this.controlsScreen = new ControlsScreen(this);
 
         this.canvas.addEventListener("mousemove", (event) => {
-            let rect = this.canvas.getBoundingClientRect();
-            let x = event.clientX - rect.left;
-            let y = event.clientY - rect.top;
-            this.handleMouseMove(x, y);
+            let position = this.getCanvasMousePosition(event);
+            this.handleMouseMove(position.x, position.y);
         });
 
         this.canvas.addEventListener("click", (event) => {
-            let rect = this.canvas.getBoundingClientRect();
-            let x = event.clientX - rect.left;
-            let y = event.clientY - rect.top;
-            this.handleClick(x, y);
+            let position = this.getCanvasMousePosition(event);
+            this.handleClick(position.x, position.y);
         });
 
 
         let size = 50;
-        let margin = 20;
+        let margin = 10;
 
         this.fullscreenButton = new Buttons(
             this.canvas.width - size - margin,
@@ -69,8 +65,35 @@ class World {
             ""
         );
         this.fullscreenButton.icon = new Image();
-        this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen.svg";
+        this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen_icon.svg";
         this.draw();
+    }
+
+    getCanvasMousePosition(event) {
+        let rect = this.canvas.getBoundingClientRect();
+
+        let canvasRatio = this.canvas.width / this.canvas.height;
+        let rectRatio = rect.width / rect.height;
+
+        let drawWidth;
+        let drawHeight;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (rectRatio > canvasRatio) {
+            drawHeight = rect.height;
+            drawWidth = drawHeight * canvasRatio;
+            offsetX = (rect.width - drawWidth) / 2;
+        } else {
+            drawWidth = rect.width;
+            drawHeight = drawWidth / canvasRatio;
+            offsetY = (rect.height - drawHeight) / 2;
+        }
+
+        let x = (event.clientX - rect.left - offsetX) * (this.canvas.width / drawWidth);
+        let y = (event.clientY - rect.top - offsetY) * (this.canvas.height / drawHeight);
+
+        return { x, y };
     }
 
 
