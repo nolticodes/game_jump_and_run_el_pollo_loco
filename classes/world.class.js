@@ -378,6 +378,12 @@ class World {
         if (this.gamestate === "playingScreen" && this.pauseButton.checkHover(x, y)) {
             this.isPaused = !this.isPaused;
 
+            if (this.isPaused) {
+                this.sounds.pauseAll();
+            } else {
+                this.sounds.resumeAll();
+            }
+
             this.pauseButton.icon.src = this.isPaused
                 ? "./assets/img/01_UI/play_icon.svg"
                 : "./assets/img/01_UI/stop_icon.svg";

@@ -15,13 +15,13 @@ class SoundManager {
         this.pepeLanding = new Audio("./assets/audio/pepe/landing.mp3");
         this.pepeDead = new Audio("./assets/audio/pepe/pepe_dead.mp3");
         this.pepeSleeping = new Audio("./assets/audio/pepe/pepe_snoring.mp3");
-        
+
         this.pepeWalking.loop = true;
         this.pepeWalking.volume = 1;
         this.pepeWalking.playbackRate = 2;
         this.pepeJump.volume = 0.3;
         this.pepeLanding.volume = 0.7;
-        this.pepeSleeping.volume = 0.2
+        this.pepeSleeping.volume = 0.05
 
         this.allSounds = [
             this.collectBottle,
@@ -40,20 +40,28 @@ class SoundManager {
         ];
 
         this.muted = false
+
+        this.activeSounds = new Set();
     }
 
     play(sound) {
+        if (this.muted) return;
+
         sound.currentTime = 0;
         sound.play();
     }
 
     playLoop(sound) {
+        if (this.muted) return;
+
         sound.play();
+        this.activeSounds.add(sound);
     }
 
     stop(sound) {
         sound.pause();
         sound.currentTime = 0;
+        this.activeSounds.delete(sound);
     }
 
     toggleMute() {
@@ -66,6 +74,20 @@ class SoundManager {
                 sound.pause();
                 sound.currentTime = 0;
             }
+        });
+    }
+
+    pauseAll() {
+        this.activeSounds.forEach(sound => {
+            sound.pause();
+        });
+    }
+
+    resumeAll() {
+        if (this.muted) return;
+
+        this.activeSounds.forEach(sound => {
+            sound.play();
         });
     }
 }
