@@ -8,38 +8,10 @@ class Buttons {
         this.isHovered = false;
     }
     draw(ctx) {
-        let radius = 15;
-
-        let scale = this.isHovered ? 1.08 : 1;
-        let shadowOffset = this.isHovered ? 10 : 6;
-
         ctx.save();
 
-        // 👉 Scale Animation (zentriert)
-        let centerX = this.x + this.width / 2;
-        let centerY = this.y + this.height / 2;
-
-        ctx.translate(centerX, centerY);
-        ctx.scale(scale, scale);
-        ctx.translate(-centerX, -centerY);
-
-        // 👉 Shadow (3D Effekt)
-        ctx.fillStyle = "#8B3A0E";
-        this.drawRoundedRect(ctx, this.x, this.y + shadowOffset, this.width, this.height, radius);
-
-        // 👉 Button Farbe
-        ctx.fillStyle = this.isHovered ? "#FFD54F" : "#F4B400";
-        this.drawRoundedRect(ctx, this.x, this.y, this.width, this.height, radius);
-
-        // 👉 Border
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = "#8B3A0E";
-        this.drawRoundedPath(ctx, this.x, this.y, this.width, this.height, radius);
-        ctx.stroke();
-
-        // 👉 Text oder Icon
         if (this.icon) {
-            let iconSize = this.width * 0.6;
+            let iconSize = this.isHovered ? this.width * 1.15 : this.width;
 
             ctx.drawImage(
                 this.icon,
@@ -48,18 +20,44 @@ class Buttons {
                 iconSize,
                 iconSize
             );
-        } else {
-            ctx.fillStyle = "white";
-            ctx.font = "30px 'Luckiest Guy', Arial";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
 
-            ctx.fillText(
-                this.text,
-                this.x + this.width / 2,
-                this.y + this.height / 2 + 5
-            );
+            ctx.restore();
+            return;
         }
+
+        let radius = 15;
+
+        let scale = this.isHovered ? 1.08 : 1;
+        let shadowOffset = this.isHovered ? 10 : 6;
+
+        let centerX = this.x + this.width / 2;
+        let centerY = this.y + this.height / 2;
+
+        ctx.translate(centerX, centerY);
+        ctx.scale(scale, scale);
+        ctx.translate(-centerX, -centerY);
+
+        ctx.fillStyle = "#8B3A0E";
+        this.drawRoundedRect(ctx, this.x, this.y + shadowOffset, this.width, this.height, radius);
+
+        ctx.fillStyle = this.isHovered ? "#FFD54F" : "#F4B400";
+        this.drawRoundedRect(ctx, this.x, this.y, this.width, this.height, radius);
+
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#8B3A0E";
+        this.drawRoundedPath(ctx, this.x, this.y, this.width, this.height, radius);
+        ctx.stroke();
+
+        ctx.fillStyle = "white";
+        ctx.font = "30px 'Luckiest Guy', Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.fillText(
+            this.text,
+            this.x + this.width / 2,
+            this.y + this.height / 2 + 5
+        );
 
         ctx.restore();
     }

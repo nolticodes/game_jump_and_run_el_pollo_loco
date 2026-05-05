@@ -58,9 +58,18 @@ class World {
         });
 
 
-        this.fullscreenButton = new Buttons(20, this.canvas.height - 70, 50, 50, "");
-        this.fullscreenImage = new Image();
-        this.fullscreenImage.src = "./assets/img/01_UI/fullscreen.svg"; // dein Icon
+        let size = 50;
+        let margin = 20;
+
+        this.fullscreenButton = new Buttons(
+            this.canvas.width - size - margin,
+            this.canvas.height - size - margin,
+            size,
+            size,
+            ""
+        );
+        this.fullscreenButton.icon = new Image();
+        this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen.svg";
         this.draw();
     }
 
