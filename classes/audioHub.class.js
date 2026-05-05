@@ -3,6 +3,7 @@ class SoundManager {
         this.collectBottle = new Audio("./assets/audio/pepe/collect_bottle.mp3");
         this.splashBottle = new Audio("./assets/audio/pepe/bottle_splash.mp3");
         this.collectCoin = new Audio("./assets/audio/pepe/collect_coin.mp3");
+        this.throwingBottleSound = new Audio("./assets/audio/pepe/throw_bottle.mp3");
 
         this.chickenDies = new Audio("./assets/audio/pepe/chicken_dies.mp3");
         this.endbossDiesSound = new Audio("./assets/audio/pepe/endboss_dies.mp3");
@@ -14,7 +15,7 @@ class SoundManager {
         this.pepeLanding = new Audio("./assets/audio/pepe/landing.mp3");
         this.pepeDead = new Audio("./assets/audio/pepe/pepe_dead.mp3");
         this.pepeSleeping = new Audio("./assets/audio/pepe/pepe_snoring.mp3");
-
+        
         this.pepeWalking.loop = true;
         this.pepeWalking.volume = 1;
         this.pepeWalking.playbackRate = 2;
@@ -34,7 +35,8 @@ class SoundManager {
             this.pepeJump,
             this.pepeLanding,
             this.pepeDead,
-            this.pepeSleeping
+            this.pepeSleeping,
+            this.throwingBottleSound
         ];
 
         this.muted = false

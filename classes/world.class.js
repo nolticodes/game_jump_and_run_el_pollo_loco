@@ -129,6 +129,8 @@ class World {
 
     checkThrowableObjext() {
         if (this.keyboard.t && this.collectedBottles > 0) {
+            this.sounds.play(this.sounds.throwingBottleSound)
+
 
             let xOffset = this.character.otherDirection ? 20 : 100;
             let yOffset = 160;
@@ -138,6 +140,8 @@ class World {
                 this.character.y + yOffset,
                 this.character.otherDirection
             );
+
+            bottle.world = this
 
             this.throwableObject.push(bottle);
 
