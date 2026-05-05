@@ -1,0 +1,8 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Speaker -->
+  <path d="M18 38H34L56 20V80L34 62H18V38Z" fill="black"/>
+
+  <!-- Mute X -->
+  <path d="M68 38L86 56" stroke="black" stroke-width="8" stroke-linecap="round"/>
+  <path d="M86 38L68 56" stroke="black" stroke-width="8" stroke-linecap="round"/>
+</svg>

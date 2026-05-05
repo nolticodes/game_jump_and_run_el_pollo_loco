@@ -21,6 +21,23 @@ class SoundManager {
         this.pepeJump.volume = 0.3;
         this.pepeLanding.volume = 0.7;
         this.pepeSleeping.volume = 0.2
+
+        this.allSounds = [
+            this.collectBottle,
+            this.splashBottle,
+            this.collectCoin,
+            this.chickenDies,
+            this.endbossDiesSound,
+            this.endbossHit,
+            this.pepeHurt,
+            this.pepeWalking,
+            this.pepeJump,
+            this.pepeLanding,
+            this.pepeDead,
+            this.pepeSleeping
+        ];
+
+        this.muted = false
     }
 
     play(sound) {
@@ -35,5 +52,18 @@ class SoundManager {
     stop(sound) {
         sound.pause();
         sound.currentTime = 0;
+    }
+
+    toggleMute() {
+        this.muted = !this.muted;
+
+        this.allSounds.forEach(sound => {
+            sound.muted = this.muted;
+
+            if (this.muted) {
+                sound.pause();
+                sound.currentTime = 0;
+            }
+        });
     }
 }
