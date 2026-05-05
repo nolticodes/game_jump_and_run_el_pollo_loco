@@ -34,10 +34,12 @@ class Chicken extends Moveableobject {
 
     animateImages() {
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             this.playAnimation(this.chickensWalking)
         }, 175);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             this.otherDirection = false;
             this.moveLeft()
         }, 1000 / 60)

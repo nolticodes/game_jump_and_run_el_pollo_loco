@@ -95,6 +95,7 @@ class Pepe extends Moveableobject {
 
     animateImages() {
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
 
             let currentlyInAir = this.isInAir();
 
@@ -157,6 +158,7 @@ class Pepe extends Moveableobject {
 
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.isDead() && !this.isHurt() && !this.isInAir() && this.isSleeping()) {
                 if (!this.isSleepingSoundPlaying) {
                     this.world.sounds.playLoop(this.world.sounds.pepeSleeping);
@@ -173,6 +175,7 @@ class Pepe extends Moveableobject {
         }, 150);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.isDeadAnimationPlayed = true;
                 this.world.sounds.play(this.world.sounds.pepeDead);
@@ -195,12 +198,14 @@ class Pepe extends Moveableobject {
         }, 100);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.isDead() && this.isHurt()) {
                 this.playAnimation(this.pepeIsHurt, "hurt");
             }
         }, 100);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
                 this.playAnimation(this.pepeWalkingImages, "walk");
             }
@@ -209,12 +214,14 @@ class Pepe extends Moveableobject {
 
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.isDead() && !this.isHurt() && this.isInAir()) {
                 this.playAnimationOnce(this.pepeJumpingImages, "jump");
             }
         }, 120);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.world) return;
 
             if (!this.isDead() && !this.isHurt() && !this.isInAir() && !this.isSleeping() && !this.world.keyboard.right && !this.world.keyboard.left) {

@@ -15,6 +15,8 @@ class Moveableobject extends DrawableObject {
 
     applyGravity() {
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
+
             if (this.isInAir() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
@@ -33,6 +35,7 @@ class Moveableobject extends DrawableObject {
 
     animationMoveLeft() {
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             this.x -= this.speed;
         }, 1000 / 60)
     }

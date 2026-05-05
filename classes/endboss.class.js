@@ -74,24 +74,28 @@ class Endboss extends Moveableobject {
 
     animate() {
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.isHurt() && !this.isDead() && !this.hasSeenPlayer) {
                 this.playAnimation(this.endbossAlert, "alert");
             }
         }, 250)
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (!this.isDead() && this.isHurt()) {
                 this.playAnimation(this.endbossHurt, "hurt");
             }
         }, 100);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.isDeadAnimationPlayed = true;
                 this.world.sounds.playLoop(this.world.sounds.endbossDiesSound);
                 let i = 0;
 
                 let interval = setInterval(() => {
+                    if (this.world && this.world.isPaused) return;
                     if (i < this.endbossDead.length) {
                         let path = this.endbossDead[i];
                         this.img = this.imageCache[path];
@@ -107,6 +111,7 @@ class Endboss extends Moveableobject {
         }, 100);
 
         setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (this.isDead()) return;
             if (this.isPlayerNear()) {
                 this.hasSeenPlayer = true

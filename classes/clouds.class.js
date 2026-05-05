@@ -1,4 +1,4 @@
-class Cloud extends Moveableobject{
+class Cloud extends Moveableobject {
     speed = 0.2
 
     constructor() {
@@ -8,12 +8,16 @@ class Cloud extends Moveableobject{
         this.y = 20 + Math.random() * 20
         this.width = 480;
         this.height = 400;
+    }
 
-        this.animationMoveLeft();
+    move() {
+        if (this.world && this.world.isPaused) return;
+
+        this.x -= this.speed;
     }
 }
 
-class CloudSecond extends Moveableobject{
+class CloudSecond extends Moveableobject {
     speed = 0.15
 
     constructor() {
@@ -23,7 +27,10 @@ class CloudSecond extends Moveableobject{
         this.y = 20 + Math.random() * 20
         this.width = 480;
         this.height = 400;
+    }
+    move() {
+        if (this.world && this.world.isPaused) return;
 
-        this.animationMoveLeft();
+        this.x -= this.speed;
     }
 }

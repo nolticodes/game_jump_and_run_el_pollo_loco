@@ -13,7 +13,7 @@ class ThrowableObject extends Bottles {
         this.height = 100;
         this.otherDirection = otherDirection;
 
-        this.throw();
+        // this.throw();
     }
 
     throw() {
@@ -24,6 +24,7 @@ class ThrowableObject extends Bottles {
         this.applyGravity();
 
         let moveInterval = setInterval(() => {
+            if (this.world?.isPaused) return
             if (!this.isBroken) {
                 this.x += this.speedX;
             } else {
@@ -32,6 +33,7 @@ class ThrowableObject extends Bottles {
         }, 1000 / 60);
 
         let rotateInterval = setInterval(() => {
+            if (this.world?.isPaused) return
             if (!this.isBroken) {
                 this.playAnimation(this.bottleThrow);
             } else {
@@ -48,6 +50,7 @@ class ThrowableObject extends Bottles {
         let i = 0;
 
         let interval = setInterval(() => {
+            if (this.world?.isPaused) return
             if (i < this.bottleSplash.length) {
                 let path = this.bottleSplash[i];
                 this.img = this.imageCache[path];
@@ -61,6 +64,7 @@ class ThrowableObject extends Bottles {
 
     applyGravity() {
         let gravityInterval = setInterval(() => {
+            if (this.world?.isPaused) return
             if (!this.isBroken) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;

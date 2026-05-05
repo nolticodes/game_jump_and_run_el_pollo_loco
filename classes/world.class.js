@@ -24,6 +24,8 @@ class World {
     muteButton = new Buttons(20, 90, 50, 50, "mute");
     unmuteButton = new Buttons(20, 90, 50, 50, "unmute");
 
+    isPaused = false
+
     gameStarted = false;
 
     constructor(canvas) {
@@ -65,16 +67,11 @@ class World {
         this.fullscreenButton.icon = new Image();
         this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen_icon.svg";
 
-        this.playButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
-        this.playButton.icon = new Image();
-        this.playButton.icon.src = "./assets/img/01_UI/play_icon.svg";
-
-        this.pauseButton = new Buttons(75, this.canvas.height - size - margin, size, size, "");
+        this.pauseButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
         this.pauseButton.icon = new Image();
         this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
 
-
-        this.muteButton = new Buttons(140, this.canvas.height - size - margin, size, size, "");
+        this.muteButton = new Buttons(75, this.canvas.height - size - margin, size, size, "");
         this.muteButton.icon = new Image();
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
 
@@ -122,12 +119,15 @@ class World {
         this.checkCollision();
 
         setInterval(() => {
+            if (this.isPaused) return;
             this.checkThrowableObjext();
             this.throwableObject = this.throwableObject.filter(bottle => !bottle.markedForDeletion);
         }, 200);
     }
 
     checkThrowableObjext() {
+        if (this.isPaused) return
+
         if (this.keyboard.t && this.collectedBottles > 0) {
             this.sounds.play(this.sounds.throwingBottleSound)
 
@@ -142,7 +142,7 @@ class World {
             );
 
             bottle.world = this
-
+            bottle.throw();
             this.throwableObject.push(bottle);
 
             this.collectedBottles--;
@@ -156,6 +156,7 @@ class World {
 
     checkCollision() {
         setInterval(() => {
+            if (this.isPaused) return
             this.level.enemies.forEach((enemy, index) => {
                 if (enemy instanceof Chicken && this.character.isJumpingOn(enemy)) {
                     this.sounds.play(this.sounds.chickenDies);
@@ -194,6 +195,7 @@ class World {
         }, 200);
 
         setInterval(() => {
+            if (this.isPaused) return
             for (let i = this.level.coins.length - 1; i >= 0; i--) {
                 let coin = this.level.coins[i];
                 if (this.character.isColliding(coin)) {
@@ -207,6 +209,7 @@ class World {
         }, 200);
 
         setInterval(() => {
+            if (this.isPaused) return
             for (let i = this.level.bottles.length - 1; i >= 0; i--) {
                 let bottle = this.level.bottles[i];
                 if (this.character.isColliding(bottle)) {
@@ -234,6 +237,11 @@ class World {
             if (enemy instanceof Endboss) {
                 enemy.animate();
             }
+        });
+
+        this.level.clouds.forEach((cloud) => {
+            cloud.world = this;
+            cloud.animationMoveLeft();
         });
     }
 
@@ -270,7 +278,8 @@ class World {
             this.addToMap(bg);
         });
         this.level.clouds.forEach(cloud => {
-            this.addToMap(cloud);
+            cloud.move();        // 👉 Bewegung
+            this.addToMap(cloud); // 👉 Rendering
         });
 
         this.ctx.translate(-this.camera_x, 0)
@@ -310,7 +319,6 @@ class World {
             this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
             this.ctx.stroke();
         }
-        this.playButton.draw(this.ctx);
         this.pauseButton.draw(this.ctx);
         this.muteButton.draw(this.ctx);
         this.fullscreenButton.draw(this.ctx);
@@ -365,6 +373,14 @@ class World {
             } else {
                 this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
             }
+        }
+
+        if (this.gamestate === "playingScreen" && this.pauseButton.checkHover(x, y)) {
+            this.isPaused = !this.isPaused;
+
+            this.pauseButton.icon.src = this.isPaused
+                ? "./assets/img/01_UI/play_icon.svg"
+                : "./assets/img/01_UI/stop_icon.svg";
         }
     }
 
