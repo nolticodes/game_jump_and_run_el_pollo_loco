@@ -11,7 +11,7 @@ class Buttons {
         ctx.save();
 
         if (this.icon) {
-            let iconSize = this.isHovered ? this.width * 1.15 : this.width;
+            let iconSize = this.isHovered ? this.width * 1.03 : this.width;
 
             ctx.drawImage(
                 this.icon,
@@ -27,7 +27,7 @@ class Buttons {
 
         let radius = 15;
 
-        let scale = this.isHovered ? 1.08 : 1;
+        let scale = this.isHovered ? 1.05 : 1;
         let shadowOffset = this.isHovered ? 10 : 6;
 
         let centerX = this.x + this.width / 2;

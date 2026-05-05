@@ -73,13 +73,10 @@ class World {
         this.pauseButton.icon = new Image();
         this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
 
+
         this.muteButton = new Buttons(140, this.canvas.height - size - margin, size, size, "");
         this.muteButton.icon = new Image();
-        this.muteButton.icon.src = "./assets/img/01_UI/mute_icon.svg";
-
-        this.unmuteButton = new Buttons(140, this.canvas.height - size - margin, size, size, "");
-        this.unmuteButton.icon = new Image();
-        this.unmuteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
+        this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
 
         this.draw();
     }
@@ -311,7 +308,7 @@ class World {
         }
         this.playButton.draw(this.ctx);
         this.pauseButton.draw(this.ctx);
-        this.muteButton.draw(this.ctx)
+        this.muteButton.draw(this.ctx);
         this.fullscreenButton.draw(this.ctx);
 
     }
