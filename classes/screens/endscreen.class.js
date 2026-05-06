@@ -83,6 +83,24 @@ class Endscreen {
         ctx.closePath();
     }
 
+    handleMouseMove(x, y) {
+        let buttons = [
+            this.restartButton,
+            this.mainMenuButton
+        ];
+
+        return buttons.some(btn => btn.checkHover(x, y));
+    }
+
+    handleClick(x, y) {
+        if (this.restartButton.checkHover(x, y)) {
+            this.world.restartGame();
+        }
+
+        if (this.mainMenuButton.checkHover(x, y)) {
+            this.world.backToStartpage();
+        }
+    }
 
     screenWin() {
 

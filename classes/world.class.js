@@ -27,6 +27,7 @@ class World {
     isPaused = false
 
     gameStarted = false;
+    isGameEnding = false;
     isGameEnded = false
 
     constructor(canvas) {
@@ -135,8 +136,10 @@ class World {
         this.resetUI();
 
         this.gameStarted = false;
+        this.isGameEnded = false
         this.isPaused = false;
         this.gamestate = "startScreen";
+        this.isGameEnding = false
 
         this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
     }
@@ -147,6 +150,9 @@ class World {
         this.isPaused = false;
         this.gameStarted = true;
         this.gamestate = "playingScreen";
+        this.isGameEnded = false;
+        this.isGameEnding = false;
+        this.isPaused = false;
     }
 
     resetGameObjects() {
@@ -322,13 +328,18 @@ class World {
     isGameOver() {
         let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
 
-        if (this.character.isDead() || endboss?.isDead()) {
-            this.isGameEnded = true;
-            this.isPaused = true;
+        if (!this.isGameEnding && (this.character.isDead() || endboss?.isDead())) {
+            this.isGameEnding = true;
+
             this.sounds.pauseAll();
+
+            setTimeout(() => {
+                this.isGameEnded = true;
+                this.isPaused = true;
+            }, 1500);
         }
     }
-    
+
     addToMap(mo) {
         if (mo.otherDirection) {
             this.flipImages(mo);
@@ -418,6 +429,12 @@ class World {
         let buttons = [this.startButton, this.controlsButton, this.backButton, this.playButton, this.fullscreenButton, this.pauseButton, this.muteButton, this.unmuteButton];
         let isHoveringAny = buttons.some(btn => btn && btn.checkHover(x, y));
 
+        if (this.isGameEnded) {
+            let hovering = this.endScreen.handleMouseMove(x, y);
+            this.canvas.style.cursor = hovering ? "pointer" : "default";
+            return;
+        }
+
         if (this.isPaused) {
             isHoveringAny = this.pauseMenuScreen.handleMouseMove(x, y) || isHoveringAny;
         }
@@ -425,6 +442,11 @@ class World {
     }
 
     handleClick(x, y) {
+        if (this.isGameEnded) {
+            this.endScreen.handleClick(x, y);
+            return;
+        }
+
         if (this.isPaused) {
             this.pauseMenuScreen.handleClick(x, y);
             return;
@@ -461,6 +483,7 @@ class World {
         if (this.gamestate === "playingScreen" && this.pauseButton.checkHover(x, y)) {
             this.togglePause();
         }
+
     }
 
     togglePause() {

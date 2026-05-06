@@ -96,6 +96,7 @@ class Pepe extends Moveableobject {
     animateImages() {
         
         setInterval(() => {
+            if (!this.world || this.world.isPaused || this.world.isGameEnding) return;
             if (!this.world || this.world.isPaused) return;
 
             let currentlyInAir = this.isInAir();
