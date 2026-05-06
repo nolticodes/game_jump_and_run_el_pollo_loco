@@ -129,6 +129,7 @@ class World {
     }
 
     resetGameObjects() {
+        this.character.world = null; // alter Pepe darf World nicht mehr steuern
         this.camera_x = 0;
         this.character = new Pepe();
         this.level = createLevel1(); // wichtig, dazu gleich mehr
