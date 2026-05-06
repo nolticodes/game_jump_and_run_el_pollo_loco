@@ -48,6 +48,7 @@ class World {
 
         this.startScreen = new StartScreen(this);
         this.controlsScreen = new ControlsScreen(this);
+        this.pauseMenuScreen = new PauseMenuScreen(this);
 
         this.canvas.addEventListener("mousemove", (event) => {
             let position = this.getCanvasMousePosition(event);
@@ -322,6 +323,10 @@ class World {
         this.pauseButton.draw(this.ctx);
         this.muteButton.draw(this.ctx);
         this.fullscreenButton.draw(this.ctx);
+
+        if (this.isPaused) {
+            this.pauseMenuScreen.draw();
+        }
 
     }
 
