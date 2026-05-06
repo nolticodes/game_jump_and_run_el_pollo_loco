@@ -344,9 +344,11 @@ class World {
 
     handleMouseMove(x, y) {
         let buttons = [this.startButton, this.controlsButton, this.backButton, this.playButton, this.fullscreenButton, this.pauseButton, this.muteButton, this.unmuteButton];
-
         let isHoveringAny = buttons.some(btn => btn && btn.checkHover(x, y));
 
+        if (this.isPaused) {
+            isHoveringAny = this.pauseMenuScreen.handleMouseMove(x, y) || isHoveringAny;
+        }
         this.canvas.style.cursor = isHoveringAny ? "pointer" : "default";
     }
 
