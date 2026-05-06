@@ -116,8 +116,11 @@ class World {
         this.run();
     }
 
-    restartGame2() {
-        location.reload()
+    backToStartpage() {
+        this.restartGame();
+        this.gamestate = "startScreen"
+        this.gameStarted = false;
+        this.isPaused = false;
     }
 
     restartGame() {

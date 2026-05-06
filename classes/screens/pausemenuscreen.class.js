@@ -94,7 +94,7 @@ class PauseMenuScreen {
         }
 
         if (this.mainMenuButton.checkHover(x, y)) {
-            // später Main Menu
+            this.world.backToStartpage();
         }
     }
 
