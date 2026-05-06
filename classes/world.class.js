@@ -27,6 +27,7 @@ class World {
     isPaused = false
 
     gameStarted = false;
+    isGameEnded = false
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
@@ -49,6 +50,7 @@ class World {
         this.startScreen = new StartScreen(this);
         this.controlsScreen = new ControlsScreen(this);
         this.pauseMenuScreen = new PauseMenuScreen(this);
+        this.endScreen = new Endscreen(this);
 
         this.canvas.addEventListener("mousemove", (event) => {
             let position = this.getCanvasMousePosition(event);
@@ -300,6 +302,9 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.gamestate === "playingScreen") {
+            this.isGameOver();
+        }
 
         if (this.gamestate === "startScreen") {
             this.startScreen.draw();
@@ -307,12 +312,23 @@ class World {
             this.drawPlayingScreen();
         } else if (this.gamestate === "controlsScreen") {
             this.controlsScreen.draw();
+        } else if (this.gamestate === "endScreen") {
+            this.endScreen.drawEndscreen();
         }
 
         requestAnimationFrame(() => this.draw());
     }
 
+    isGameOver() {
+        let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
 
+        if (this.character.isDead() || endboss?.isDead()) {
+            this.isGameEnded = true;
+            this.isPaused = true;
+            this.sounds.pauseAll();
+        }
+    }
+    
     addToMap(mo) {
         if (mo.otherDirection) {
             this.flipImages(mo);
@@ -378,6 +394,10 @@ class World {
 
         if (this.isPaused) {
             this.pauseMenuScreen.draw();
+        }
+
+        if (this.isGameEnded) {
+            this.endScreen.drawEndscreen();
         }
 
     }
