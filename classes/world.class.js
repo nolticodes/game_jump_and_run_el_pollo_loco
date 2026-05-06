@@ -117,10 +117,26 @@ class World {
     }
 
     backToStartpage() {
-        this.restartGame();
-        this.gamestate = "startScreen"
+        this.resetToStartpage();
+    }
+
+    resetToStartpage() {
+        this.character.world = null;
+
+        this.camera_x = 0;
+        this.character = new Pepe();
+        this.level = createLevel1();
+        this.throwableObject = [];
+        this.collectedCoins = 0;
+        this.collectedBottles = 0;
+
+        this.resetUI();
+
         this.gameStarted = false;
         this.isPaused = false;
+        this.gamestate = "startScreen";
+
+        this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
     }
 
     restartGame() {
