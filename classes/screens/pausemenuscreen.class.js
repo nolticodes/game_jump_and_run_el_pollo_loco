@@ -84,4 +84,18 @@ class PauseMenuScreen {
         return buttons.some(btn => btn.checkHover(x, y));
     }
 
+    handleClick(x, y) {
+        if (this.resumeButton.checkHover(x, y)) {
+            this.world.togglePause();
+        }
+
+        if (this.restartButton.checkHover(x, y)) {
+            this.world.restartGame();
+        }
+
+        if (this.mainMenuButton.checkHover(x, y)) {
+            // später Main Menu
+        }
+    }
+
 }

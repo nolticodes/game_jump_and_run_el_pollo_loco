@@ -5,7 +5,7 @@ class World {
     keyboard;
     camera_x = 0;
     character = new Pepe();
-    level = level1;
+    level = createLevel1();
     statusbarHealth = new Statusbar("health", 15, -10, 100);
     statusbarCoins = new Statusbar("coins", 15, 35, 0);
     statusbarBottles = new Statusbar("bottles", 15, 80, 0);
@@ -114,6 +114,38 @@ class World {
         this.gamestate = "playingScreen";
         this.setWorld();
         this.run();
+    }
+
+    restartGame2() {
+        location.reload()
+    }
+
+    restartGame() {
+        this.resetGameObjects();
+        this.resetUI();
+        this.isPaused = false;
+        this.gameStarted = true;
+        this.gamestate = "playingScreen";
+    }
+
+    resetGameObjects() {
+        this.camera_x = 0;
+        this.character = new Pepe();
+        this.level = createLevel1(); // wichtig, dazu gleich mehr
+        this.throwableObject = [];
+        this.collectedCoins = 0;
+        this.collectedBottles = 0;
+
+        this.setWorld();
+    }
+
+    resetUI() {
+        this.statusbarHealth.setPercentage(100);
+        this.statusbarCoins.setPercentage(0);
+        this.statusbarBottles.setPercentage(0);
+        this.statusbarEndboss.setPercentage(100);
+
+        this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
     }
 
     run() {
@@ -353,6 +385,11 @@ class World {
     }
 
     handleClick(x, y) {
+        if (this.isPaused) {
+            this.pauseMenuScreen.handleClick(x, y);
+            return;
+        }
+
         if (this.gamestate === "startScreen") {
             if (this.startButton.checkHover(x, y)) {
                 this.startGame();
@@ -368,6 +405,7 @@ class World {
                 this.gamestate = "startScreen";
             }
         }
+
         if (this.fullscreenButton.checkHover(x, y)) {
             this.toggleFullscreen();
         }
@@ -375,26 +413,28 @@ class World {
         if (this.muteButton.checkHover(x, y)) {
             this.sounds.toggleMute();
 
-            if (this.sounds.muted) {
-                this.muteButton.icon.src = "./assets/img/01_UI/mute_icon.svg";
-            } else {
-                this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
-            }
+            this.muteButton.icon.src = this.sounds.muted
+                ? "./assets/img/01_UI/mute_icon.svg"
+                : "./assets/img/01_UI/unmute_icon.svg";
         }
 
         if (this.gamestate === "playingScreen" && this.pauseButton.checkHover(x, y)) {
-            this.isPaused = !this.isPaused;
-
-            if (this.isPaused) {
-                this.sounds.pauseAll();
-            } else {
-                this.sounds.resumeAll();
-            }
-
-            this.pauseButton.icon.src = this.isPaused
-                ? "./assets/img/01_UI/play_icon.svg"
-                : "./assets/img/01_UI/stop_icon.svg";
+            this.togglePause();
         }
+    }
+
+    togglePause() {
+        this.isPaused = !this.isPaused;
+
+        if (this.isPaused) {
+            this.sounds.pauseAll();
+        } else {
+            this.sounds.resumeAll();
+        }
+
+        this.pauseButton.icon.src = this.isPaused
+            ? "./assets/img/01_UI/play_icon.svg"
+            : "./assets/img/01_UI/stop_icon.svg";
     }
 
     toggleFullscreen() {
