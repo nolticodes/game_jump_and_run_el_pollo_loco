@@ -9,6 +9,61 @@ body {
     align-items: center;
 }
 
+header {
+    width: 100%;
+    height: 120px;
+    background-color: #C89243;;
+    display: flex;
+    justify-content: center;
+}
+
+.header_content {
+    max-width: 1920px;
+    width: 100%;
+    height: 100%;
+    background-color: #C89243;
+}
+
+main {
+    width: 100%;
+    height: calc(100dvh - 240px);
+    background-color: #FCC15E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main_content {
+    max-width: 1920px;
+    width: 100%;
+    height: 100%;
+    background-color: #FCC15E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../assets/img/html_img/main_background_2.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+footer {
+    width: 100%;
+    height: 120px;
+    background-color: #C89243;;
+    display: flex;
+    justify-content: center;
+}
+
+.footer_content {
+    max-width: 1920px;
+    width: 100%;
+    height: 100%;
+    background-color: #C89243;;
+}
+
+
+
 canvas {
     background-color: black;
     width: 720px;
