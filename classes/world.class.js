@@ -123,6 +123,7 @@ class World {
     }
 
     backToStartpage() {
+        this.sounds.stop(this.sounds.gameWonSound); 
         this.resetToStartpage();
     }
 
@@ -148,6 +149,7 @@ class World {
     }
 
     restartGame() {
+        this.sounds.stop(this.sounds.gameWonSound); 
         this.resetGameObjects();
         this.resetUI();
         this.isPaused = false;
@@ -339,6 +341,9 @@ class World {
             setTimeout(() => {
                 this.isGameEnded = true;
                 this.isPaused = true;
+                if (endboss?.isDead()) {
+                    this.sounds.playLoop(this.sounds.gameWonSound)
+                }
             }, 1500);
         }
     }

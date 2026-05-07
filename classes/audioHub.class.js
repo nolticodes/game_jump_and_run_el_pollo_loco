@@ -1,6 +1,7 @@
 class SoundManager {
     constructor() {
         this.startscreeenSound = new Audio ("./assets/audio/pepe/startscreen_sound.mp3")
+        this.gameWonSound = new Audio ("./assets/audio/pepe/game_won_sound.mp3")
 
         this.collectBottle = new Audio("./assets/audio/pepe/collect_bottle.mp3");
         this.splashBottle = new Audio("./assets/audio/pepe/bottle_splash.mp3");
@@ -39,7 +40,9 @@ class SoundManager {
             this.pepeLanding,
             this.pepeDead,
             this.pepeSleeping,
-            this.throwingBottleSound
+            this.throwingBottleSound,
+            this.startscreeenSound,
+            this,this.gameWonSound,
         ];
 
         this.muted = false
