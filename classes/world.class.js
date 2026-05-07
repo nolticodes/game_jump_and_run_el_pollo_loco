@@ -121,6 +121,13 @@ class World {
 
 
     startGame() {
+        if (window.innerWidth < 800 && window.innerHeight > window.innerWidth) {
+            document.body.classList.add("show_rotate_hint");
+            return;
+        }
+
+        document.body.classList.remove("show_rotate_hint");
+
         if (this.gameStarted) return;
 
         this.sounds.stop(this.sounds.startscreenSound);
