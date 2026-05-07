@@ -81,6 +81,15 @@ class World {
 
         this.draw();
         this.enterStartScreen()
+        document.addEventListener("pointerdown", () => {
+            this.unlockAudio();
+        }, { once: true });
+    }
+
+    unlockAudio() {
+        if (this.gamestate === "startScreen" && !this.sounds.muted) {
+            this.sounds.playLoop(this.sounds.startscreenSound);
+        }
     }
 
     getCanvasMousePosition(event) {
@@ -114,7 +123,7 @@ class World {
     startGame() {
         if (this.gameStarted) return;
 
-        this.sounds.stop(this.sounds.startscreeenSound);
+        this.sounds.stop(this.sounds.startscreenSound);
 
         this.gameStarted = true;
         this.gamestate = "playingScreen";
@@ -123,7 +132,7 @@ class World {
     }
 
     backToStartpage() {
-        this.sounds.stop(this.sounds.gameWonSound); 
+        this.sounds.stop(this.sounds.gameWonSound);
         this.resetToStartpage();
     }
 
@@ -149,7 +158,7 @@ class World {
     }
 
     restartGame() {
-        this.sounds.stop(this.sounds.gameWonSound); 
+        this.sounds.stop(this.sounds.gameWonSound);
         this.resetGameObjects();
         this.resetUI();
         this.isPaused = false;
@@ -486,6 +495,9 @@ class World {
             this.muteButton.icon.src = this.sounds.muted
                 ? "./assets/img/01_UI/mute_icon.svg"
                 : "./assets/img/01_UI/unmute_icon.svg";
+            if (this.gamestate === "startScreen" && !this.sounds.muted) {
+                this.sounds.playLoop(this.sounds.startscreenSound);
+            }
         }
 
         if (this.gamestate === "playingScreen" && this.pauseButton.checkHover(x, y)) {
@@ -510,8 +522,10 @@ class World {
 
     enterStartScreen() {
         this.gamestate = "startScreen";
-        this.sounds.stopAll?.(); // optional falls du sowas hast
-        this.sounds.playLoop(this.sounds.startscreeenSound);
+
+        if (!this.sounds.muted) {
+            this.sounds.playLoop(this.sounds.startscreenSound);
+        }
     }
 
     toggleFullscreen() {

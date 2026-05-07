@@ -15,5 +15,6 @@ class StartScreen {
         this.world.startButton.draw(this.world.ctx);
         this.world.controlsButton.draw(this.world.ctx);
         this.world.fullscreenButton.draw(this.world.ctx, this.world.fullscreenImage);
+        this.world.muteButton.draw(this.world.ctx)
     }
 }

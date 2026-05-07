@@ -1,7 +1,7 @@
 class SoundManager {
     constructor() {
-        this.startscreeenSound = new Audio ("./assets/audio/pepe/startscreen_sound.mp3")
-        this.gameWonSound = new Audio ("./assets/audio/pepe/game_won_sound.mp3")
+        this.startscreenSound = new Audio("./assets/audio/pepe/startscreen_sound.mp3")
+        this.gameWonSound = new Audio("./assets/audio/pepe/game_won_sound.mp3")
 
         this.collectBottle = new Audio("./assets/audio/pepe/collect_bottle.mp3");
         this.splashBottle = new Audio("./assets/audio/pepe/bottle_splash.mp3");
@@ -25,7 +25,7 @@ class SoundManager {
         this.pepeJump.volume = 0.3;
         this.pepeLanding.volume = 0.7;
         this.pepeSleeping.volume = 0.05
-        this.startscreeenSound.volume = 0.6
+        this.startscreenSound.volume = 0.6
 
         this.allSounds = [
             this.collectBottle,
@@ -41,8 +41,8 @@ class SoundManager {
             this.pepeDead,
             this.pepeSleeping,
             this.throwingBottleSound,
-            this.startscreeenSound,
-            this,this.gameWonSound,
+            this.startscreenSound,
+            this.gameWonSound,
         ];
 
         this.muted = false
@@ -59,8 +59,14 @@ class SoundManager {
 
     playLoop(sound) {
         if (this.muted) return;
+        if (!sound.paused) return;
 
-        sound.play();
+        sound.loop = true;
+
+        sound.play().catch(() => {
+            console.log("Audio wurde vom Browser blockiert, bis der User klickt.");
+        });
+
         this.activeSounds.add(sound);
     }
 
