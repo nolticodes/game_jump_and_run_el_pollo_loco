@@ -19,10 +19,10 @@ class World {
     controlsButton = new Buttons(200, 110, 200, 60, "Controls");
     fullscreenButton = new Buttons(20, 410, 50, 50, "");
     backButton = new Buttons(20, 20, 140, 50, "Back");
-    playButton = new Buttons(20, 20, 50, 50, "play");
+    playButton = new Buttons(20, 90, 50, 50, "play");
     pauseButton = new Buttons(20, 90, 50, 50, "pause")
-    muteButton = new Buttons(20, 90, 50, 50, "mute");
-    unmuteButton = new Buttons(20, 90, 50, 50, "unmute");
+    muteButton = new Buttons(20, 20, 50, 50, "mute");
+    unmuteButton = new Buttons(20, 20, 50, 50, "unmute");
 
     isPaused = false
 
@@ -71,11 +71,11 @@ class World {
         this.fullscreenButton.icon = new Image();
         this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen_icon.svg";
 
-        this.pauseButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
+        this.pauseButton = new Buttons(75, this.canvas.height - size - margin, size, size, "");
         this.pauseButton.icon = new Image();
         this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
 
-        this.muteButton = new Buttons(75, this.canvas.height - size - margin, size, size, "");
+        this.muteButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
         this.muteButton.icon = new Image();
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
 
