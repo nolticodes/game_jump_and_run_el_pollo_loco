@@ -1,5 +1,7 @@
 class SoundManager {
     constructor() {
+        this.startscreeenSound = new Audio ("./assets/audio/pepe/startscreen_sound.mp3")
+
         this.collectBottle = new Audio("./assets/audio/pepe/collect_bottle.mp3");
         this.splashBottle = new Audio("./assets/audio/pepe/bottle_splash.mp3");
         this.collectCoin = new Audio("./assets/audio/pepe/collect_coin.mp3");
@@ -22,6 +24,7 @@ class SoundManager {
         this.pepeJump.volume = 0.3;
         this.pepeLanding.volume = 0.7;
         this.pepeSleeping.volume = 0.05
+        this.startscreeenSound.volume = 0.6
 
         this.allSounds = [
             this.collectBottle,

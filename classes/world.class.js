@@ -80,6 +80,7 @@ class World {
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
 
         this.draw();
+        this.enterStartScreen()
     }
 
     getCanvasMousePosition(event) {
@@ -113,6 +114,8 @@ class World {
     startGame() {
         if (this.gameStarted) return;
 
+        this.sounds.stop(this.sounds.startscreeenSound);
+
         this.gameStarted = true;
         this.gamestate = "playingScreen";
         this.setWorld();
@@ -138,7 +141,7 @@ class World {
         this.gameStarted = false;
         this.isGameEnded = false
         this.isPaused = false;
-        this.gamestate = "startScreen";
+        this.enterStartScreen()
         this.isGameEnding = false
 
         this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
@@ -464,7 +467,7 @@ class World {
 
         else if (this.gamestate === "controlsScreen") {
             if (this.backButton.checkHover(x, y)) {
-                this.gamestate = "startScreen";
+                this.enterStartScreen();
             }
         }
 
@@ -498,6 +501,12 @@ class World {
         this.pauseButton.icon.src = this.isPaused
             ? "./assets/img/01_UI/play_icon.svg"
             : "./assets/img/01_UI/stop_icon.svg";
+    }
+
+    enterStartScreen() {
+        this.gamestate = "startScreen";
+        this.sounds.stopAll?.(); // optional falls du sowas hast
+        this.sounds.playLoop(this.sounds.startscreeenSound);
     }
 
     toggleFullscreen() {
