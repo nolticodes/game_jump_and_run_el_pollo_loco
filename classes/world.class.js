@@ -329,6 +329,8 @@ class World {
     }
 
     draw() {
+        this.updateMobileControlsVisibility();
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.gamestate === "playingScreen") {
             this.isGameOver();
@@ -577,5 +579,13 @@ class World {
         button.addEventListener("mouseleave", () => {
             this.keyboard[keyName] = false;
         });
+    }
+
+    updateMobileControlsVisibility() {
+        if (this.gamestate === "playingScreen" && !this.isPaused && !this.isGameEnded) {
+            document.body.classList.add("show_mobile_controls");
+        } else {
+            document.body.classList.remove("show_mobile_controls");
+        }
     }
 }

@@ -181,7 +181,7 @@ canvas:fullscreen {
 
 /* Nur auf kleinen Screens + Querformat */
 @media (max-width: 800px) and (orientation: landscape) {
-    #mobile_controls {
+    body.show_mobile_controls #mobile_controls {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -189,7 +189,6 @@ canvas:fullscreen {
         position: fixed;
         inset: 0;
         pointer-events: none;
-        /* wichtig */
     }
 
     .controls_left,
