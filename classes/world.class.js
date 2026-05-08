@@ -84,6 +84,7 @@ class World {
         document.addEventListener("pointerdown", () => {
             this.unlockAudio();
         }, { once: true });
+        this.setMobileControls();
     }
 
     unlockAudio() {
@@ -541,5 +542,40 @@ class World {
         } else {
             document.exitFullscreen();
         }
+    }
+
+    setMobileControls() {
+        this.bindMobileButton("btn_left", "left");
+        this.bindMobileButton("btn_right", "right");
+        this.bindMobileButton("btn_jump", "up");
+        this.bindMobileButton("btn_throw", "t");
+    }
+
+    bindMobileButton(buttonId, keyName) {
+        let button = document.getElementById(buttonId);
+
+        if (!button) return;
+
+        button.addEventListener("touchstart", (event) => {
+            event.preventDefault();
+            this.keyboard[keyName] = true;
+        });
+
+        button.addEventListener("touchend", (event) => {
+            event.preventDefault();
+            this.keyboard[keyName] = false;
+        });
+
+        button.addEventListener("mousedown", () => {
+            this.keyboard[keyName] = true;
+        });
+
+        button.addEventListener("mouseup", () => {
+            this.keyboard[keyName] = false;
+        });
+
+        button.addEventListener("mouseleave", () => {
+            this.keyboard[keyName] = false;
+        });
     }
 }

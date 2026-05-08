@@ -166,3 +166,58 @@ canvas:fullscreen {
         padding: 24px;
     }
 }
+
+#mobile_controls {
+    display: none;
+}
+
+/* Nur auf kleinen Screens + Querformat */
+@media (max-width: 800px) and (orientation: landscape) {
+    #mobile_controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        /* wichtig */
+    }
+
+    .controls_left,
+    .controls_right {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        pointer-events: auto;
+        /* Buttons wieder klickbar */
+    }
+
+    .controls_left {
+        align-items: flex-start;
+    }
+
+    .controls_right {
+        align-items: flex-end;
+    }
+
+    #mobile_controls button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+
+        border: none;
+        font-size: 24px;
+
+        background: rgba(255, 213, 79, 0.85);
+        /* passt zu deinem Theme */
+        color: #5A2A0A;
+
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    #mobile_controls button:active {
+        transform: scale(0.95);
+    }
+}
