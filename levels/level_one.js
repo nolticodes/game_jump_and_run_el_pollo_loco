@@ -12,8 +12,8 @@ function createLevel1() {
             new Endboss(),
         ],
         [
-            new Cloud(),
-            new CloudSecond(),
+            new Cloud("./assets/img/5_background/layers/4_clouds/1.png", 0.2),
+            new Cloud("./assets/img/5_background/layers/4_clouds/2.png", 0.15)
         ],
         [
             new AirBG_0(),
