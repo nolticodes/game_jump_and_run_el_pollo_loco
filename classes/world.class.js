@@ -539,8 +539,10 @@ class World {
     }
 
     toggleFullscreen() {
+        let container = document.getElementById("game_container");
+
         if (!document.fullscreenElement) {
-            this.canvas.requestFullscreen();
+            container.requestFullscreen();
         } else {
             document.exitFullscreen();
         }
