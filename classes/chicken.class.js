@@ -1,6 +1,16 @@
+/**
+ * Represents a standard enemy chicken with movement and walking animation.
+ */
 class Chicken extends Moveableobject {
 
-    damage = 10
+    /**
+     * Damage dealt to the player on collision.
+     */
+    damage = 10;
+
+    /**
+     * Collision offset for precise hit detection.
+     */
     offset = {
         top: 10,
         bottom:10,
@@ -8,43 +18,49 @@ class Chicken extends Moveableobject {
         right: 10,
     }
 
+    /**
+     * Movement speed with slight random variation.
+     */
     speed = 0.4 + Math.random() * 0.5;
+
+    /**
+     * Animation frames for walking.
+     */
     chickensWalking = [
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
         "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png"
-    ]
+    ];
+
+    /**
+     * Indicates whether the chicken is dead.
+     */
     isDead = false
 
-    
-
+    /**
+     * Initializes position, size and animation assets.
+     */
     constructor() {
         super().loadImage("./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
         this.loadImagesToCacheJSON(this.chickensWalking);
-
         this.x = 340 + Math.random() * 2500;
         this.y = 335
         this.width = 100;
         this.height = 100;
-
-        // this.animateImages();
-        
-        
     }
 
+    /**
+     * Starts walking animation and continuous movement.
+     */
     animateImages() {
         setInterval(() => {
             if (this.world && this.world.isPaused) return;
             this.playAnimation(this.chickensWalking)
         }, 175);
-
         setInterval(() => {
             if (this.world && this.world.isPaused) return;
             this.otherDirection = false;
             this.moveLeft()
         }, 1000 / 60)
     }
-
-    
-
 }
