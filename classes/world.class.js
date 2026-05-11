@@ -28,6 +28,9 @@ class World {
     isGameEnding = false;
     isGameEnded = false
 
+    /**
+     * Initializes the game world with canvas, assets, UI, managers and starts the render loop.
+     */
     constructor(canvas) {
         this.initCanvas(canvas);
         this.initGameValues();
@@ -35,26 +38,37 @@ class World {
         this.initButtons();
         this.initScreens();
         this.initManagers();
-
         this.enterStartScreen();
         this.draw();
     }
 
+    /**
+     * Sets up canvas context and keyboard reference.
+     */
     initCanvas(canvas) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
     }
 
+    /**
+     * Initializes game-related values like max collectibles.
+     */
     initGameValues() {
         this.maxCoins = this.level.coins.length;
         this.maxBottles = this.level.bottles.length;
     }
 
+    /**
+     * Loads static assets like images.
+     */
     initAssets() {
         this.startScreenImage.src = "./assets/img/9_intro_outro_screens/start/startscreen_2.png";
     }
 
+    /**
+     * Creates main menu buttons and delegates HUD button creation.
+     */
     initButtons() {
         let buttonWidth = 200;
         let gap = 20;
@@ -66,6 +80,9 @@ class World {
         this.initHudButtons();
     }
 
+    /**
+     * Creates in-game HUD buttons (pause, mute, fullscreen).
+     */
     initHudButtons() {
         let size = 50;
         let margin = 10;
@@ -81,6 +98,9 @@ class World {
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
     }
 
+    /**
+     * Initializes all screen components (start, controls, pause, end).
+     */
     initScreens() {
         this.startScreen = new StartScreen(this);
         this.controlsScreen = new ControlsScreen(this);
@@ -88,6 +108,9 @@ class World {
         this.endScreen = new Endscreen(this);
     }
 
+    /**
+     * Initializes all manager classes (input, state, logic, mobile controls).
+     */
     initManagers() {
         this.mobileControls = new MobileControls(this);
         this.gameLogic = new GameLogic(this);
@@ -95,65 +118,85 @@ class World {
         this.gameStateManager = new GameStateManager(this);
     }
 
+    /**
+     * Unlocks audio playback after user interaction.
+     */
     unlockAudio() {
         this.gameStateManager.unlockAudio();
     }
 
+    /**
+     * Starts the game via GameStateManager.
+     */
     startGame() {
         this.gameStateManager.startGame();
     }
 
+    /**
+     * Returns to the start screen via GameStateManager.
+     */
     backToStartpage() {
         this.gameStateManager.backToStartpage();
     }
 
+    /**
+     * Restarts the game via GameStateManager.
+     */
     restartGame() {
         this.gameStateManager.restartGame();
     }
 
+    /**
+     * Switches to the start screen state.
+     */
     enterStartScreen() {
         this.gameStateManager.enterStartScreen();
     }
 
+    /**
+     * Toggles pause state and sound playback.
+     */
     togglePause() {
         this.gameStateManager.togglePause();
     }
 
+    /**
+     * Checks if the game is over.
+     */
     isGameOver() {
         this.gameStateManager.checkGameOver();
     }
 
-
+    /**
+     * Assigns world reference to all entities and starts their animations.
+     */
     setWorld() {
         this.character.world = this;
         this.character.animateImages();
-
         this.level.enemies.forEach((enemy) => {
             enemy.world = this;
-
             if (enemy instanceof Chicken || enemy instanceof MiniChicken) {
                 enemy.animateImages();
             }
-
             if (enemy instanceof Endboss) {
                 enemy.animate();
             }
         });
-
         this.level.clouds.forEach((cloud) => {
             cloud.world = this;
             cloud.animationMoveLeft();
         });
     }
 
+    /**
+     * Main render loop that updates and draws the current game state.
+     */
     draw() {
         this.mobileControls.updateVisibility();
-
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.gamestate === "playingScreen") {
             this.isGameOver();
         }
-
         if (this.gamestate === "startScreen") {
             this.startScreen.draw();
         } else if (this.gamestate === "playingScreen") {
@@ -163,10 +206,12 @@ class World {
         } else if (this.gamestate === "endScreen") {
             this.endScreen.drawEndscreen();
         }
-
         requestAnimationFrame(() => this.draw());
     }
-
+    
+    /**
+     * Renders the full gameplay scene including world, UI and overlays.
+     */
     drawPlayingScreen() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawWorldObjects();
@@ -175,6 +220,9 @@ class World {
         this.drawOverlays();
     }
 
+    /**
+     * Draws all world objects affected by camera movement.
+     */
     drawWorldObjects() {
         this.ctx.translate(this.camera_x, 0);
         this.level.backgrounds.forEach(bg => {
@@ -200,6 +248,9 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
     }
 
+    /** 
+     * Draws fixed UI elements like status bars and buttons.
+     */
     drawFixedUI() {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoins);
@@ -213,6 +264,9 @@ class World {
         this.fullscreenButton.draw(this.ctx);
     }
 
+    /** 
+     * Draws overlay screens like pause menu and endscreen.
+     */
     drawOverlays() {
         if (this.isPaused) {
             this.pauseMenuScreen.draw();
@@ -222,6 +276,9 @@ class World {
         }
     }
 
+    /**
+     * Draws debug boundary lines for the endboss.
+     */
     drawDebugLines() {
         let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         if (!endboss) return;
@@ -235,6 +292,9 @@ class World {
         this.ctx.stroke();
     }
 
+    /**
+     * Draws a moveable object with optional horizontal flip.
+     */
     addToMap(mo) {
         if (mo.otherDirection) {
             this.flipImages(mo);
@@ -246,6 +306,9 @@ class World {
         }
     }
 
+    /**
+     * Applies horizontal flip transformation before rendering an object.
+     */
     flipImages(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -253,6 +316,9 @@ class World {
         mo.x = mo.x * -1;
     }
 
+    /** 
+     * Restores object position and canvas state after flipping.
+     */
     flipImagesBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
