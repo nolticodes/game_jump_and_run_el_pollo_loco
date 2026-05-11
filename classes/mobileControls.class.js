@@ -1,9 +1,18 @@
+/**
+ * Manages mobile control inputs and their visibility.
+ */
 class MobileControls {
+    /**
+     * Initializes mobile controls and binds all control buttons.
+     */
     constructor(world) {
         this.world = world;
         this.bindControls();
     }
 
+    /**
+     * Binds all mobile control buttons to their respective actions.
+     */
     bindControls() {
         this.bindButton("btn_left", "left");
         this.bindButton("btn_right", "right");
@@ -11,6 +20,9 @@ class MobileControls {
         this.bindButton("btn_throw", "t");
     }
 
+    /**
+     * Binds a single button to a keyboard action for touch and mouse input.
+     */
     bindButton(buttonId, keyName) {
         let button = document.getElementById(buttonId);
 
@@ -34,6 +46,9 @@ class MobileControls {
         });
     }
 
+    /**
+     * Updates the visibility of mobile controls based on game state.
+     */
     updateVisibility() {
         if (this.world.gamestate === "playingScreen" && !this.world.isPaused && !this.world.isGameEnded) {
             document.body.classList.add("show_mobile_controls");
