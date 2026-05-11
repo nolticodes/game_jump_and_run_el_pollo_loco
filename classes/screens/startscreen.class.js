@@ -1,8 +1,17 @@
+/**
+ * Represents the start screen and handles its rendering.
+ */
 class StartScreen {
+    /**
+     * Initializes the start screen with a reference to the world.
+     */
     constructor(world) {
         this.world = world;
     }
 
+    /**
+     * Renders the start screen background and UI buttons.
+     */
     draw() {
         this.world.ctx.drawImage(
             this.world.startScreenImage,
