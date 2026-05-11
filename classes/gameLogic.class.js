@@ -1,15 +1,27 @@
+/**
+ * Handles all core gameplay logic like collisions, throwing and collectibles.
+ */
 class GameLogic {
+    /**
+     * Initializes game logic and starts all update loops.
+     */
     constructor(world) {
         this.world = world;
         this.start();
     }
 
+    /**
+     * Starts all logic handlers for gameplay mechanics.
+     */
     start() {
         this.handleThrowing();
         this.handleCollisions();
         this.handleCollectibles();
     }
 
+    /**
+     * Handles bottle throwing logic and cleanup in intervals.
+     */
     handleThrowing() {
         setInterval(() => {
             if (this.world.isPaused) return;
@@ -18,6 +30,9 @@ class GameLogic {
         }, 200);
     }
 
+    /**
+     * Creates and throws a bottle if input and resources are available.
+     */
     throwBottle() {
         if (this.world.keyboard.t && this.world.collectedBottles > 0) {
             this.world.sounds.play(this.world.sounds.throwingBottleSound);
@@ -38,11 +53,17 @@ class GameLogic {
         }
     }
 
+    /**
+     * Removes bottles that are marked for deletion.
+     */
     cleanupBottles() {
         this.world.throwableObject =
             this.world.throwableObject.filter(b => !b.markedForDeletion);
     }
 
+    /**
+     * Handles all collision checks in intervals.
+     */
     handleCollisions() {
         setInterval(() => {
             if (this.world.isPaused) return;
@@ -51,6 +72,9 @@ class GameLogic {
         }, 200);
     }
 
+    /**
+     * Handles collisions between the player and enemies.
+     */
     handleEnemyCollision() {
         this.world.level.enemies.forEach((enemy, index) => {
             if (enemy instanceof Chicken && this.world.character.isJumpingOn(enemy)) {
@@ -71,6 +95,9 @@ class GameLogic {
         });
     }
 
+    /**
+     * Handles collisions between thrown bottles and enemies.
+     */
     handleBottleHits() {
         this.world.throwableObject.forEach((bottle) => {
             this.world.level.enemies.forEach((enemy, enemyIndex) => {
@@ -94,6 +121,9 @@ class GameLogic {
         });
     }
 
+    /**
+     * Handles collectible logic in intervals.
+     */
     handleCollectibles() {
         setInterval(() => {
             if (this.world.isPaused) return;
@@ -102,6 +132,9 @@ class GameLogic {
         }, 200);
     }
 
+    /**
+     * Handles coin collection and updates UI.
+     */
     collectCoins() {
         for (let i = this.world.level.coins.length - 1; i >= 0; i--) {
             let coin = this.world.level.coins[i];
@@ -115,6 +148,9 @@ class GameLogic {
         }
     }
 
+    /**
+     * Handles bottle collection and updates UI.
+     */
     collectBottles() {
         for (let i = this.world.level.bottles.length - 1; i >= 0; i--) {
             let bottle = this.world.level.bottles[i];
