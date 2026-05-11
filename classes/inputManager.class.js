@@ -50,7 +50,6 @@ class InputManager {
     }
 
     handleMouseMove(x, y) {
-        console.log("hover check", x, y);
         let buttons = [
             this.world.startButton,
             this.world.controlsButton,
@@ -75,7 +74,6 @@ class InputManager {
     }
 
     handleClick(x, y) {
-        console.log("click check", x, y);
         if (this.world.isGameEnded) {
             this.world.endScreen.handleClick(x, y);
             return;

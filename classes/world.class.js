@@ -29,15 +29,33 @@ class World {
     isGameEnded = false
 
     constructor(canvas) {
+        this.initCanvas(canvas);
+        this.initGameValues();
+        this.initAssets();
+        this.initButtons();
+        this.initScreens();
+        this.initManagers();
+
+        this.enterStartScreen();
+        this.draw();
+    }
+
+    initCanvas(canvas) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
+    }
 
+    initGameValues() {
         this.maxCoins = this.level.coins.length;
         this.maxBottles = this.level.bottles.length;
+    }
 
+    initAssets() {
         this.startScreenImage.src = "./assets/img/9_intro_outro_screens/start/startscreen_2.png";
+    }
 
+    initButtons() {
         let buttonWidth = 200;
         let gap = 20;
         let totalWidth = buttonWidth * 2 + gap;
@@ -45,32 +63,36 @@ class World {
 
         this.startButton = new Buttons(startX, 30, buttonWidth, 60, "PLAY");
         this.controlsButton = new Buttons(startX + buttonWidth + gap, 30, buttonWidth, 60, "CONTROLS");
+        this.initHudButtons();
+    }
 
-        this.startScreen = new StartScreen(this);
-        this.controlsScreen = new ControlsScreen(this);
-        this.pauseMenuScreen = new PauseMenuScreen(this);
-        this.endScreen = new Endscreen(this);
-
+    initHudButtons() {
         let size = 50;
         let margin = 10;
 
         this.fullscreenButton = new Buttons(this.canvas.width - size - margin, this.canvas.height - size - margin, size, size, "");
         this.fullscreenButton.icon = new Image();
         this.fullscreenButton.icon.src = "./assets/img/01_UI/fullscreen_icon.svg";
-
         this.pauseButton = new Buttons(75, this.canvas.height - size - margin, size, size, "");
         this.pauseButton.icon = new Image();
         this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
-
         this.muteButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
         this.muteButton.icon = new Image();
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
+    }
+
+    initScreens() {
+        this.startScreen = new StartScreen(this);
+        this.controlsScreen = new ControlsScreen(this);
+        this.pauseMenuScreen = new PauseMenuScreen(this);
+        this.endScreen = new Endscreen(this);
+    }
+
+    initManagers() {
         this.mobileControls = new MobileControls(this);
         this.gameLogic = new GameLogic(this);
         this.inputManager = new InputManager(this);
         this.gameStateManager = new GameStateManager(this);
-        this.enterStartScreen()
-        this.draw();
     }
 
     unlockAudio() {
@@ -145,17 +167,6 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
-    addToMap(mo) {
-        if (mo.otherDirection) {
-            this.flipImages(mo);
-        }
-        mo.drawMoveableObjects(this.ctx);
-        mo.drawRectangle(this.ctx);
-        if (mo.otherDirection) {
-            this.flipImagesBack(mo);
-        }
-    }
-
     drawPlayingScreen() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawWorldObjects();
@@ -222,6 +233,17 @@ class World {
         this.ctx.moveTo(endboss.borderXRight + this.camera_x, 0);
         this.ctx.lineTo(endboss.borderXRight + this.camera_x, this.canvas.height);
         this.ctx.stroke();
+    }
+
+    addToMap(mo) {
+        if (mo.otherDirection) {
+            this.flipImages(mo);
+        }
+        mo.drawMoveableObjects(this.ctx);
+        mo.drawRectangle(this.ctx);
+        if (mo.otherDirection) {
+            this.flipImagesBack(mo);
+        }
     }
 
     flipImages(mo) {
