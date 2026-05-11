@@ -32,8 +32,6 @@ class InputManager {
         let drawHeight;
         let offsetX = 0;
         let offsetY = 0;
-        let x = (event.clientX - rect.left - offsetX) * (this.canvas.width / drawWidth);
-        let y = (event.clientY - rect.top - offsetY) * (this.canvas.height / drawHeight);
 
         if (rectRatio > canvasRatio) {
             drawHeight = rect.height;
@@ -44,10 +42,15 @@ class InputManager {
             drawHeight = drawWidth / canvasRatio;
             offsetY = (rect.height - drawHeight) / 2;
         }
+
+        let x = (event.clientX - rect.left - offsetX) * (this.canvas.width / drawWidth);
+        let y = (event.clientY - rect.top - offsetY) * (this.canvas.height / drawHeight);
+
         return { x, y };
     }
 
     handleMouseMove(x, y) {
+        console.log("hover check", x, y);
         let buttons = [
             this.world.startButton,
             this.world.controlsButton,
@@ -72,6 +75,7 @@ class InputManager {
     }
 
     handleClick(x, y) {
+        console.log("click check", x, y);
         if (this.world.isGameEnded) {
             this.world.endScreen.handleClick(x, y);
             return;

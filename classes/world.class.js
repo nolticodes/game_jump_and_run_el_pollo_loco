@@ -68,92 +68,39 @@ class World {
         this.mobileControls = new MobileControls(this);
         this.gameLogic = new GameLogic(this);
         this.inputManager = new InputManager(this);
+        this.gameStateManager = new GameStateManager(this);
         this.enterStartScreen()
         this.draw();
     }
 
     unlockAudio() {
-        if (this.gamestate === "startScreen" && !this.sounds.muted) {
-            this.sounds.playLoop(this.sounds.startscreenSound);
-        }
+        this.gameStateManager.unlockAudio();
     }
 
     startGame() {
-        if (window.innerWidth < 800 && window.innerHeight > window.innerWidth) {
-            document.body.classList.add("show_rotate_hint");
-            return;
-        }
-
-        document.body.classList.remove("show_rotate_hint");
-
-        if (this.gameStarted) return;
-
-        this.sounds.stop(this.sounds.startscreenSound);
-
-        this.gameStarted = true;
-        this.gamestate = "playingScreen";
-        this.setWorld();
-        this.run();
+        this.gameStateManager.startGame();
     }
 
     backToStartpage() {
-        this.sounds.stop(this.sounds.gameWonSound);
-        this.resetToStartpage();
-    }
-
-    resetToStartpage() {
-        this.character.world = null;
-
-        this.camera_x = 0;
-        this.character = new Pepe();
-        this.level = createLevel1();
-        this.throwableObject = [];
-        this.collectedCoins = 0;
-        this.collectedBottles = 0;
-
-        this.resetUI();
-
-        this.gameStarted = false;
-        this.isGameEnded = false
-        this.isPaused = false;
-        this.enterStartScreen()
-        this.isGameEnding = false
-
-        this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
+        this.gameStateManager.backToStartpage();
     }
 
     restartGame() {
-        this.sounds.stop(this.sounds.gameWonSound);
-        this.resetGameObjects();
-        this.resetUI();
-        this.isPaused = false;
-        this.gameStarted = true;
-        this.gamestate = "playingScreen";
-        this.isGameEnded = false;
-        this.isGameEnding = false;
-        this.isPaused = false;
+        this.gameStateManager.restartGame();
     }
 
-    resetGameObjects() {
-        this.character.world = null; // alter Pepe darf World nicht mehr steuern
-        this.camera_x = 0;
-        this.character = new Pepe();
-        this.level = createLevel1(); // wichtig, dazu gleich mehr
-        this.throwableObject = [];
-        this.collectedCoins = 0;
-        this.collectedBottles = 0;
-
-        this.setWorld();
+    enterStartScreen() {
+        this.gameStateManager.enterStartScreen();
     }
 
-    resetUI() {
-        this.statusbarHealth.setPercentage(100);
-        this.statusbarCoins.setPercentage(0);
-        this.statusbarBottles.setPercentage(0);
-        this.statusbarEndboss.setPercentage(100);
-
-        this.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
+    togglePause() {
+        this.gameStateManager.togglePause();
     }
+
+    isGameOver() {
+        this.gameStateManager.checkGameOver();
+    }
+
 
     setWorld() {
         this.character.world = this;
@@ -196,24 +143,6 @@ class World {
         }
 
         requestAnimationFrame(() => this.draw());
-    }
-
-    isGameOver() {
-        let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-
-        if (!this.isGameEnding && (this.character.isDead() || endboss?.isDead())) {
-            this.isGameEnding = true;
-
-            this.sounds.pauseAll();
-
-            setTimeout(() => {
-                this.isGameEnded = true;
-                this.isPaused = true;
-                if (endboss?.isDead()) {
-                    this.sounds.playLoop(this.sounds.gameWonSound)
-                }
-            }, 1500);
-        }
     }
 
     addToMap(mo) {
@@ -305,27 +234,5 @@ class World {
     flipImagesBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
-    }
-
-    togglePause() {
-        this.isPaused = !this.isPaused;
-
-        if (this.isPaused) {
-            this.sounds.pauseAll();
-        } else {
-            this.sounds.resumeAll();
-        }
-
-        this.pauseButton.icon.src = this.isPaused
-            ? "./assets/img/01_UI/play_icon.svg"
-            : "./assets/img/01_UI/stop_icon.svg";
-    }
-
-    enterStartScreen() {
-        this.gamestate = "startScreen";
-
-        if (!this.sounds.muted) {
-            this.sounds.playLoop(this.sounds.startscreenSound);
-        }
     }
 }
