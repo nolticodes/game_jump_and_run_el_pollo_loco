@@ -51,16 +51,6 @@ class World {
         this.pauseMenuScreen = new PauseMenuScreen(this);
         this.endScreen = new Endscreen(this);
 
-        this.canvas.addEventListener("mousemove", (event) => {
-            let position = this.getCanvasMousePosition(event);
-            this.handleMouseMove(position.x, position.y);
-        });
-
-        this.canvas.addEventListener("click", (event) => {
-            let position = this.getCanvasMousePosition(event);
-            this.handleClick(position.x, position.y);
-        });
-
         let size = 50;
         let margin = 10;
 
@@ -77,10 +67,7 @@ class World {
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
         this.mobileControls = new MobileControls(this);
         this.gameLogic = new GameLogic(this);
-        
-        document.addEventListener("pointerdown", () => {
-            this.unlockAudio();
-        }, { once: true });
+        this.inputManager = new InputManager(this);
         this.enterStartScreen()
         this.draw();
     }
@@ -320,97 +307,6 @@ class World {
         this.ctx.restore();
     }
 
-    getCanvasMousePosition(event) {
-        let rect = this.canvas.getBoundingClientRect();
-
-        let canvasRatio = this.canvas.width / this.canvas.height;
-        let rectRatio = rect.width / rect.height;
-
-        let drawWidth;
-        let drawHeight;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        if (rectRatio > canvasRatio) {
-            drawHeight = rect.height;
-            drawWidth = drawHeight * canvasRatio;
-            offsetX = (rect.width - drawWidth) / 2;
-        } else {
-            drawWidth = rect.width;
-            drawHeight = drawWidth / canvasRatio;
-            offsetY = (rect.height - drawHeight) / 2;
-        }
-
-        let x = (event.clientX - rect.left - offsetX) * (this.canvas.width / drawWidth);
-        let y = (event.clientY - rect.top - offsetY) * (this.canvas.height / drawHeight);
-
-        return { x, y };
-    }
-
-    handleMouseMove(x, y) {
-        let buttons = [this.startButton, this.controlsButton, this.backButton, this.playButton, this.fullscreenButton, this.pauseButton, this.muteButton, this.unmuteButton];
-        let isHoveringAny = buttons.some(btn => btn && btn.checkHover(x, y));
-
-        if (this.isGameEnded) {
-            let hovering = this.endScreen.handleMouseMove(x, y);
-            this.canvas.style.cursor = hovering ? "pointer" : "default";
-            return;
-        }
-
-        if (this.isPaused) {
-            isHoveringAny = this.pauseMenuScreen.handleMouseMove(x, y) || isHoveringAny;
-        }
-        this.canvas.style.cursor = isHoveringAny ? "pointer" : "default";
-    }
-
-    handleClick(x, y) {
-        if (this.isGameEnded) {
-            this.endScreen.handleClick(x, y);
-            return;
-        }
-
-        if (this.isPaused) {
-            this.pauseMenuScreen.handleClick(x, y);
-            return;
-        }
-
-        if (this.gamestate === "startScreen") {
-            if (this.startButton.checkHover(x, y)) {
-                this.startGame();
-            }
-
-            if (this.controlsButton.checkHover(x, y)) {
-                this.gamestate = "controlsScreen";
-            }
-        }
-
-        else if (this.gamestate === "controlsScreen") {
-            if (this.backButton.checkHover(x, y)) {
-                this.enterStartScreen();
-            }
-        }
-
-        if (this.fullscreenButton.checkHover(x, y)) {
-            this.toggleFullscreen();
-        }
-
-        if (this.muteButton.checkHover(x, y)) {
-            this.sounds.toggleMute();
-
-            this.muteButton.icon.src = this.sounds.muted
-                ? "./assets/img/01_UI/mute_icon.svg"
-                : "./assets/img/01_UI/unmute_icon.svg";
-            if (this.gamestate === "startScreen" && !this.sounds.muted) {
-                this.sounds.playLoop(this.sounds.startscreenSound);
-            }
-        }
-
-        if (this.gamestate === "playingScreen" && this.pauseButton.checkHover(x, y)) {
-            this.togglePause();
-        }
-
-    }
-
     togglePause() {
         this.isPaused = !this.isPaused;
 
@@ -430,16 +326,6 @@ class World {
 
         if (!this.sounds.muted) {
             this.sounds.playLoop(this.sounds.startscreenSound);
-        }
-    }
-
-    toggleFullscreen() {
-        let container = document.getElementById("game_container");
-
-        if (!document.fullscreenElement) {
-            container.requestFullscreen();
-        } else {
-            document.exitFullscreen();
         }
     }
 }
