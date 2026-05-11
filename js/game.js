@@ -1,14 +1,22 @@
+/**
+ * Entry point of the game. Sets up the world, canvas and global keyboard input.
+ */
 let world;
 let canvas;
 let keyboard = new Keyboard();
 
+/**
+ * Initializes the game by creating the world and linking it to the canvas.
+ */
 function init() {
     canvas = document.getElementById("canvas_id");
 
     world = new World(canvas, keyboard);
 }
 
-
+/**
+ * Handles keydown events and updates keyboard state for movement and actions.
+ */
 window.addEventListener("keydown", (event) => {
     world.character.lastKeyPressTime = new Date().getTime();
     if (event.key == "a" || event.key == "ArrowLeft") {
@@ -31,6 +39,9 @@ window.addEventListener("keydown", (event) => {
     }
 });
 
+/**
+ * Handles keyup events and resets keyboard state when keys are released.
+ */
 window.addEventListener("keyup", (event) => {
     if (event.key == "a" || event.key == "ArrowLeft") {
         keyboard.left = false;
@@ -51,9 +62,3 @@ window.addEventListener("keyup", (event) => {
         keyboard.t = false;
     }
 });
-
-function activateFullscreen() {
-    // Get the canvas element form the page
-    var canvas = document.getElementById("canvas_id");
-    canvas.requestFullscreen()
-}

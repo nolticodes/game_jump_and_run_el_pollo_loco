@@ -148,6 +148,22 @@ canvas:fullscreen {
     inset: 0;
 }
 
+#game_container:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game_container:fullscreen canvas {
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    border-radius: 0;
+}
+
 
 @media (max-width: 800px) {
     h1 {
