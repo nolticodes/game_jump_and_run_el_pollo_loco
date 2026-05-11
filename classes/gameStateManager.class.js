@@ -1,14 +1,26 @@
+/**
+ * Manages all game state transitions and lifecycle logic.
+ */
 class GameStateManager {
+    /**
+     * Initializes the manager with a reference to the world.
+     */
     constructor(world) {
         this.world = world;
     }
 
+    /**
+     * Starts the start screen audio after user interaction.
+     */
     unlockAudio() {
         if (this.world.gamestate === "startScreen" && !this.world.sounds.muted) {
             this.world.sounds.playLoop(this.world.sounds.startscreenSound);
         }
     }
 
+    /**
+     * Starts the game and switches to playing state.
+     */
     startGame() {
         if (window.innerWidth < 800 && window.innerHeight > window.innerWidth) {
             document.body.classList.add("show_rotate_hint");
@@ -23,11 +35,17 @@ class GameStateManager {
         this.world.gameLogic.start();
     }
 
+    /**
+     * Returns to the start screen and resets the game state.
+     */
     backToStartpage() {
         this.world.sounds.stop(this.world.sounds.gameWonSound);
         this.resetToStartpage();
     }
 
+    /**
+     * Fully resets the game to its initial start screen state.
+     */
     resetToStartpage() {
         this.world.character.world = null;
         this.world.camera_x = 0;
@@ -45,6 +63,9 @@ class GameStateManager {
         this.world.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
     }
 
+    /**
+     * Restarts the game from the beginning without returning to menu.
+     */
     restartGame() {
         this.world.sounds.stop(this.world.sounds.gameWonSound);
         this.resetGameObjects();
@@ -56,6 +77,9 @@ class GameStateManager {
         this.world.isGameEnding = false;
     }
 
+    /**
+     * Resets all game objects like character, level and collectibles.
+     */
     resetGameObjects() {
         this.world.character.world = null;
         this.world.camera_x = 0;
@@ -67,6 +91,9 @@ class GameStateManager {
         this.world.setWorld();
     }
 
+    /**
+     * Resets all UI elements like status bars and button states.
+     */
     resetUI() {
         this.world.statusbarHealth.setPercentage(100);
         this.world.statusbarCoins.setPercentage(0);
@@ -75,6 +102,9 @@ class GameStateManager {
         this.world.pauseButton.icon.src = "./assets/img/01_UI/stop_icon.svg";
     }
 
+    /**
+     * Switches the game into start screen state and plays intro sound.
+     */
     enterStartScreen() {
         this.world.gamestate = "startScreen";
         if (!this.world.sounds.muted) {
@@ -82,6 +112,9 @@ class GameStateManager {
         }
     }
 
+    /**
+     * Toggles pause state and controls audio playback accordingly.
+     */
     togglePause() {
         this.world.isPaused = !this.world.isPaused;
         if (this.world.isPaused) {
@@ -94,6 +127,9 @@ class GameStateManager {
             : "./assets/img/01_UI/stop_icon.svg";
     }
 
+    /**
+     * Checks if the game is over and triggers end state logic.
+     */
     checkGameOver() {
         let endboss = this.world.level.enemies.find(enemy => enemy instanceof Endboss);
 
