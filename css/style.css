@@ -108,8 +108,6 @@ footer {
     color: white
 }
 
-
-
 canvas {
     background-color: black;
     width: min(720px, calc(100vw - 32px));

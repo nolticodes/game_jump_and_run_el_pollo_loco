@@ -1,4 +1,10 @@
+/**
+ * Handles all user input including mouse, touch and keyboard interactions.
+ */
 class InputManager {
+    /**
+     * Initializes input handling and binds all relevant event listeners.
+     */
     constructor(world) {
         this.world = world;
         this.canvas = world.canvas;
@@ -7,6 +13,9 @@ class InputManager {
         this.bindAudioUnlock();
     }
 
+    /**
+     * Binds mouse events to the canvas for movement and clicks.
+     */
     bindCanvasEvents() {
         this.canvas.addEventListener("mousemove", (event) => {
             let position = this.getCanvasMousePosition(event);
@@ -18,12 +27,18 @@ class InputManager {
         });
     }
 
+    /**
+     * Unlocks audio playback after the first user interaction.
+     */
     bindAudioUnlock() {
         document.addEventListener("pointerdown", () => {
             this.world.unlockAudio();
         }, { once: true });
     }
 
+    /**
+     * Converts mouse coordinates to canvas coordinate system.
+     */
     getCanvasMousePosition(event) {
         let rect = this.canvas.getBoundingClientRect();
         let canvasRatio = this.canvas.width / this.canvas.height;
@@ -49,6 +64,9 @@ class InputManager {
         return { x, y };
     }
 
+    /**
+     * Handles mouse movement and updates hover state for UI elements.
+     */
     handleMouseMove(x, y) {
         let buttons = [
             this.world.startButton,
@@ -73,6 +91,9 @@ class InputManager {
         this.canvas.style.cursor = isHoveringAny ? "pointer" : "default";
     }
 
+    /**
+     * Handles click events and triggers corresponding UI actions.
+     */
     handleClick(x, y) {
         if (this.world.isGameEnded) {
             this.world.endScreen.handleClick(x, y);
@@ -106,6 +127,9 @@ class InputManager {
         }
     }
 
+    /**
+     * Toggles sound mute state and updates the mute button icon.
+     */
     toggleMute() {
         this.world.sounds.toggleMute();
         this.world.muteButton.icon.src = this.world.sounds.muted
@@ -116,6 +140,9 @@ class InputManager {
         }
     }
 
+    /**
+     * Toggles fullscreen mode for the game container.
+     */
     toggleFullscreen() {
         let container = document.getElementById("game_container");
         if (!document.fullscreenElement) {
