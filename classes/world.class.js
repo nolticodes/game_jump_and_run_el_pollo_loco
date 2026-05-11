@@ -85,6 +85,7 @@ class World {
             this.unlockAudio();
         }, { once: true });
         this.setMobileControls();
+        this.mobileControls = new MobileControls(this);
     }
 
     unlockAudio() {
@@ -92,34 +93,6 @@ class World {
             this.sounds.playLoop(this.sounds.startscreenSound);
         }
     }
-
-    getCanvasMousePosition(event) {
-        let rect = this.canvas.getBoundingClientRect();
-
-        let canvasRatio = this.canvas.width / this.canvas.height;
-        let rectRatio = rect.width / rect.height;
-
-        let drawWidth;
-        let drawHeight;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        if (rectRatio > canvasRatio) {
-            drawHeight = rect.height;
-            drawWidth = drawHeight * canvasRatio;
-            offsetX = (rect.width - drawWidth) / 2;
-        } else {
-            drawWidth = rect.width;
-            drawHeight = drawWidth / canvasRatio;
-            offsetY = (rect.height - drawHeight) / 2;
-        }
-
-        let x = (event.clientX - rect.left - offsetX) * (this.canvas.width / drawWidth);
-        let y = (event.clientY - rect.top - offsetY) * (this.canvas.height / drawHeight);
-
-        return { x, y };
-    }
-
 
     startGame() {
         if (window.innerWidth < 800 && window.innerHeight > window.innerWidth) {
@@ -330,6 +303,7 @@ class World {
 
     draw() {
         this.updateMobileControlsVisibility();
+        this.mobileControls.updateVisibility();
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.gamestate === "playingScreen") {
@@ -452,6 +426,33 @@ class World {
         this.ctx.restore();
     }
 
+    getCanvasMousePosition(event) {
+        let rect = this.canvas.getBoundingClientRect();
+
+        let canvasRatio = this.canvas.width / this.canvas.height;
+        let rectRatio = rect.width / rect.height;
+
+        let drawWidth;
+        let drawHeight;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (rectRatio > canvasRatio) {
+            drawHeight = rect.height;
+            drawWidth = drawHeight * canvasRatio;
+            offsetX = (rect.width - drawWidth) / 2;
+        } else {
+            drawWidth = rect.width;
+            drawHeight = drawWidth / canvasRatio;
+            offsetY = (rect.height - drawHeight) / 2;
+        }
+
+        let x = (event.clientX - rect.left - offsetX) * (this.canvas.width / drawWidth);
+        let y = (event.clientY - rect.top - offsetY) * (this.canvas.height / drawHeight);
+
+        return { x, y };
+    }
+
     handleMouseMove(x, y) {
         let buttons = [this.startButton, this.controlsButton, this.backButton, this.playButton, this.fullscreenButton, this.pauseButton, this.muteButton, this.unmuteButton];
         let isHoveringAny = buttons.some(btn => btn && btn.checkHover(x, y));
@@ -545,49 +546,6 @@ class World {
             container.requestFullscreen();
         } else {
             document.exitFullscreen();
-        }
-    }
-
-    setMobileControls() {
-        this.bindMobileButton("btn_left", "left");
-        this.bindMobileButton("btn_right", "right");
-        this.bindMobileButton("btn_jump", "up");
-        this.bindMobileButton("btn_throw", "t");
-    }
-
-    bindMobileButton(buttonId, keyName) {
-        let button = document.getElementById(buttonId);
-
-        if (!button) return;
-
-        button.addEventListener("touchstart", (event) => {
-            event.preventDefault();
-            this.keyboard[keyName] = true;
-        });
-
-        button.addEventListener("touchend", (event) => {
-            event.preventDefault();
-            this.keyboard[keyName] = false;
-        });
-
-        button.addEventListener("mousedown", () => {
-            this.keyboard[keyName] = true;
-        });
-
-        button.addEventListener("mouseup", () => {
-            this.keyboard[keyName] = false;
-        });
-
-        button.addEventListener("mouseleave", () => {
-            this.keyboard[keyName] = false;
-        });
-    }
-
-    updateMobileControlsVisibility() {
-        if (this.gamestate === "playingScreen" && !this.isPaused && !this.isGameEnded) {
-            document.body.classList.add("show_mobile_controls");
-        } else {
-            document.body.classList.remove("show_mobile_controls");
         }
     }
 }
