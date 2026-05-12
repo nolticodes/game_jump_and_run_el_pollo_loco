@@ -96,6 +96,9 @@ class World {
         this.muteButton = new Buttons(10, this.canvas.height - size - margin, size, size, "");
         this.muteButton.icon = new Image();
         this.muteButton.icon.src = "./assets/img/01_UI/unmute_icon.svg";
+        if (this.sounds.muted) {
+            this.muteButton.icon.src = "./assets/img/01_UI/mute_icon.svg";
+        }
     }
 
     /**
@@ -208,7 +211,7 @@ class World {
         }
         requestAnimationFrame(() => this.draw());
     }
-    
+
     /**
      * Renders the full gameplay scene including world, UI and overlays.
      */
