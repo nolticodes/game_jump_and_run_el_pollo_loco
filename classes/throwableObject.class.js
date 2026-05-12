@@ -46,8 +46,8 @@ class ThrowableObject extends Bottles {
      * Initializes movement values for the throw.
      */
     initThrowValues() {
-        this.speedY = 10;
-        this.speedX = this.otherDirection ? -10 : 10;
+        this.speedY = 12;
+        this.speedX = this.otherDirection ? -8 : 8;
         this.acceleration = 2;
     }
 

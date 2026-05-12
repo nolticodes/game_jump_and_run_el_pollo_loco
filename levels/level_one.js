@@ -53,6 +53,12 @@ function createLevel1() {
             new Bottles(),
             new Bottles(),
             new Bottles(),
+            new Bottles(),
+            new Bottles(),
+            new Bottles(),
+            new Bottles(),
+            new Bottles(),
+            new Bottles(),
         ]
     );
 }
