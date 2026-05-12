@@ -286,7 +286,7 @@ class World {
         let endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         if (!endboss) return;
         this.ctx.beginPath();
-        this.ctx.strokeStyle = "red";
+        this.ctx.strokeStyle = "transparent";
         this.ctx.lineWidth = 2;
         this.ctx.moveTo(endboss.borderXLeft + this.camera_x, 0);
         this.ctx.lineTo(endboss.borderXLeft + this.camera_x, this.canvas.height);

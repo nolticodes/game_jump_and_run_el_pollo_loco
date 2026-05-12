@@ -42,8 +42,8 @@ class DrawableObject {
     drawRectangle(ctx) {
         if (this instanceof Pepe || this instanceof MiniChicken || this instanceof Chicken || this instanceof Endboss || this instanceof Coins || this instanceof Bottles) {
             ctx.beginPath();
-            ctx.lineWidth = "1";
-            ctx.strokeStyle = "blue";
+            ctx.lineWidth = "2";
+            ctx.strokeStyle = "transparent";
             ctx.rect(
                 this.x + this.offset.left,
                 this.y + this.offset.top,

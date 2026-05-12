@@ -13,7 +13,7 @@ class Endboss extends Moveableobject {
     isDeadAnimationPlayed = false;
     borderXLeft = 1000;
     borderXRight = 2500;
-    speed = 55;
+    speed = 57;
     hasSeenPlayer = false;
     offset = {
         top: 150,
