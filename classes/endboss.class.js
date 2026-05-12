@@ -6,14 +6,14 @@ class Endboss extends Moveableobject {
     height = 400;
     width = 400;
     y = 50;
-    x = 1900;
-    startX = 1900;
+    x = 2900;
+    startX = 2900;
     energy = 100;
     lastAnimation = "";
     isDeadAnimationPlayed = false;
     borderXLeft = 1000;
     borderXRight = 2500;
-    speed = 25;
+    speed = 60;
     hasSeenPlayer = false;
     offset = {
         top: 150,
