@@ -5,16 +5,13 @@ class Pepe extends Moveableobject {
     speed = 5;
     x = 80;
     y = 40;
-
     isDeadAnimationPlayed = false;
     isWalkingSoundPlaying = false;
     isSleepingSoundPlaying = false;
     wasInAir = false;
     lastAnimation = "";
     lastKeyPressTime = new Date().getTime();
-
     world;
-
     offset = {
         top: 180,
         bottom: 20,
@@ -124,7 +121,6 @@ class Pepe extends Moveableobject {
     startMovementInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused || this.world.isGameEnding) return;
-
             this.handleLandingSound();
             this.handleMovement();
             this.handleJump();
@@ -142,7 +138,6 @@ class Pepe extends Moveableobject {
         if (this.wasInAir && !currentlyInAir) {
             this.world.sounds.play(this.world.sounds.pepeLanding);
         }
-
         this.wasInAir = currentlyInAir;
     }
 
@@ -153,7 +148,6 @@ class Pepe extends Moveableobject {
         if (this.world.keyboard.right) {
             this.movePepeRight();
         }
-
         if (this.world.keyboard.left && this.x > 0) {
             this.movePepeLeft();
         }
@@ -200,11 +194,9 @@ class Pepe extends Moveableobject {
         if (cameraTarget < 0) {
             cameraTarget = 0;
         }
-
         if (cameraTarget > maxCameraX) {
             cameraTarget = maxCameraX;
         }
-
         this.world.camera_x = -cameraTarget;
     }
 
@@ -254,7 +246,6 @@ class Pepe extends Moveableobject {
     startSleepingInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused) return;
-
             if (this.shouldSleep()) {
                 this.startSleepingSound();
                 this.playAnimation(this.pepeIsSleeping, "sleep");
@@ -300,7 +291,6 @@ class Pepe extends Moveableobject {
     startDeadInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused) return;
-
             if (this.isDead() && !this.isDeadAnimationPlayed) {
                 this.playDeadAnimation();
             }
@@ -315,7 +305,6 @@ class Pepe extends Moveableobject {
         this.world.sounds.play(this.world.sounds.pepeDead);
 
         let i = 0;
-
         let interval = setInterval(() => {
             if (i < this.pepeIsDead.length) {
                 let path = this.pepeIsDead[i];
@@ -334,7 +323,6 @@ class Pepe extends Moveableobject {
     startHurtInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused) return;
-
             if (!this.isDead() && this.isHurt()) {
                 this.playAnimation(this.pepeIsHurt, "hurt");
             }
@@ -347,7 +335,6 @@ class Pepe extends Moveableobject {
     startWalkingInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused) return;
-
             if (!this.isDead() && !this.isInAir() && (this.world.keyboard.right || this.world.keyboard.left)) {
                 this.playAnimation(this.pepeWalkingImages, "walk");
             }
@@ -360,7 +347,6 @@ class Pepe extends Moveableobject {
     startJumpingInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused) return;
-
             if (!this.isDead() && !this.isHurt() && this.isInAir()) {
                 this.playAnimationOnce(this.pepeJumpingImages, "jump");
             }
@@ -373,7 +359,6 @@ class Pepe extends Moveableobject {
     startIdleInterval() {
         setInterval(() => {
             if (!this.world || this.world.isPaused) return;
-
             if (this.shouldPlayIdleAnimation()) {
                 this.playAnimation(this.pepeStandingImages, "idle");
             }
