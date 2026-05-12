@@ -47,6 +47,7 @@ class SoundManager {
         ];
         this.muted = false
         this.activeSounds = new Set();
+        this.loadMuteState();
     }
 
     /**
@@ -61,7 +62,7 @@ class SoundManager {
 
     /**
      * Plays a sound in a loop if it is not already playing.
-     */       
+     */
     playLoop(sound) {
         if (this.muted) return;
         if (!sound.paused) return;
@@ -89,6 +90,8 @@ class SoundManager {
      */
     toggleMute() {
         this.muted = !this.muted;
+
+        localStorage.setItem("pepe_muted", this.muted);
 
         this.allSounds.forEach(sound => {
             sound.muted = this.muted;
@@ -118,5 +121,20 @@ class SoundManager {
         this.activeSounds.forEach(sound => {
             sound.play();
         });
+    }
+
+    /**
+ * Loads the saved mute state from localStorage.
+ */
+    loadMuteState() {
+        let savedMuteState = localStorage.getItem("pepe_muted");
+
+        if (savedMuteState === "true") {
+            this.muted = true;
+
+            this.allSounds.forEach(sound => {
+                sound.muted = true;
+            });
+        }
     }
 }

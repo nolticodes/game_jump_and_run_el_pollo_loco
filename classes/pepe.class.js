@@ -397,7 +397,7 @@ class Pepe extends Moveableobject {
     isSleeping() {
         let timePassed = new Date().getTime() - this.lastKeyPressTime;
 
-        return timePassed > 5000 &&
+        return timePassed > 15000 &&
             !this.world.keyboard.right &&
             !this.world.keyboard.left &&
             !this.world.keyboard.up &&

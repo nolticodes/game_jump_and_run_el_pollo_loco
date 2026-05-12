@@ -40,6 +40,7 @@ class GameStateManager {
      */
     backToStartpage() {
         this.world.sounds.stop(this.world.sounds.gameWonSound);
+        this.world.sounds.stop(this.world.sounds.endbossDiesSound);
         this.resetToStartpage();
     }
 
@@ -68,6 +69,7 @@ class GameStateManager {
      */
     restartGame() {
         this.world.sounds.stop(this.world.sounds.gameWonSound);
+        this.world.sounds.stop(this.world.sounds.endbossDiesSound);
         this.resetGameObjects();
         this.resetUI();
         this.world.isPaused = false;
