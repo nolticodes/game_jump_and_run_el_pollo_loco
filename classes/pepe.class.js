@@ -7,7 +7,7 @@ class Pepe extends Moveableobject {
     speed = 5;
     x = 80;
     y = 80;
-    groundY = 80;
+    groundY = 85;
     isDeadAnimationPlayed = false;
     isWalkingSoundPlaying = false;
     isSleepingSoundPlaying = false;

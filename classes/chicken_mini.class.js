@@ -11,7 +11,7 @@ class MiniChicken extends Chicken {
      * Collision offset for precise hit detection.
      */
     offset = {
-        top: 20,
+        top: 30,
         bottom: 10,
         left: 10,
         right: 10,
