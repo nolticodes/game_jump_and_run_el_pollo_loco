@@ -63,7 +63,6 @@ class ControlsScreen {
         this.drawControlLine("Jump", "W / Space / Arrow Up", 170);
         this.drawControlLine("Left", "A / Arrow Left", 220);
         this.drawControlLine("Right", "D / Arrow Right", 270);
-        this.drawControlLine("Down", "S / Arrow Down", 320);
         this.drawControlLine("Throw Bottle", "T", 370);
     }
 

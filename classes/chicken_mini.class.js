@@ -1,7 +1,7 @@
 /**
  * Represents a small enemy chicken with movement and walking animation.
  */
-class MiniChicken extends Moveableobject {
+class MiniChicken extends Chicken {
     /**
      * Damage dealt to the player on collision.
      */
@@ -25,7 +25,7 @@ class MiniChicken extends Moveableobject {
     /**
      * Animation frames for walking.
      */
-    MiniChickensWalking = [
+    chickensWalking = [
         "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
         "./assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
         "./assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
@@ -37,26 +37,11 @@ class MiniChicken extends Moveableobject {
     constructor() {
         super();
         this.loadImage("./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
-        this.loadImagesToCacheJSON(this.MiniChickensWalking);
+        this.loadImagesToCacheJSON(this.chickensWalking);
         this.x = 340 + Math.random() * 2500;
         this.y = 335;
         this.width = 100;
         this.height = 100;
 
-    }
-
-    /**
-     * Starts walking animation and continuous movement.
-     */
-    animateImages() {
-        setInterval(() => {
-            if (this.world && this.world.isPaused) return;
-            this.playAnimation(this.MiniChickensWalking)
-        }, 175);
-        setInterval(() => {
-            if (this.world && this.world.isPaused) return;
-            this.otherDirection = false;
-            this.moveLeft()
-        }, 1000 / 60)
     }
 }
