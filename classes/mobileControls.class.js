@@ -30,10 +30,12 @@ class MobileControls {
         button.addEventListener("touchstart", (event) => {
             event.preventDefault();
             this.world.keyboard[keyName] = true;
+            this.world.character.lastKeyPressTime = new Date().getTime();
         });
         button.addEventListener("touchend", (event) => {
             event.preventDefault();
             this.world.keyboard[keyName] = false;
+            this.world.character.lastKeyPressTime = new Date().getTime();
         });
         button.addEventListener("mousedown", () => {
             this.world.keyboard[keyName] = true;

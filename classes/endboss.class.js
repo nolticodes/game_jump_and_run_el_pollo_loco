@@ -217,9 +217,6 @@ class Endboss extends Moveableobject {
      */
     isPlayerNear() {
         let distance = Math.abs(this.x - this.world.character.x);
-
-        console.log("Endboss x:", this.x, "Pepe x:", this.world.character.x, "Distance:", distance);
-
         return distance <= 600;
     }
 
