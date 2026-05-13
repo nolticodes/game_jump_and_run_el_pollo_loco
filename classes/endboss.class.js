@@ -2,7 +2,7 @@
  * Represents the endboss enemy with alert, movement, hurt and death behavior.
  */
 class Endboss extends Moveableobject {
-    damage = 15;
+    damage = 20;
     height = 400;
     width = 400;
     y = 50;
@@ -12,7 +12,7 @@ class Endboss extends Moveableobject {
     lastAnimation = "";
     isDeadAnimationPlayed = false;
     borderXLeft = 1000;
-    borderXRight = 2500;
+    borderXRight = 6500;
     speed = 57;
     hasSeenPlayer = false;
     offset = {
@@ -217,7 +217,10 @@ class Endboss extends Moveableobject {
      */
     isPlayerNear() {
         let distance = Math.abs(this.x - this.world.character.x);
-        return distance <= 500;
+
+        console.log("Endboss x:", this.x, "Pepe x:", this.world.character.x, "Distance:", distance);
+
+        return distance <= 600;
     }
 
     /**
