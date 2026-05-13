@@ -70,7 +70,7 @@ class SoundManager {
         sound.loop = true;
 
         sound.play().catch(() => {
-            console.log("Audio wurde vom Browser blockiert, bis der User klickt.");
+            console.warn("Audio wurde vom Browser blockiert, bis der User klickt.");
         });
 
         this.activeSounds.add(sound);
