@@ -11,7 +11,7 @@ class MiniChicken extends Chicken {
      * Collision offset for precise hit detection.
      */
     offset = {
-        top: 10,
+        top: 20,
         bottom: 10,
         left: 10,
         right: 10,
@@ -39,9 +39,9 @@ class MiniChicken extends Chicken {
         this.loadImage("./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
         this.loadImagesToCacheJSON(this.chickensWalking);
         this.x = 340 + Math.random() * 2500;
-        this.y = 335;
-        this.width = 100;
-        this.height = 100;
+        this.y = 360;
+        this.width = 75;
+        this.height = 75;
 
     }
 }

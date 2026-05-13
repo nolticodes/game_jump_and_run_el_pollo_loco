@@ -20,11 +20,11 @@ class Coins extends Moveableobject {
         super();
         this.loadImage("./assets/img/8_coin/coin_1.png");
         this.x = 600 + Math.random() * 1500;
-        this.baseY = 300 - Math.random() * 300; // Ausgangspunkt
+        this.baseY = 300 - Math.random() * 200; 
         this.y = this.baseY;
         this.width = 150;
         this.height = 150;
-        this.angle = 0; // für Sinus-Bewegung
+        this.angle = 0; 
         this.animate();
     }
 

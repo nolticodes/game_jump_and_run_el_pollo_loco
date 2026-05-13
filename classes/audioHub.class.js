@@ -27,7 +27,7 @@ class SoundManager {
         this.pepeJump.volume = 0.3;
         this.pepeLanding.volume = 0.7;
         this.pepeSleeping.volume = 0.05
-        this.startscreenSound.volume = 0.6
+        this.startscreenSound.volume = 0.3
         this.allSounds = [
             this.collectBottle,
             this.splashBottle,

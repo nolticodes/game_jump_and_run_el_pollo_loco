@@ -2,6 +2,8 @@
  * Handles all core gameplay logic like collisions, throwing and collectibles.
  */
 class GameLogic {
+    lastThrowTime = 0;
+    throwCooldown = 1000;
     /**
      * Initializes game logic and starts all update loops.
      */
@@ -34,7 +36,14 @@ class GameLogic {
      * Creates and throws a bottle if input and resources are available.
      */
     throwBottle() {
-        if (this.world.keyboard.t && this.world.collectedBottles > 0) {
+        let now = Date.now();
+
+        if (
+            this.world.keyboard.t &&
+            this.world.collectedBottles > 0 &&
+            now - this.lastThrowTime > this.throwCooldown
+        ) {
+            this.lastThrowTime = now;
             this.world.sounds.play(this.world.sounds.throwingBottleSound);
             let xOffset = this.world.character.otherDirection ? 20 : 100;
             let yOffset = 160;
@@ -47,7 +56,9 @@ class GameLogic {
             bottle.throw();
             this.world.throwableObject.push(bottle);
             this.world.collectedBottles--;
-            let percentage = (this.world.collectedBottles / this.world.maxBottles) * 100;
+
+            let percentage =
+                (this.world.collectedBottles / this.world.maxBottles) * 100;
             this.world.statusbarBottles.setPercentage(percentage);
             this.world.keyboard.t = false;
         }
@@ -81,12 +92,12 @@ class GameLogic {
                 this.world.sounds.play(this.world.sounds.chickenDies);
                 this.world.level.enemies.splice(index, 1);
                 this.world.character.speedY = 13;
-            } 
+            }
             else if (enemy instanceof MiniChicken && this.world.character.isJumpingOn(enemy)) {
                 this.world.sounds.play(this.world.sounds.chickenDies);
                 this.world.level.enemies.splice(index, 1);
                 this.world.character.speedY = 8;
-            } 
+            }
             else if (this.world.character.isColliding(enemy) && !this.world.character.isHurt()) {
                 this.world.sounds.play(this.world.sounds.pepeHurt);
                 this.world.character.hit(enemy);

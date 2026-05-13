@@ -2,9 +2,12 @@
  * Represents the main playable character Pepe with movement, animations and sounds.
  */
 class Pepe extends Moveableobject {
+    width = 150;
+    height = 350
     speed = 5;
     x = 80;
-    y = 40;
+    y = 80;
+    groundY = 80;
     isDeadAnimationPlayed = false;
     isWalkingSoundPlaying = false;
     isSleepingSoundPlaying = false;
@@ -14,7 +17,7 @@ class Pepe extends Moveableobject {
     world;
     offset = {
         top: 180,
-        bottom: 20,
+        bottom: 30,
         left: 40,
         right: 60,
     };

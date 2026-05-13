@@ -31,6 +31,7 @@ class GameStateManager {
         this.world.sounds.stop(this.world.sounds.startscreenSound);
         this.world.gameStarted = true;
         this.world.gamestate = "playingScreen";
+        this.world.character.lastKeyPressTime = Date.now();
         this.world.setWorld();
         this.world.gameLogic.start();
     }
@@ -72,6 +73,7 @@ class GameStateManager {
         this.world.sounds.stop(this.world.sounds.endbossDiesSound);
         this.resetGameObjects();
         this.resetUI();
+        this.world.character.lastKeyPressTime = Date.now();
         this.world.isPaused = false;
         this.world.gameStarted = true;
         this.world.gamestate = "playingScreen";

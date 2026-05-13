@@ -12,7 +12,7 @@ class Chicken extends Moveableobject {
      * Collision offset for precise hit detection.
      */
     offset = {
-        top: 10,
+        top: 20,
         bottom:10,
         left: 10,
         right: 10,

@@ -28,8 +28,8 @@ class Moveableobject extends DrawableObject {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
-            if (this.y > 40) {
-                this.y = 40;
+            if (this.y > this.groundY) {
+                this.y = this.groundY;
                 this.speedY = 0
             }
         }, 1000 / 25)
@@ -39,7 +39,7 @@ class Moveableobject extends DrawableObject {
      * Checks if the object is currently above ground level.
      */
     isInAir() {
-        return this.y < 40
+        return this.y < this.groundY
     }
 
     /**
@@ -103,7 +103,7 @@ class Moveableobject extends DrawableObject {
      * Triggers a jump by setting vertical speed.
      */
     jump() {
-        return this.speedY = 25
+        return this.speedY = 20
     };
 
     /**

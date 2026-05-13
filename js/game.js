@@ -18,6 +18,7 @@ function init() {
  * Handles keydown events and updates keyboard state for movement and actions.
  */
 window.addEventListener("keydown", (event) => {
+    if (event.repeat) return;
     world.character.lastKeyPressTime = new Date().getTime();
     if (event.key == "a" || event.key == "ArrowLeft") {
         keyboard.left = true;
